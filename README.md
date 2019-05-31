@@ -1,4 +1,4 @@
-# housing-finder
+# Location-based Housing Finder
 
 > A Web-based Application developed by Project Team 40 - CPSC 304 - University of British Columbia
 
