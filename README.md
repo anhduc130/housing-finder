@@ -1,7 +1,6 @@
 # housing-finder
 
-> A Web-based Application developed by Project Team 40 
-> CPSC 304 - University of British Columbia
+> A Web-based Application developed by Project Team 40 - CPSC 304 - University of British Columbia
 
 ## Build Setup
 
