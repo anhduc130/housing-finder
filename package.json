@@ -1,0 +1,15 @@
+{
+  "name": "housing-finder",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": "git@github.com:anhduc130/housing-finder.git",
+  "author": "Andrew Bui <andrewbui130@hotmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "npm install; npm run dev",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
