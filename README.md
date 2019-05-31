@@ -6,6 +6,12 @@
 ## Build Setup
 
 ``` bash
+# clone the repository
+git clone git@github.com:anhduc130/housing-finder.git
+
+# change directory to the repository
+cd housing-finder
+
 # install dependencies
 npm install
 
