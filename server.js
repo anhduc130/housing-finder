@@ -1,5 +1,16 @@
-const express = require("express");
+const express   = require('express'),
+      mysql     = require('mysql');
+
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'dbuser',
+  password: 's3kreee7',
+  database: 'housing_db'
+})
+
+
 const app = express();
+
 
 app.use(express.static("public"));
 
@@ -14,3 +25,5 @@ const server = app.listen(2019, function () {
   const port = server.address().port;
   console.log("Server started at http://localhost:%s", port);
 });
+
+module.exports = ("App", app);
