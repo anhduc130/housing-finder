@@ -20,4 +20,4 @@ VALUES
 
 
 -- clinics only 
-INSERT INTO  hostpital("Address","Name","Type","Postal Code")
+-- INSERT INTO  hostpital("Address","Name","Type","Postal Code")
