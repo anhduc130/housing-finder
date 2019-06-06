@@ -1,6 +1,5 @@
 CREATE TABLE ParksNRecreation
-(
-    Address	varchar(255) NOT NULL PRIMARY KEY,
+(   Address	varchar(255) NOT NULL PRIMARY KEY,
     Name	varchar(50),
     Facility varchar(50),
     Postal_Code varchar(20), 

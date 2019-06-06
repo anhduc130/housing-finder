@@ -21,7 +21,7 @@ INSERT INTO Neighbourhood VALUES ("V5Y", "MountPleasant-Hillcrest-Oakridge", "00
 INSERT INTO Neighbourhood VALUES ("V6A", "Strathcona", "0001");
 
 -- West Vancouver
-
+INSERT INTO Neighbourhood VALUES ("V6T", "University Endowment Lands", "0001");
 INSERT INTO Neighbourhood VALUES ("V6R", "West Point Grey", "0001");
 INSERT INTO Neighbourhood VALUES ("V6K", "Kitsilano", "0001");
 INSERT INTO Neighbourhood VALUES ("V6N", "Dunbar Southlands", "0001");
