@@ -1,6 +1,7 @@
 const express = require("express")
 const app = express();
 const mysql = require("mysql");
+const createHousingOption = require("./create-housing-option")
 
 app.use(express.static("public"));
 
@@ -30,7 +31,7 @@ const connection = mysql.createConnection({
 });
 
 connection.connect(function (err) {
-  if (err) 
+  if (err)
     throw err;
   console.log("Connected!");
 });
@@ -44,7 +45,12 @@ app.get("/housing-options/:housingId", function (request, response) {
 });
 
 app.post("/housing-options", function (request, response) {
-  response.send("POST housing-options endpoint");
+  const result = createHousingOption(request.body, connection)
+  if (result) {
+    response.status(201).send(result);
+  } else {
+    response.status(400).send("Error: Failed to create a houing option");
+  }
 });
 
 app.post("/signup", function (request, response) {
