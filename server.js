@@ -1,5 +1,4 @@
-const express = require("express"),
-const connection = mysql.createConnection({host: "localhost", user: "root", password: "root", database: "housing_finder"});
+const express = require("express")
 const app = express();
 const mysql = require("mysql");
 
