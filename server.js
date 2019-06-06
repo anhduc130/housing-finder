@@ -1,5 +1,5 @@
 const express = require("express"),
-const connection = mysql.createConnection({host: "localhost", user: "dbuser", password: "s3kreee7", database: "housing_db"});
+const connection = mysql.createConnection({host: "localhost", user: "root", password: "root", database: "housing_finder"});
 const app = express();
 const mysql = require("mysql");
 
