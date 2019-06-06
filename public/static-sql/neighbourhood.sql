@@ -8,7 +8,7 @@ FOREIGN KEY (City_ID) references City(City_ID));
 
 INSERT INTO Neighbourhood VALUES ("V6P", "Marpole", "0001");
 INSERT INTO Neighbourhood VALUES ("V5X", "Sunset", "0001");
-INSERT INTO Neighbourhood VALUES ("V5P", "Victoria Fraser View", "0001");
+INSERT INTO Neighbourhood VALUES ("V5P", "Victoria-FraserView", "0001");
 INSERT INTO Neighbourhood VALUES ("V5S", "Renfrew-Killarney", "0001");
 
 
@@ -18,7 +18,7 @@ INSERT INTO Neighbourhood VALUES ("V5L", "Grandview-Woodland", "0001");
 INSERT INTO Neighbourhood VALUES ("V5K", "Hastings-Sunrise", "0001");
 INSERT INTO Neighbourhood VALUES ("V5N", "Kensington-Cedar Cottage", "0001");
 INSERT INTO Neighbourhood VALUES ("V5R", "Renfrew-Collingwood", "0001");
-INSERT INTO Neighbourhood VALUES ("V5Y", "Mount Pleasant-Hillcrest-Oakridge", "0001");
+INSERT INTO Neighbourhood VALUES ("V5Y", "MountPleasant-Hillcrest-Oakridge", "0001");
 INSERT INTO Neighbourhood VALUES ("V6A", "Strathcona", "0001");
 
 -- West Vancouver
