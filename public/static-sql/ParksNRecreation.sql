@@ -4,7 +4,7 @@ CREATE TABLE ParksNRecreation
     Name	varchar(50),
     Facility varchar(50),
     Postal_Code varchar(20), 
-    FOREIGN KEY (Postal_Code) references neighborhood(Postal_code));
+    FOREIGN KEY (Postal_Code) references neighborhood(Postal_Code));
 
 
 INSERT INTO ParksNRecreation ("Address","Name","Facility","Postal Code")
