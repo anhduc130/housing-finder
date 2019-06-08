@@ -44,12 +44,12 @@ app.get("/rental-units/:housingId", function (request, response) {
   response.send("GET rental-units/housingId endpoint");
 });
 
-app.post("/rental-units", function (request, response) {
-  const result = createRentalUnit(request.body, connection)
-  if (result) {
-    response.status(201).send(result);
-  } else {
-    response.status(400).send("Error: Failed to create a houing option");
+app.post("/rental-units", async function (request, response) {
+  try {
+    createRentalUnit(request.body, connection)
+    response.status(201).send("Success: A rental unit inserted");
+  } catch (error) {
+    response.status(400).send(error);
   }
 });
 
