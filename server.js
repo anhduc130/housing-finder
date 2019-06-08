@@ -36,15 +36,15 @@ connection.connect(function (err) {
   console.log("Connected!");
 });
 
-app.get("/housing-options", function (request, response) {
-  response.send("GET housing-options endpoint");
+app.get("/rental-units", function (request, response) {
+  response.send("GET rental-units endpoint");
 });
 
-app.get("/housing-options/:housingId", function (request, response) {
-  response.send("GET housing-options/housingId endpoint");
+app.get("/rental-units/:housingId", function (request, response) {
+  response.send("GET rental-units/housingId endpoint");
 });
 
-app.post("/housing-options", function (request, response) {
+app.post("/rental-units", function (request, response) {
   const result = createRentalUnit(request.body, connection)
   if (result) {
     response.status(201).send(result);
