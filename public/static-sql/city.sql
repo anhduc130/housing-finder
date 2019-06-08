@@ -1,11 +1,13 @@
-CREATE TABLE City ( 
-City_ID int PRIMARY KEY, 
-Name varChar(20) NOT NULL UNIQUE,
-Province_Name varChar(20) NOT NULL,
-FOREIGN KEY (Province_Name) references Province(Province_Name)); 
+CREATE TABLE city
+(
+    city_id int PRIMARY KEY,
+    city_name varChar(20) NOT NULL UNIQUE,
+    province_name varChar(20) NOT NULL,
+    FOREIGN KEY (province_name) references province(province_name)
+);
 
-INSERT INTO City VALUES ("0001", "Vancouver", "BC");
-INSERT INTO City VALUES ("0002", "Richmond", "BC");
-INSERT INTO City VALUES ("0003", "Langley", "BC");
-INSERT INTO City VALUES ("0004", "Kelowna", "BC");
-INSERT INTO City VALUES ("0005", "Surrey", "BC");
+INSERT INTO city VALUES ("0001", "Vancouver", "BC");
+INSERT INTO city VALUES ("0002", "Richmond", "BC");
+INSERT INTO city VALUES ("0003", "Langley", "BC");
+INSERT INTO city VALUES ("0004", "Kelowna", "BC");
+INSERT INTO city VALUES ("0005", "Surrey", "BC");
