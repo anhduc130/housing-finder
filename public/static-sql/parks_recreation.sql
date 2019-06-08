@@ -1,12 +1,15 @@
-CREATE TABLE ParksNRecreation
-(   Address	varchar(255) NOT NULL PRIMARY KEY,
-    Name	varchar(50),
-    Facility varchar(50),
-    Postal_Code varchar(20), 
-    FOREIGN KEY (Postal_Code) references neighborhood(Postal_Code));
+CREATE TABLE parks_recreation
+(
+    parks_recreation_address varchar(255) NOT NULL PRIMARY KEY,
+    parks_recreation_name varchar(50),
+    facility varchar(50),
+    postal_code varchar(20),
+    FOREIGN KEY (postal_code) references neighborhood(postal_code)
+);
 
 
-INSERT INTO ParksNRecreation ("Address","Name","Facility","Postal Code")
+INSERT INTO parks_recreation
+    ("parks_recreation_address","parks_recreation_name","facility","postal_code")
 VALUES
     ("4202 Valley Drive", "Arbutus Village Park", "Playground", "V6L"),
     ("2995 W 19th Avenue", "Carnarvon Park", "Playground", "V6L"),

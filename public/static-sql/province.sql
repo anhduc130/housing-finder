@@ -1,5 +1,6 @@
-CREATE TABLE Province (
-Province_Name VarChar(2) PRIMARY KEY);
+CREATE TABLE province (
+province_name VarChar(2) PRIMARY KEY
+);
 
 INSERT INTO province VALUES ("BC");
 INSERT INTO province VALUES ("AB");

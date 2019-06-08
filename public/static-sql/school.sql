@@ -1,13 +1,13 @@
 CREATE TABLE school
 (
-    Address	varchar(255) NOT NULL PRIMARY KEY,
-    Name	varchar(50),
-    Type varchar(20),
-    Postal_Code varchar(20), 
-    FOREIGN KEY (Postal_Code) references neighborhood(Postal_Code));
+    school_address	varchar(255) NOT NULL PRIMARY KEY,
+    school_name	varchar(50),
+    school_type varchar(20),
+    postal_code varchar(20), 
+    FOREIGN KEY (postal_code) references neighbourhood(postal_code));
 
 -- UNIVERSITIES ONLY
-INSERT INTO school ("Address","Name","Facility","Postal Code")
+INSERT INTO school
 VALUES
     ("2329 West Mall", "University of British Columbia", "University", "V6T"),
     ("515 W Hastings St", "Simon Fraser University (Downtown Campus)", "University", "V6B"),

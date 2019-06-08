@@ -1,8 +1,10 @@
-CREATE TABLE neighbourhood (
-Postal_Code varChar (20) NOT NULL PRIMARY KEY,  
-Name varChar(20) NOT NULL,
-City_ID int NOT NULL,
-FOREIGN KEY (City_ID) references City(City_ID));
+CREATE TABLE neighbourhood
+(
+    postal_code varChar (20) NOT NULL PRIMARY KEY,
+    neighbourhood_name varChar(20) NOT NULL,
+    city_id int NOT NULL,
+    FOREIGN KEY (city_id) references city(city_id)
+);
 
 -- South Vancouver: 
 
