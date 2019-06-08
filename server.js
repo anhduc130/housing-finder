@@ -1,7 +1,7 @@
 const express = require("express")
 const app = express();
 const mysql = require("mysql");
-const createHousingOption = require("./create-housing-option")
+const createRentalUnit = require("./create-rental-unit")
 
 app.use(express.static("public"));
 
@@ -45,7 +45,7 @@ app.get("/housing-options/:housingId", function (request, response) {
 });
 
 app.post("/housing-options", function (request, response) {
-  const result = createHousingOption(request.body, connection)
+  const result = createRentalUnit(request.body, connection)
   if (result) {
     response.status(201).send(result);
   } else {
