@@ -16,7 +16,7 @@ VALUES
     ("250 W Pender St", "Vancouver Community College", "University", "V6B"),
     ("555 Seymour St", "BCIT (Downtown Campus)", "University", "V6B"),
     ("410 Robson St", "Blanche Macdonald Centre", "University", "V6B"),
-    -- ("520 E 1st Ave", "Emily Carr University of Art + Design", "University", "V5T"),
+    ("520 E 1st Ave", "Emily Carr University of Art + Design", "University", "V6A"),
     ("198 W Hastings St", "Vancouver Film School", "University", "V6B");
 
     
