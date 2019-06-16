@@ -1,25 +1,6 @@
 const superagent = require('superagent');
 const fs         = require('fs');
 
-// TODOs:
-// 1. compile response data from each API call
-// 2. associate the API results with specific neighbourhoods based on ZIP
-// 3. insert compiled data into db
-// 4. run static SQL queries to populate the DB
-// / 5. Learn to make API calls, set headers without superagent
-// / 6. Learn to receive and process calls on the front end
-// // 
-// / 1. Python basics
-// / 2. Cracking Coding Interview look through most important parts
-// 3. Familiarize w/ YelpCamp
-// 4. Estimate how to finish Housing-Finder
-// / 5. Networking crashcourse
-// / 6. Asynchronous JS BackEnd Crash course 
-// 7. Prepare for the personality questions
-// 8. Read up on Blue Willow / Phillips Caregiving and 
-// 9. Familiarize with everything on resume
-// 10. Practice skills on resume
-
 //Parse the specified hard-coded SQL file and return an list of valid string SQL statements
 function parseSQL(file) {
   return new Promise ((resolve) => {
