@@ -1,7 +1,8 @@
-const express = require("express")
+const express = require("express");
 const app = express();
 const mysql = require("mysql");
-const createRentalUnit = require("./create-rental-unit")
+const createRentalUnit = require("./create-rental-unit");
+const initialize = require("./seedDB");
 
 app.use(express.static("public"));
 
@@ -32,9 +33,11 @@ const connection = mysql.createConnection({
 
 connection.connect(function (err) {
   if (err)
-    throw err;
+    // throw err;
   console.log("Connected!");
 });
+
+initialize(connection);
 
 app.get("/rental-units", function (request, response) {
   response.send("GET rental-units endpoint");
