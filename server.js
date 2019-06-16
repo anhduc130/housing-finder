@@ -46,7 +46,7 @@ app.get("/rental-units/:housingId", function (request, response) {
 
 app.post("/rental-units", async function (request, response) {
   try {
-    createRentalUnit(request.body, connection)
+    createRentalUnit(request.body, connection);
     response.status(201).send("Success: A rental unit inserted");
   } catch (error) {
     response.status(400).send(error);
@@ -54,7 +54,12 @@ app.post("/rental-units", async function (request, response) {
 });
 
 app.post("/signup", function (request, response) {
-  response.send("POST signup endpoint");
+  try {
+    signUp(request.body, connection);
+    response.status(201).send("Success: A landlord signed up");
+  } catch (error) {
+    response.status(400).send(error);
+  }
 });
 
 app.post("/signin", function (request, response) {
