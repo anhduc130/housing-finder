@@ -1,6 +1,6 @@
 CREATE TABLE neighbourhood
 (
-    postal_code varChar (20) NOT NULL PRIMARY KEY,
+    postal_code varChar (10) NOT NULL PRIMARY KEY,
     neighbourhood_name varChar(40) NOT NULL,
     city_id int NOT NULL,
     FOREIGN KEY (city_id) references city(city_id)

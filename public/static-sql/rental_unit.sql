@@ -8,5 +8,5 @@ CREATE TABLE rental_unit
     postal_code varchar(10) NOT NULL,
     landlord_id Integer NOT NULL,
     FOREIGN KEY (landlord_id) REFERENCES landlord (landlord_id) ON DELETE CASCADE,
-    FOREIGN KEY (postal_code) REFERENCES neighbourhood (postal_code)
+    FOREIGN KEY (postal_code) REFERENCES neighbourhood(postal_code)
 );
