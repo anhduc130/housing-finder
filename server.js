@@ -4,6 +4,7 @@ const mysql = require("mysql");
 const signUp = require("./sign-up");
 const signIn = require("./sign-in");
 const createRentalUnit = require("./create-rental-unit");
+const addFeatureListToRentalUnit = require("./add-feature-list-to-rental-unit");
 const initialize = require("./seedDB");
 
 app.use(express.static("public"));
@@ -80,7 +81,9 @@ app.post("/rental-units", async function (request, response) {
       loggedInKey: cookies['logged-in-key']
     }
 
-    createRentalUnit(landlord, request.body.rentalUnit, connection);
+    const rentalUnitId = await createRentalUnit(landlord, request.body.rentalUnit, connection);
+    await addFeatureListToRentalUnit(request.body.unitFeatureList, rentalUnitId, connection);
+
     response.status(201).send("A rental unit was successfully created!");
   } catch (error) {
     response.status(400).send(error);

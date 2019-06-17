@@ -25,7 +25,7 @@ const postRentalUnit = () => {
     const unitType = document.getElementById('rentalUnitType').value
     const unitDescription = document.getElementById('rentalUnitDescription').value
 
-    const unitRoomNum = document.getElementById('rentalUnitRoomNum').value
+    const numOfRooms = document.getElementById('rentalUnitRoomNum').value
     const parkingYes = document.getElementById('parkingYes').checked
     const smokingYes = document.getElementById('smokingYes').checked
     const petsYes = document.getElementById('petsYes').checked
@@ -44,7 +44,7 @@ const postRentalUnit = () => {
     }
 
     const unitFeatureList = {
-        unitRoomNum,
+        numOfRooms,
         parking: parkingYes ? 'yes' : 'no',
         smoking: smokingYes ? 'yes' : 'no',
         pets: petsYes ? 'yes' : 'no',
