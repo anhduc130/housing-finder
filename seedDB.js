@@ -20,7 +20,6 @@ function parseSQL(file) {
       })
     }
   )
-  
 }
 
 //Get list of static SQL statements and strore each entry in DB
