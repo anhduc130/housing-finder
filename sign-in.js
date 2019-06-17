@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const cryptoRandomString = require('crypto-random-string');
 
 const getLandlord = (landlordEmail, connection) => {
     const sql = `SELECT * 
@@ -14,6 +15,20 @@ const getLandlord = (landlordEmail, connection) => {
     });
 }
 
+const updateLoggedInKey = (landlordEmail, connection) => {
+    const loggedInKey = cryptoRandomString({ length: 15, type: 'base64' });
+    const sql = `UPDATE landlord 
+                SET logged_in_key =  ${JSON.stringify(loggedInKey)}
+                WHERE landlord_email = ${JSON.stringify(landlordEmail)}`;
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, function (err, result) {
+            if (err) throw err;
+            resolve(loggedInKey)
+        });
+    });
+}
+
 const signIn = async (landlord, connection) => {
     const email = landlord.email;
     const password = landlord.password
@@ -22,7 +37,12 @@ const signIn = async (landlord, connection) => {
         const landlord = await getLandlord(email, connection);
         const result = await bcrypt.compare(password, landlord.landlord_password);
 
-        return result ? landlord : null;
+        if (result) {
+            const loggedInKey = await updateLoggedInKey(email, connection);
+            return { loggedInKey, landlord }
+        } else {
+            return;
+        }
     } catch (e) {
         throw e;
     }

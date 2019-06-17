@@ -4,5 +4,6 @@ CREATE TABLE landlord
     landlord_name varchar(128) NOT NULL,
     landlord_email varchar(128) NOT NULL UNIQUE,
     landlord_password varchar(256) NOT NULL,
-    landlord_phone_number varchar(50)
+    landlord_phone_number varchar(50),
+    logged_in_key varchar(50)
 );

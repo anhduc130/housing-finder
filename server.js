@@ -72,10 +72,16 @@ app.post("/signup", function (request, response) {
 
 app.post("/signin", async function (request, response) {
   try {
-    const landlord = await signIn(request.body, connection);
-    if (landlord) {
-      delete landlord.landlord_password;
-      response.status(200).send(landlord);
+    const result = await signIn(request.body, connection);
+
+    if (result && result.landlord && result.loggedInKey) {
+      result.landlord.logged_in_key = result.loggedInKey
+
+      delete result.landlord.landlord_password;
+      delete result.loggedInKey;
+
+      response.setHeader('Cookie', [`logged-in-key=${result.landlord.logged_in_key}`, 'HttpOnly', 'Secure'])
+      response.status(200).send(result.landlord);
     } else {
       response.status(401).send("Failed to sign in");
     }
