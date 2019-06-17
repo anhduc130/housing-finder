@@ -19,8 +19,10 @@ const signUp = async (landlord, connection) => {
     return new Promise((resolve, reject) => {
         connection.query(sql, function (err, result) {
             if (err) reject(err);
-            console.log('Success: A landlord signed up!');
-            resolve()
+            else {
+                console.log('Success: A landlord signed up!');
+                resolve()
+            }
         });
     })
 }

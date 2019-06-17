@@ -55,7 +55,7 @@ app.get("/rental-units/:housingId", function (request, response) {
 app.post("/rental-units", async function (request, response) {
   try {
     createRentalUnit(request.body, connection);
-    response.status(201).send("Success: A rental unit inserted");
+    response.status(201).send("A rental unit was successfully created!");
   } catch (error) {
     response.status(400).send(error);
   }
@@ -64,9 +64,9 @@ app.post("/rental-units", async function (request, response) {
 app.post("/signup", async function (request, response) {
   try {
     await signUp(request.body, connection);
-    response.status(200).send("Success: A landlord signed up");
+    response.status(201).send("You are successfully signed up! Please sign in now.");
   } catch (error) {
-    response.status(400).send(error);
+    response.status(400).send("Email was already registered");
   }
 });
 
@@ -83,7 +83,7 @@ app.post("/signin", async function (request, response) {
 
       response.status(200).send(result.landlord);
     } else {
-      response.status(401).send({ error: "Failed to sign in" });
+      response.status(401).send({ error: "Failed to sign in." });
     }
   } catch (error) {
     response.status(400).send(error);
