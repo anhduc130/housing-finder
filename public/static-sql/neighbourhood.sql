@@ -7,7 +7,6 @@ CREATE TABLE neighbourhood
 );
 
 -- South Vancouver: 
-
 INSERT INTO neighbourhood VALUES ("V6P", "Marpole", "0001");
 INSERT INTO neighbourhood VALUES ("V5X", "Sunset", "0001");
 INSERT INTO neighbourhood VALUES ("V5P", "Victoria-Fraserview", "0001");
