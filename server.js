@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const mysql = require("mysql");
+const signUp = require("./sign-up");
+const signIn = require("./sign-in");
 const createRentalUnit = require("./create-rental-unit");
 const initialize = require("./seedDB");
 
@@ -34,9 +36,12 @@ const connection = mysql.createConnection({
 connection.connect(function (err) {
   if (err)
     // throw err;
-  console.log("Connected!");
+    console.log("Connected!");
 });
 
+/**
+ * Uncomment this line to initialize
+ */
 // initialize(connection);
 
 app.get("/rental-units", function (request, response) {
@@ -49,17 +54,38 @@ app.get("/rental-units/:housingId", function (request, response) {
 
 app.post("/rental-units", async function (request, response) {
   try {
-    createRentalUnit(request.body, connection)
+    createRentalUnit(request.body, connection);
     response.status(201).send("Success: A rental unit inserted");
   } catch (error) {
     response.status(400).send(error);
   }
 });
 
-app.post("/signup", function (request, response) {
-  response.send("POST signup endpoint");
+app.post("/signup", async function (request, response) {
+  try {
+    await signUp(request.body, connection);
+    response.status(200).send("Success: A landlord signed up");
+  } catch (error) {
+    response.status(400).send(error);
+  }
 });
 
-app.post("/signin", function (request, response) {
-  response.send("POST signin endpoint");
+app.post("/signin", async function (request, response) {
+  try {
+    const result = await signIn(request.body, connection);
+
+    if (result && result.landlord && result.loggedInKey) {
+      response.setHeader('Set-Cookie', [`logged-in-key=${result.loggedInKey}`]);
+
+      delete result.landlord.landlord_password;
+      delete result.landlord.logged_in_key;
+      delete result.loggedInKey;
+
+      response.status(200).send(result.landlord);
+    } else {
+      response.status(401).send({ error: "Failed to sign in" });
+    }
+  } catch (error) {
+    response.status(400).send(error);
+  }
 });

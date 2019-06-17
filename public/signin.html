@@ -105,9 +105,11 @@
 
   </style>
   <head>
+    <script src="js/sign-in.js"></script>
+    <script src="js/sign-up.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
       <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
       <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-      <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
       <script>
         $(function() {
 
@@ -155,12 +157,12 @@ e.preventDefault();
                 <div class="row">
                   <div class="col-lg-12">
                     <!-- <form id="login-form" action="https://phpoll.com/login/process" method="post" role="form" style="display: block;"> -->
-                      <form id="login-form" method="post" role="form" style="display: block;">
+                      <form id="login-form" role="form" style="display: block;">
                       <div class="form-group">
-                        <input type="text" name="Email" id="Email" tabindex="1" class="form-control" placeholder="Email Address" value="">
+                        <input type="text" name="Email" id="signInEmail" tabindex="1" class="form-control" placeholder="Email Address" value="">
                       </div>
                       <div class="form-group">
-                        <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+                        <input type="password" name="password" id="signInPassword" tabindex="2" class="form-control" placeholder="Password">
                       </div>
                       <!-- <div class="form-group text-center">
                         <input type="checkbox" tabindex="3" class="" name="remember" id="remember">
@@ -169,7 +171,7 @@ e.preventDefault();
                       <div class="form-group">
                         <div class="row">
                           <div class="col-sm-6 col-sm-offset-3">
-                            <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Log In">
+                            <input onclick="signIn()" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Log In">
                           </div>
                         </div>
                       </div>
@@ -184,26 +186,26 @@ e.preventDefault();
                       </div> -->
                     </form>
                     <!-- <form id="register-form" action="https://phpoll.com/register/process" method="post" role="form" style="display: none;"> -->
-                      <form id="register-form" method="post" role="form" style="display: none;">
+                      <form id="register-form" role="form" style="display: none;">
                       <div class="form-group">
-                        <input type="text" name="Name" id="Name" tabindex="1" class="form-control" placeholder="Name" value="">
+                        <input type="text" name="Name" id="signUpName" tabindex="1" class="form-control" placeholder="Name" value="">
                       </div>
                       <div class="form-group">
-                        <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="">
+                        <input type="email" name="email" id="signUpEmail" tabindex="1" class="form-control" placeholder="Email Address" value="">
                       </div>
                       <div class="form-group">
-                        <input type="text" name="Phone" id="Phone" tabindex="1" class="form-control" placeholder="Phone" value="">
+                        <input type="text" name="Phone" id="signUpPhoneNumber" tabindex="1" class="form-control" placeholder="Phone" value="">
                       </div>
                       <div class="form-group">
-                        <input type="password" name="password" id="password" tabindex="1" class="form-control" placeholder="Password">
+                        <input type="password" name="password" id="signUpPassword" tabindex="1" class="form-control" placeholder="Password">
                       </div>
                       <div class="form-group">
-                        <input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password">
+                        <input type="password" name="confirm-password" id="signUpConfirmSignUpPassword" tabindex="2" class="form-control" placeholder="Confirm Password">
                       </div>
                       <div class="form-group">
                         <div class="row">
                           <div class="col-sm-6 col-sm-offset-3">
-                            <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now">
+                            <input onclick="signUp()" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now">
                           </div>
                         </div>
                       </div>
