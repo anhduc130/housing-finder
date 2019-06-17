@@ -1,6 +1,7 @@
 CREATE TABLE rental_unit
 (
-    rental_id varchar(128) PRIMARY KEY,
+    unit_id varchar(128) PRIMARY KEY,
+    unit_title varchar(128),
     unit_description varchar(128),
     price Integer NOT NULL,
     unit_address varchar(128) NOT NULL,

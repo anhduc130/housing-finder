@@ -9,7 +9,7 @@ const getLandlord = (landlordEmail, connection) => {
     return new Promise((resolve, reject) => {
         connection.query(sql, function (err, result) {
             if (err) throw err;
-            else if (!result[0]) reject(result);
+            else if (!result[0]) reject('Invalid email address');
             else resolve(result[0]);
         });
     });
@@ -41,7 +41,7 @@ const signIn = async (landlord, connection) => {
             const loggedInKey = await updateLoggedInKey(email, connection);
             return { loggedInKey, landlord }
         } else {
-            return;
+            throw 'Invalid password';
         }
     } catch (e) {
         throw e;

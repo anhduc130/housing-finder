@@ -64,7 +64,7 @@ app.post("/rental-units", async function (request, response) {
 app.post("/signup", async function (request, response) {
   try {
     await signUp(request.body, connection);
-    response.status(201).send("Success: A landlord signed up");
+    response.status(200).send("Success: A landlord signed up");
   } catch (error) {
     response.status(400).send(error);
   }
@@ -75,15 +75,15 @@ app.post("/signin", async function (request, response) {
     const result = await signIn(request.body, connection);
 
     if (result && result.landlord && result.loggedInKey) {
-      result.landlord.logged_in_key = result.loggedInKey
+      response.setHeader('Set-Cookie', [`logged-in-key=${result.loggedInKey}`]);
 
       delete result.landlord.landlord_password;
+      delete result.landlord.logged_in_key;
       delete result.loggedInKey;
 
-      response.setHeader('Cookie', [`logged-in-key=${result.landlord.logged_in_key}`, 'HttpOnly', 'Secure'])
       response.status(200).send(result.landlord);
     } else {
-      response.status(401).send("Failed to sign in");
+      response.status(401).send({ error: "Failed to sign in" });
     }
   } catch (error) {
     response.status(400).send(error);

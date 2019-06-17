@@ -105,6 +105,7 @@
 
   </style>
   <head>
+    <script src="js/sign-in.js"></script>
     <script src="js/sign-up.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
       <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -156,12 +157,12 @@ e.preventDefault();
                 <div class="row">
                   <div class="col-lg-12">
                     <!-- <form id="login-form" action="https://phpoll.com/login/process" method="post" role="form" style="display: block;"> -->
-                      <form id="login-form" method="post" role="form" style="display: block;">
+                      <form id="login-form" role="form" style="display: block;">
                       <div class="form-group">
-                        <input type="text" name="Email" id="Email" tabindex="1" class="form-control" placeholder="Email Address" value="">
+                        <input type="text" name="Email" id="signInEmail" tabindex="1" class="form-control" placeholder="Email Address" value="">
                       </div>
                       <div class="form-group">
-                        <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+                        <input type="password" name="password" id="signInPassword" tabindex="2" class="form-control" placeholder="Password">
                       </div>
                       <!-- <div class="form-group text-center">
                         <input type="checkbox" tabindex="3" class="" name="remember" id="remember">
@@ -170,7 +171,7 @@ e.preventDefault();
                       <div class="form-group">
                         <div class="row">
                           <div class="col-sm-6 col-sm-offset-3">
-                            <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Log In">
+                            <input onclick="signIn()" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Log In">
                           </div>
                         </div>
                       </div>

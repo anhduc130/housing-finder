@@ -1,13 +1,10 @@
-const url = "http://localhost:2019/signup";
-const error = (request) => {
-    console.log(request.responseText);
-    if (request.statusText == 'Created') {
-        alert('Successfully signed up. Please sign in now.')
-        location.reload();
-    } else {
-        alert('There is an error occured')
-    }
+const signUpUrl = "http://localhost:2019/signup";
+const signUpError = (request) => {
+    alert(`${request.responstText}`)
 };
+const signUpSuccess = (request) => {
+    console.log(request.responstText)
+}
 
 /**
  * SIGN UP
@@ -36,9 +33,10 @@ const signUp = () => {
         headers: {
             'Content-Type': 'application/json'
         },
-        url: url,
+        url: signUpUrl,
         data: JSON.stringify(landlord),
-        error: error,
+        error: signUpError,
+        success: signUpSuccess,
         dataType: 'json'
     });
 }
