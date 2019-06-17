@@ -14,12 +14,15 @@ const signUp = async (landlord, connection) => {
     const landlordPhoneNumber = JSON.stringify(landlord.phoneNumber);
 
     const sql = `INSERT INTO  landlord 
-        VALUES  (${landlordId}, ${landlordName}, ${landlordEmail}, ${landlordPassword}, ${landlordPhoneNumber})`;
+        VALUES  (${landlordId}, ${landlordName}, ${landlordEmail}, ${landlordPassword}, ${landlordPhoneNumber}, "")`;
 
-    connection.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log('Success: A landlord signed up!');
-    });
+    return new Promise((resolve, reject) => {
+        connection.query(sql, function (err, result) {
+            if (err) reject(err);
+            console.log('Success: A landlord signed up!');
+            resolve()
+        });
+    })
 }
 
 module.exports = signUp
