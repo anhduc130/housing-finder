@@ -23,7 +23,8 @@
 <head>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-
+    <script src="js/post-rental-unit.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
@@ -36,7 +37,7 @@
                     <!-- <div class="signup-img">
                   <img src="images/signup-img.jpg" alt="">
               </div> -->
-                    <form method="POST" class="register-form" id="register-form">
+                    <form onsubmit="return false;" class="register-form" id="register-form">
                         <h1 class="text-center">Rental Unit</h1>
                         <div class="form-row">
                             <!-- <div class="form-group">
@@ -48,30 +49,30 @@
                             <label for="name">Title :
                                 <strong><abbr title="required">*</abbr></strong>
                             </label>
-                            <input type="text" name="name" id="name" required />
+                            <input type="text" name="name" id="rentalUnitTitle" required />
                         </div>
                         <div class="form-group">
                             <label for="address">Address :
                                 <strong><abbr title="required">*</abbr></strong>
                             </label>
-                            <input type="text" name="address" id="address" required />
+                            <input type="text" name="address" id="rentalUnitAddress" required />
                         </div>
 
                         <div class="form-group">
                             <label for="price">Price :</label>
-                            <input type="text" name="Price" id="price" required />
+                            <input type="text" name="rentalUnitPrice" id="rentalUnitPrice" required />
                         </div>
 
                         <div class="form-group">
                             <label for="postal_code">Postal Code :
                                 <strong><abbr title="required">*</abbr></strong>
                             </label>
-                            <input type="text" name="postal_code" id="postal_code" required />
+                            <input type="text" name="postal_code" id="rentalUnitPostalCode" required />
                         </div>
 
                         <label for="unit_type">Unit Type</label>
                         <div class="form-select">
-                            <select name="course" id="course">
+                            <select name="course" id="rentalUnitType">
                                 <option value=""></option>
                                 <option value="Apartment">Apartment</option>
                                 <option value="House">House</option>
@@ -83,13 +84,13 @@
                         </div>
                         <div class="form-group">
                             <label for="pincode">Description :</label>
-                            <textarea rows="5" cols="40"
+                            <textarea id="rentalUnitDescription" rows="5" cols="40"
                                       placeholder="Write description about the rental unit"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="course">Number of Rooms :</label>
                             <div class="form-select">
-                                <select name="course" id="course">
+                                <select name="course" id="rentalUnitRoomNum">
                                     <option value=""></option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -128,9 +129,8 @@
                                 <span class="check"></span>
                             </div>
                         </div>
-                        <div class="form-submit text-center">
-                            <input style="width:200px;height:auto;" type="submit" value="Submit" class="submit"
-                                   name="submit" id="submit" />
+                        <div class="text-center">
+                            <button style="width:200px;height:auto;" onclick="postRentalUnit()">Submit</button>
                         </div>
                     </form>
                 </div>

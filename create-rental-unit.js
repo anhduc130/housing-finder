@@ -1,22 +1,28 @@
 const uuidv1 = require('uuid/v1');
 
-const createRentalUnit = (housing, connection) => {
-    const rentalId = JSON.stringify(uuidv1());
-    const price = JSON.stringify(housing.price);
-    const landlordId = JSON.stringify(housing.landlordId);
-    const postalCode = JSON.stringify(housing.postal_code);
-    const unitType = JSON.stringify(housing.unitType);
-    const unitAddress = JSON.stringify(housing.unitAddress);
-    const unitDescription = JSON.stringify(housing.unitDescription);
+const createRentalUnit = (landlord, rentalUnit, connection) => {
+    const unitId = JSON.stringify(uuidv1());
+    const landlordId = JSON.stringify(landlord.landlordId);
+    const unitTitle = JSON.stringify(rentalUnit.unitTitle);
+    const unitAddress = JSON.stringify(rentalUnit.unitAddress);
+    const unitPrice = JSON.stringify(rentalUnit.unitPrice);
+    const unitPostalCode = JSON.stringify(rentalUnit.unitPostalCode);
+    const unitType = JSON.stringify(rentalUnit.unitType);
+    const unitDescription = JSON.stringify(rentalUnit.unitDescription);
 
     const sql = `INSERT INTO  rental_unit 
-        VALUES  (${rentalId}, ${unitDescription}, ${price}, ${unitAddress}, 
-                ${unitType}, ${postalCode}, ${landlordId})`;
+        VALUES  (${unitId}, ${unitTitle}, ${unitDescription}, ${unitPrice}, ${unitAddress}, 
+                ${unitType}, ${unitPostalCode}, ${landlordId})`;
 
-    connection.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log('Success: A rental unit inserted!');
-    });
+    return new Promise((resolve, reject) => {
+        connection.query(sql, function (err, result) {
+            if (err) reject(err);
+            else {
+                resolve(unitId)
+                console.log('Success: A rental unit inserted!');
+            }
+        });
+    })
 }
 
 module.exports = createRentalUnit

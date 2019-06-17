@@ -4,6 +4,7 @@ const mysql = require("mysql");
 const signUp = require("./sign-up");
 const signIn = require("./sign-in");
 const createRentalUnit = require("./create-rental-unit");
+const addFeatureListToRentalUnit = require("./add-feature-list-to-rental-unit");
 const initialize = require("./seedDB");
 
 app.use(express.static("public"));
@@ -12,6 +13,21 @@ app.use("/css", express.static(__dirname + "/public/css"));
 app.use("/js", express.static(__dirname + "/public/js"));
 app.use("/images", express.static(__dirname + "/public/images"));
 app.use(express.json());
+
+/**
+ * Parse cookies
+ */
+function parseCookies(request) {
+  const list = {},
+    rc = request.headers.cookie;
+
+  rc && rc.split(';').forEach(function (cookie) {
+    const parts = cookie.split('=');
+    list[parts.shift().trim()] = decodeURI(parts.join('='));
+  });
+
+  return list;
+}
 
 /**
  * Run server
@@ -53,9 +69,22 @@ app.get("/rental-units/:housingId", function (request, response) {
 });
 
 app.post("/rental-units", async function (request, response) {
+  const cookies = parseCookies(request);
   try {
-    createRentalUnit(request.body, connection);
-    response.status(201).send("Success: A rental unit inserted");
+    if (!cookies['landlord-id'] || !cookies['logged-in-key']) {
+      response.status(401).send('Session has expired. Please log in again.');
+      return;
+    }
+
+    const landlord = {
+      landlordId: cookies['landlord-id'],
+      loggedInKey: cookies['logged-in-key']
+    }
+
+    const rentalUnitId = await createRentalUnit(landlord, request.body.rentalUnit, connection);
+    await addFeatureListToRentalUnit(request.body.unitFeatureList, rentalUnitId, connection);
+
+    response.status(201).send("A rental unit was successfully created!");
   } catch (error) {
     response.status(400).send(error);
   }
@@ -64,9 +93,9 @@ app.post("/rental-units", async function (request, response) {
 app.post("/signup", async function (request, response) {
   try {
     await signUp(request.body, connection);
-    response.status(200).send("Success: A landlord signed up");
+    response.status(201).send("You are successfully signed up! Please sign in now.");
   } catch (error) {
-    response.status(400).send(error);
+    response.status(400).send("Email was already registered");
   }
 });
 
@@ -75,7 +104,7 @@ app.post("/signin", async function (request, response) {
     const result = await signIn(request.body, connection);
 
     if (result && result.landlord && result.loggedInKey) {
-      response.setHeader('Set-Cookie', [`logged-in-key=${result.loggedInKey}`]);
+      response.setHeader('Set-Cookie', [`logged-in-key=${result.loggedInKey}`, `landlord-id=${result.landlord.landlord_id}`]);
 
       delete result.landlord.landlord_password;
       delete result.landlord.logged_in_key;
@@ -83,7 +112,7 @@ app.post("/signin", async function (request, response) {
 
       response.status(200).send(result.landlord);
     } else {
-      response.status(401).send({ error: "Failed to sign in" });
+      response.status(401).send({ error: "Failed to sign in." });
     }
   } catch (error) {
     response.status(400).send(error);
