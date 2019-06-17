@@ -14,6 +14,21 @@ app.use("/images", express.static(__dirname + "/public/images"));
 app.use(express.json());
 
 /**
+ * Parse cookies
+ */
+function parseCookies(request) {
+  const list = {},
+    rc = request.headers.cookie;
+
+  rc && rc.split(';').forEach(function (cookie) {
+    const parts = cookie.split('=');
+    list[parts.shift().trim()] = decodeURI(parts.join('='));
+  });
+
+  return list;
+}
+
+/**
  * Run server
  */
 const server = app.listen(2019, function () {
@@ -53,8 +68,19 @@ app.get("/rental-units/:housingId", function (request, response) {
 });
 
 app.post("/rental-units", async function (request, response) {
+  const cookies = parseCookies(request);
   try {
-    createRentalUnit(request.body, connection);
+    if (!cookies['landlord-id'] || !cookies['logged-in-key']) {
+      response.status(401).send('Session has expired. Please log in again.');
+      return;
+    }
+
+    const landlord = {
+      landlordId: cookies['landlord-id'],
+      loggedInKey: cookies['logged-in-key']
+    }
+
+    createRentalUnit(landlord, request.body.rentalUnit, connection);
     response.status(201).send("A rental unit was successfully created!");
   } catch (error) {
     response.status(400).send(error);
@@ -75,7 +101,7 @@ app.post("/signin", async function (request, response) {
     const result = await signIn(request.body, connection);
 
     if (result && result.landlord && result.loggedInKey) {
-      response.setHeader('Set-Cookie', [`logged-in-key=${result.loggedInKey}`]);
+      response.setHeader('Set-Cookie', [`logged-in-key=${result.loggedInKey}`, `landlord-id=${result.landlord.landlord_id}`]);
 
       delete result.landlord.landlord_password;
       delete result.landlord.logged_in_key;

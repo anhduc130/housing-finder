@@ -9,7 +9,7 @@ const signInSuccess = (response) => {
 }
 
 /**
- * SIGN UP
+ * SIGN IN
  */
 const signIn = () => {
     const email = document.getElementById('signInEmail').value
