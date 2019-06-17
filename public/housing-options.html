@@ -1,7 +1,42 @@
+<style>
+    body {
+      padding-top: 20px;
+      padding-right: 500px;
+      /* background-image: url(images/gastown.gif); */
+    background-size: cover;
+  }
+  
+  /* .jumbotron {
+      max-width: 200px;
+      padding: 5em inherit; 
+  } */
+
+div {
+ font-size: 95%;
+}
+
+/* .form-group>textarea,
+    .form-group>input {
+        width: 5%;
+    } */
+
+    .marker {
+  background-image: url('mapbox-icon.png');
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+  </style>
+
 <!DOCTYPE html>
 <html>
 
 <head>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
   <!-- Jquery 3.4.1.min.js -->
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"
           integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -13,8 +48,235 @@
 </head>
 
 <body>
+    <div id='map' style='width: 800px; height: 600px;'></div>
+    <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiY2h1bmt5dG9mdTE1NyIsImEiOiJjangwMXVoNjgxNXV1NDhvNmFiY2o1ZGU5In0.xR3QHoTmnIUe1jl2u9bTHQ';
+    var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [-123.1207, 49.2827], // starting position
+    // LngLatLike: [123.1207, 49.2827],
+    zoom: 10 // starting zoom
+    });
+    map.addControl(new mapboxgl.NavigationControl());
+    </script>
+<!-- LngLat(49.2827, 123.1207) -->
+
+
   <div id="housing-options"></div>
   <script src="../js/get-housing-options.js"></script>
+
+  <div class="main" left: 50px;>
+    <div class="container">
+        <div class="signup-content">
+            <!-- <div class="signup-img">
+                <img src="images/signup-img.jpg" alt="">
+            </div> -->
+            <div class="signup-form">
+                <form method="POST" class="register-form" id="register-form">
+                    <h4>housing</h3>
+                    <div class="form-row">
+                          <div class="form-group">
+                            <label for="city">Neighbourhood
+                                <strong><abbr title="required">*</abbr></strong>
+                            </label>
+                            <div class="form-select">
+                                <select name="city" id="city">
+                                    <option value=""></option>
+                                    <option value="">--SOUTH VANCOUVER--</option>
+                                    <option value="Marpole">Marpole</option>
+                                    <option value="Sunset">Sunset</option>
+                                    <option value="Victoria-Fraserview">Victoria-Fraserview"</option>
+                                    <option value="Renfrew-Killarney">Renfrew-Killarney</option>
+                                    <option value=""></option> -->
+                                    <option value="">--EAST VANCOUVER--</option> -->
+                                    <option value="Grandview-Woodland">Grandview-Woodland</option>
+                                    <option value="Hastings-Sunrise">Hastings-Sunrise</option>
+                                    <option value="Kensington-Cedar Cottage">Kensington-Cedar Cottage</option>
+                                    <option value="Renfrew-Collingwood">Renfrew-Collingwood</option>
+                                    <option value="MountPleasant-Hillcrest-Oakridge">MountPleasant-Hillcrest-Oakridge</option>
+                                    <option value=""></option>
+                                    <option value="">--WEST VANCOUVER--</option> 
+                                    <option value="University Endowment Lands">University Endowment Lands</option>
+                                    <option value="West Point Grey">West Point Grey</option>
+                                    <option value="Kitsilano">Kitsilano</option>
+                                    <option value="Dunbar Southlands">Dunbar Southlandse</option>
+                                    <option value="Kerrisdale">Kerrisdale</option>
+                                    <option value="SouthCambie-Oakridge">SouthCambie-Oakridge</option>
+                                    <option value="Shaughnessy-KitsPoint">Shaughnessy-KitsPoint</option>
+                                    <option value="Arbutus Ridge">Arbutus Ridge</option>
+                                    <option value=""></option>
+                                    <option value="">--CENTRAL VANCOUVER--</option>
+                                    <option value="West End">West End</option>
+                                    <option value="Chinatown-DowntownEastside-Strathcona">Chinatown-DowntownEastside-Strathcona</option>
+                                    <option value="Downtown-Gastown-Coalharbour">Downtown-Gastown-Coalharbour</option>
+                                    <option value="Yaletown">Yaletown</option> -->
+                                </select>
+                                <span class="select-icon"><i class="zmdi zmdi-chevron-down"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        <input type="text" name="Price" id="price" required/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="postal_code">Postal Code
+                        </label>
+                        <input type="text" name="postal_code" id="postal_code" required/>
+                    </div>
+                    <div class="form-group">
+                        <label for="unit_type">Unit Type</label>
+                        <div class="form-select">
+                            <select name="course" id="course">
+                            <option value=""></option>
+                                    <option value="Apartment">Apartment</option>
+                                    <option value="House">House</option>
+                                    <option value="Laneway House">Laneway House</option>
+                                    <option value="Basement">Basement</option>
+                                  </select>
+                                  <span class="select-icon"><i class="zmdi zmdi-chevron-down"></i></span>
+                                </select>
+                    </div>
+                  </div>
+                    <div class="form-group">
+                        <label for="course">Number of Rooms</label>
+                        <div class="form-select">
+                            <select name="course" id="course">
+                                <option value=""></option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="5+">5+</option>
+                            </select>
+                            <span class="select-icon"><i class="zmdi zmdi-chevron-down"></i></span>
+                        </div>
+                    </div>
+      
+                    <label for="Parking" class="radio-label">Parking</label>
+                    <div class="fixed">
+                        <input type="radio" name="parking" id="parkingYes" checked>
+                        <label for="Yes">Yes</label>
+                        <span class="check"></span>
+                        <input type="radio" name="parking" id="parkingNo">
+                        <label for="No">No</label>
+                        <span class="check"></span>
+                    </div>
+                    <label for="Smoking" class="radio-label">Smoking</label>
+                    <div class="flex-item">
+                        <input type="radio" name="smoking" id="smokingYes" checked>
+                        <label for="Yes">Yes</label>
+                        <span class="check"></span>
+                        <input type="radio" name="smoking" id="smokingNo">
+                        <label for="No">No</label>
+                        <span class="check"></span>
+                    </div>
+                    <label for="Pets" class="radio-label">Pets</label>
+                    <div class="flex-item">
+                        <input type="radio" name="pets" id="petsYes" checked>
+                        <label for="Yes">Yes</label>
+                        <span class="check"></span>
+                        <input type="radio" name="pets" id="petsNo">
+                        <label for="No">No</label>
+                        <span class="check"></span>
+                    </div>
+              
+                    <div class="form-submit">
+                        <input type="submit" value="reset" class="submit" name="reset" id="reset" />
+                        <input type="submit" value="update search" class="submit" name="submit" id="submit" />
+                    </div>
+                </form>
+            </div>
+        </div>
+</div>
+</div>
+  
 </body>
 
 </html>
+
+
+<!-- GOOGLE MAP JAVASCRIPT API TEMPLATE CODE -->
+<!-- <!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -34.397, lng: 150.644},
+          zoom: 8
+        });
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"
+    async defer></script>
+  </body>
+</html> -->
+
+
+
+
+ <!-- <div class="form-group">
+                            <label for="city">Neighbourhood
+                                <strong><abbr title="required">*</abbr></strong>
+                            </label>
+                            <div class="form-select">
+                                <select name="city" id="city">
+                                    <option value=""></option>
+                                    <option value="">--SOUTH VANCOUVER--</option>
+                                    <option value="Marpole">Marpole</option>
+                                    <option value="Sunset">Sunset</option>
+                                    <option value="Victoria-Fraserview">Victoria-Fraserview"</option>
+                                    <option value="Renfrew-Killarney">Renfrew-Killarney</option>
+                                    <option value=""></option> -->
+                                    <!-- <option value="">--EAST VANCOUVER--</option> -->
+                                    <!-- <option value="Grandview-Woodland">Grandview-Woodland</option>
+                                    <option value="Hastings-Sunrise">Hastings-Sunrise</option>
+                                    <option value="Kensington-Cedar Cottage">Kensington-Cedar Cottage</option>
+                                    <option value="Renfrew-Collingwood">Renfrew-Collingwood</option>
+                                    <option value="MountPleasant-Hillcrest-Oakridge">MountPleasant-Hillcrest-Oakridge</option>
+                                    <option value=""></option> -->
+                                    <!-- <option value="">--WEST VANCOUVER--</option> -->
+                                    <!-- <option value="University Endowment Lands">University Endowment Lands</option>
+                                    <option value="West Point Grey">West Point Grey</option>
+                                    <option value="Kitsilano">Kitsilano</option>
+                                    <option value="Dunbar Southlands">Dunbar Southlandse</option>
+                                    <option value="Kerrisdale">Kerrisdale</option>
+                                    <option value="SouthCambie-Oakridge">SouthCambie-Oakridge</option>
+                                    <option value="Shaughnessy-KitsPoint">Shaughnessy-KitsPoint</option>
+                                    <option value="Arbutus Ridge">Arbutus Ridge</option>
+                                    <option value=""></option> -->
+                                    <!-- <option value="">--CENTRAL VANCOUVER--</option> -->
+                                    <!-- <option value="West End">West End</option>
+                                    <option value="Chinatown-DowntownEastside-Strathcona">Chinatown-DowntownEastside-Strathcona</option>
+                                    <option value="Downtown-Gastown-Coalharbour">Downtown-Gastown-Coalharbour</option>
+                                    <option value="Yaletown">Yaletown</option> -->
+                                <!-- </select>
+                                <span class="select-icon"><i class="zmdi zmdi-chevron-down"></i></span>
+                            </div>
+                        </div>
+                    </div> -->
