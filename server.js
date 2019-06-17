@@ -37,7 +37,7 @@ connection.connect(function (err) {
   console.log("Connected!");
 });
 
-initialize(connection);
+// initialize(connection);
 
 app.get("/rental-units", function (request, response) {
   response.send("GET rental-units endpoint");
