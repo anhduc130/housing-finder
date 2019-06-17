@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const mysql = require("mysql");
+const signUp = require("./sign-up");
+const signIn = require("./sign-in");
 const createRentalUnit = require("./create-rental-unit");
 const initialize = require("./seedDB");
 
@@ -34,10 +36,13 @@ const connection = mysql.createConnection({
 connection.connect(function (err) {
   if (err)
     // throw err;
-  console.log("Connected!");
+    console.log("Connected!");
 });
 
-initialize(connection);
+/**
+ * Uncomment this line to initialize
+ */
+// initialize(connection);
 
 app.get("/rental-units", function (request, response) {
   response.send("GET rental-units endpoint");
@@ -65,6 +70,22 @@ app.post("/signup", function (request, response) {
   }
 });
 
-app.post("/signin", function (request, response) {
-  response.send("POST signin endpoint");
+app.post("/signin", async function (request, response) {
+  try {
+    const result = await signIn(request.body, connection);
+
+    if (result && result.landlord && result.loggedInKey) {
+      result.landlord.logged_in_key = result.loggedInKey
+
+      delete result.landlord.landlord_password;
+      delete result.loggedInKey;
+
+      response.setHeader('Cookie', [`logged-in-key=${result.landlord.logged_in_key}`, 'HttpOnly', 'Secure'])
+      response.status(200).send(result.landlord);
+    } else {
+      response.status(401).send("Failed to sign in");
+    }
+  } catch (error) {
+    response.status(400).send(error);
+  }
 });
