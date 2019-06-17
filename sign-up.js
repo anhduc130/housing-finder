@@ -1,13 +1,19 @@
 const uuidv1 = require('uuid/v1');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
-const signUp = (landlord, connection) => {
+const hashPasswod = (password) => {
+    return bcrypt.hash(password, saltRounds);
+}
+
+const signUp = async (landlord, connection) => {
     const landlordId = JSON.stringify(uuidv1());
     const landlordName = JSON.stringify(landlord.name);
     const landlordEmail = JSON.stringify(landlord.email);
-    const landlordPassword = JSON.stringify(landlord.password);
+    const landlordPassword = JSON.stringify(await hashPasswod(landlord.password));
     const landlordPhoneNumber = JSON.stringify(landlord.phoneNumber);
 
-    const sql = `INSERT INTO  rental_unit 
+    const sql = `INSERT INTO  landlord 
         VALUES  (${landlordId}, ${landlordName}, ${landlordEmail}, ${landlordPassword}, ${landlordPhoneNumber})`;
 
     connection.query(sql, function (err, result) {
