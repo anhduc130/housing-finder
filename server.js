@@ -136,7 +136,11 @@ app.get("/rental-units/:unitId", function (request, response) {
           // , school S,  hospital H, resta Re, parks_recreation Pa, supermarket Su
           // AND N.postal_code = S.postal_code AND N.postal_code = H.postal_code AND 
           // N.postal_code = Re.postal_code AND N.postal_code = Pa.postal_code AND N.postal_code = Su.postal_code
-          response.render('housing-posting', { post: postJSON });
+          if (request.query.jsonOnly) {
+            response.status(200).send(postJSON);
+          } else {
+            response.render('housing-posting', { post: postJSON });
+          }
         })
     }
   });
