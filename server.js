@@ -7,6 +7,7 @@ const createRentalUnit = require("./create-rental-unit");
 const addFeatureListToRentalUnit = require("./add-feature-list-to-rental-unit");
 const getRentalUnitsByLandlordId = require("./get-rental-units-by-landlord-id");
 const getAllRentalUnits = require("./get-all-rental-units");
+const deleteRentalUnit = require("./delete-rental-unit");
 // const initialize = require("./seedDB");
 const postJSON = require("./post");
 
@@ -86,56 +87,55 @@ app.get("/rental-units", async function (request, response) {
 // CHANGE THE RESTAURANT TABLE NAME IN THE BELOW QUERY
 app.get("/rental-units/:unitId", function (request, response) {
   connection.query(`SELECT * FROM rental_unit WHERE unit_id = '${request.params.unitId}';`, (err, unit) => {
-    if(err) {
+    if (err) {
       console.log(err);
     }
-    if(unit.length > 0) {
+    if (unit.length > 0) {
       console.log(unit[0].unit_id);
       connection.query(`SELECT * FROM landlord L, rental_unit R, neighbourhood N, city C, province P, feature_list F
                         WHERE R.postal_code = '${unit[0].postal_code}' AND R.landlord_id = L.landlord_id AND R.postal_code = N.postal_code AND
                         N.city_id = C.city_id AND C.province_name = P.province_name AND R.unit_id = F.unit_id;`,
           (err, result) => {
-            console.log(result);
-            // postJSON.post.title = result.unit_title;
+            postJSON.post.title = result[0].unit_title;
             postJSON.post.address = result[0].unit_address;
+            postJSON.post.postal_code = result[0].postal_code;
             postJSON.post.city = result[0].city_name;
             postJSON.post.province = result[0].province_name;
             postJSON.post.description = result[0].unit_description;
             postJSON.post.price = result[0].price;
             postJSON.post.type = result[0].unit_type;
             postJSON.post.landlord.name = result[0].landlord_name;
-            postJSON.post.landlord.email = result[0].email;
-            postJSON.post.landlord.phone = result[0].phone_number;
+            postJSON.post.landlord.email = result[0].landlord_email;
+            postJSON.post.landlord.phone = result[0].landlord_phone_number;
             postJSON.features.rooms = result[0].number_of_rooms;
             postJSON.features.parking = result[0].parking;
             postJSON.features.smoking = result[0].smoking;
             postJSON.features.pets = result[0].pets;
-
-            connection.query(`SELECT * FROM resta WHERE resta.postal_code = '${unit[0].postal_code}'`, 
+            connection.query(`SELECT * FROM restaurant WHERE restaurant.postal_code = '${unit[0].postal_code}'`, 
             (err, restaurants) => {
               postJSON.amenities.restaurants = restaurants;
-              connection.query(`SELECT * FROM supermarket WHERE supermarket.postal_code = '${unit[0].postal_code}'`, 
+              connection.query(`SELECT * FROM supermarket WHERE supermarket.postal_code = '${unit[0].postal_code}'`,
                 (err, supermarkets) => {
                   postJSON.amenities.supermarkets = supermarkets;
-                  connection.query(`SELECT * FROM school WHERE school.postal_code = '${unit[0].postal_code}'`, 
+                  connection.query(`SELECT * FROM school WHERE school.postal_code = '${unit[0].postal_code}'`,
                     (err, schools) => {
                       postJSON.amenities.schools = schools;
-                      connection.query(`SELECT * FROM hospital WHERE hospital.postal_code = '${unit[0].postal_code}'`, 
+                      connection.query(`SELECT * FROM hospital WHERE hospital.postal_code = '${unit[0].postal_code}'`,
                         (err, hospitals) => {
                           postJSON.amenities.hospitals = hospitals;
-                          connection.query(`SELECT * FROM parks_recreation WHERE parks_recreation.postal_code = '${unit[0].postal_code}'`, 
+                          connection.query(`SELECT * FROM parks_recreation WHERE parks_recreation.postal_code = '${unit[0].postal_code}'`,
                             (err, parks) => {
                               postJSON.amenities.parks = parks;
-                              console.log(postJSON);
                             })
                         })
                     })
                 })
             })
-                        // , school S,  hospital H, resta Re, parks_recreation Pa, supermarket Su
-                        // AND N.postal_code = S.postal_code AND N.postal_code = H.postal_code AND 
-                        // N.postal_code = Re.postal_code AND N.postal_code = Pa.postal_code AND N.postal_code = Su.postal_code
-            response.render('housing-posting', {post:postJSON});
+            if (request.query.jsonOnly) {
+              response.status(200).send({post:postJSON.post, features:postJSON.features, amenities:postJSON.amenities, transit:postJSON.transit})
+            } else {
+              response.render('housing-posting', {post:postJSON.post, features:postJSON.features, amenities:postJSON.amenities, transit:postJSON.transit});
+            }
           })
     }
   });
@@ -164,11 +164,27 @@ app.post("/rental-units", async function (request, response) {
   }
 });
 
+app.delete("/rental-units/:unitId", async function (request, response) {
+  const unitId = request.params.unitId;
+  const cookies = parseCookies(request);
+  try {
+    if (!cookies['landlord-id'] || !cookies['logged-in-key']) {
+      response.status(401).send('Session has expired. Please log in again.');
+      return;
+    }
+    deleteRentalUnit(unitId, connection);
+    response.status(200).send("Successfully deleted a rental unit.");
+  } catch (error) {
+    response.status(400).send(error);
+  }
+});
+
 app.post("/signup", async function (request, response) {
   try {
     await signUp(request.body, connection);
     response.status(201).send("You are successfully signed up! Please sign in now.");
   } catch (error) {
+    console.log(error);
     response.status(400).send("Email was already registered");
   }
 });

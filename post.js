@@ -2,6 +2,7 @@ const post = {
     'post':     {
                   'title':'',
                   'address':'',
+                  'postal_code':'',
                   'city':'',
                   'province':'',
                   'description':'',
@@ -14,7 +15,10 @@ const post = {
                               }
                 },
     'features': {
-
+                  'rooms':'',
+                  'parking':'',
+                  'smoking':'',
+                  'pets':''
                 },                  
     'amenities':{
                   'supermarkets': [

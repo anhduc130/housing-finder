@@ -34,12 +34,21 @@ const addCellsToElement = (rentalUnitElement, rentalUnit) => {
 
     const button1 = document.createElement("button");
     button1.innerHTML = "View";
+    button1.addEventListener("click", () => {
+        window.open(`rental-units/${rentalUnit.unit_id}`);
+    });
 
     const button2 = document.createElement("button");
     button2.innerHTML = "Edit";
+    button2.addEventListener("click", () => {
+        window.open(`update-rental-unit.html?id=${rentalUnit.unit_id}`);
+    });
 
     const button3 = document.createElement("button");
     button3.innerHTML = "Delete";
+    button3.addEventListener("click", () => {
+        deleteRentalUnit(rentalUnit.unit_id);
+    });
 
     actions.append(button1);
     actions.append(button2);
@@ -47,7 +56,6 @@ const addCellsToElement = (rentalUnitElement, rentalUnit) => {
 }
 
 const getRentalUnitSuccess = response => {
-    debugger
     for (let i = 0; i < response.length; i++) {
         const rentalUnit = response[i];
         const tableRef = document.getElementById('rental-unit-table-body');
@@ -61,7 +69,6 @@ const getRentalUnitSuccess = response => {
  * GET RENTAL UNITS BY LANDLORD ID
  */
 const getRentalUnitsByLandlordId = () => {
-    debugger
     $.ajax({
         type: "GET",
         headers: {
@@ -71,6 +78,23 @@ const getRentalUnitsByLandlordId = () => {
         error: getRentalUnitError,
         success: getRentalUnitSuccess,
         data: { onlyLandlordUnits: true },
+        dataType: 'json'
+    });
+}
+
+/**
+ * GET RENTAL UNITS BY UNIT ID
+ */
+const getRentalUnitByUnitId = (unitId, successCallback, errorCallback) => {
+    $.ajax({
+        type: "GET",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        url: `${rentalUnitsUrl}/${unitId}`,
+        error: errorCallback,
+        success: successCallback,
+        data: { jsonOnly: true },
         dataType: 'json'
     });
 }

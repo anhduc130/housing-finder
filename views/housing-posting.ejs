@@ -19,6 +19,7 @@ body { margin:0; padding:0; }
 #map { position:absolute; top:0; bottom:0; width:100%; }
 </style>
 
+<<<<<<< HEAD
 </head>
 <body>
 
@@ -60,18 +61,33 @@ Hello man
         <li><strong><%= o.supermarket_name %></strong> - <%= o.supermarket_type %></li>
         <% }); %>
       </ul>
+=======
+    <h2><%= post.title %> - <strong><%= post.price %>$</strong>  (<%= post.address %>)</h2>
+
+    <div> 
+      <h3>The Landlord's Description:</h3>
+      <p><%= post.description %></p>
+>>>>>>> 1762ae304f612c8ffe0217e8aeaa17f136a78757
     </div>
 
     <div>
       <h5>Schools:</h5>
       <ul>
+<<<<<<< HEAD
         <% post.amenities.schools.forEach((o) => { %>
         <li><strong><%= o.school_name %></strong> - <%= o.school_type %></li>
         <% }); %>
+=======
+        <li><%= features.rooms %> Bedroom</li>
+        <li>Parking Available: <%= features.parking %></li>
+        <li>Smoking Allowed: <%= features.smoking %></li>
+        <li>Pets Allowed: <%= features.pets %></li>
+>>>>>>> 1762ae304f612c8ffe0217e8aeaa17f136a78757
       </ul>
     </div>
 
     <div>
+<<<<<<< HEAD
       <h5>Hospitals:</h5>
       <ul>
         <% post.amenities.hospitals.forEach((o) => { %>
@@ -86,6 +102,69 @@ Hello man
         <% post.amenities.restaurants.forEach((o) => { %>
         <li><strong><%= o.name %></strong> - <%= o.cuisine %></li>
         <% }); %>
+=======
+      <h3>Some of the amazing amenities here are:</h3>
+      <div>
+        <h5>Supermarkets:</h5>
+        <ul>
+          <% amenities.supermarkets.forEach((o) => { %>
+          <li><strong><%= o.supermarket_name %></strong> - <%= o.supermarket_type %></li>
+          <% }); %>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Schools:</h5>
+        <ul>
+          <% amenities.schools.forEach((o) => { %>
+          <li><strong><%= o.school_name %></strong> - <%= o.school_type %></li>
+          <% }); %>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Hospitals:</h5>
+        <ul>
+          <% amenities.hospitals.forEach((o) => { %>
+          <li><strong><%= o.hospital_name %></strong> - <%= o.hospital_type %></li>
+          <% }); %>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Restaurants:</h5>
+        <ul>
+          <% amenities.restaurants.forEach((o) => { %>
+          <li><strong><%= o.name %></strong> - <%= o.cuisine %></li>
+          <% }); %>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Parks and Recreation:</h5>
+        <ul>
+          <% amenities.parks.forEach((o) => { %>
+          <li><strong><%= o.park_name %></strong> - <%= o.facility %></li>
+          <% }); %>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Transit Types:</h5>
+        <ul>
+          <% transit.forEach((o) => { %>
+          <li><%= o.route %> - <%= o.type %></li>
+          <% }); %>
+        </ul>
+      </div>
+    </div>
+
+    <div>
+      <h5>Please contact <%= post.landlord.name %>:</h5>
+      <ul>
+        <li><strong>Email</strong> - <%= post.landlord.email %></li>
+        <li><strong>Phone</strong> - <%= post.landlord.phone %></li>
+>>>>>>> 1762ae304f612c8ffe0217e8aeaa17f136a78757
       </ul>
     </div>
 
