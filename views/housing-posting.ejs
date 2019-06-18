@@ -1,99 +1,147 @@
+<style>
+
+
+.container{
+display: flex; 
+}
+
+.signup-form{
+width: 300px;
+/* background-color: #AFEEEE; */
+}
+.flex-item{
+flex-grow: 1;
+/* padding: 10px;  */
+/* padding-left: 200 px; */
+
+}
+</style>
+
+
 <!DOCTYPE html>
 <html>
-  <head>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<head>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <!-- Jquery 3.4.1.min.js -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  </head>
-  <body>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<!-- Jquery 3.4.1.min.js -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
-
-    <h2><%= post.title %> - <strong><%= post.price %>$</strong>  (<%= post.address %>)</h2>
-
-    <div> 
-      <h3>The Landlord's Description:</h3>
-      <p><%= post.description %></p>
-    </div>
-
-    <div>
-      <ul>
-        <li><%= features.rooms %> Bedroom</li>
-        <li>Parking Available: <%= features.parking %></li>
-        <li>Smoking Allowed: <%= features.smoking %></li>
-        <li>Pets Allowed: <%= features.pets %></li>
-      </ul>
-    </div>
-
-    <div>
-      <h3>Some of the amazing amenities here are:</h3>
-      <div>
-        <h5>Supermarkets:</h5>
-        <ul>
-          <% amenities.supermarkets.forEach((o) => { %>
-          <li><strong><%= o.supermarket_name %></strong> - <%= o.supermarket_type %></li>
-          <% }); %>
-        </ul>
-      </div>
-
-      <div>
-        <h5>Schools:</h5>
-        <ul>
-          <% amenities.schools.forEach((o) => { %>
-          <li><strong><%= o.school_name %></strong> - <%= o.school_type %></li>
-          <% }); %>
-        </ul>
-      </div>
-
-      <div>
-        <h5>Hospitals:</h5>
-        <ul>
-          <% amenities.hospitals.forEach((o) => { %>
-          <li><strong><%= o.hospital_name %></strong> - <%= o.hospital_type %></li>
-          <% }); %>
-        </ul>
-      </div>
-
-      <div>
-        <h5>Restaurants:</h5>
-        <ul>
-          <% amenities.restaurants.forEach((o) => { %>
-          <li><strong><%= o.name %></strong> - <%= o.cuisine %></li>
-          <% }); %>
-        </ul>
-      </div>
-
-      <div>
-        <h5>Parks and Recreation:</h5>
-        <ul>
-          <% amenities.parks.forEach((o) => { %>
-          <li><strong><%= o.park_name %></strong> - <%= o.facility %></li>
-          <% }); %>
-        </ul>
-      </div>
-
-      <div>
-        <h5>Transit Types:</h5>
-        <ul>
-          <% transit.forEach((o) => { %>
-          <li><%= o.route %> - <%= o.type %></li>
-          <% }); %>
-        </ul>
-      </div>
-    </div>
-
-    <div>
-      <h5>Please contact <%= post.landlord.name %>:</h5>
-      <ul>
-        <li><strong>Email</strong> - <%= post.landlord.email %></li>
-        <li><strong>Phone</strong> - <%= post.landlord.phone %></li>
-      </ul>
-    </div>
+<meta charset='utf-8' />
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
 
 
-  </body>
+<style>
+body { margin:0; padding:0; }
+#map { position:absolute; top:0; bottom:0; width:100%; }
+</style>
+
+
+<div class = container> 
+<h2><%= post.title %> - <strong><%= post.price %>$</strong>  (<%= post.address %>)</h2>
+
+<div> 
+  <h3>The Landlord's Description:</h3>
+  <p><%= post.description %></p>
+</div>
+
+<div>
+  <h5>This unit's features:</h5>
+  <ul>
+    <li><%= features.rooms %> Bedroom</li>
+    <li>Parking Available: <%= features.parking %></li>
+    <li>Smoking Allowed: <%= features.smoking %></li>
+    <li>Pets Allowed: <%= features.pets %></li>
+  </ul>
+</div>
+
+<div>
+  <h3>Some of the amazing amenities here are:</h3>
+  <div>
+    <h5>Supermarkets:</h5>
+    <ul>
+      <% amenities.supermarkets.forEach((o) => { %>
+      <li><strong><%= o.supermarket_name %></strong> - <%= o.supermarket_type %></li>
+      <% }); %>
+    </ul>
+  </div>
+
+  <div>
+    <h5>Schools:</h5>
+    <ul>
+      <% amenities.schools.forEach((o) => { %>
+      <li><strong><%= o.school_name %></strong> - <%= o.school_type %></li>
+      <% }); %>
+    </ul>
+  </div>
+
+  <div>
+    <h5>Hospitals:</h5>
+    <ul>
+      <% amenities.hospitals.forEach((o) => { %>
+      <li><strong><%= o.hospital_name %></strong> - <%= o.hospital_type %></li>
+      <% }); %>
+    </ul>
+  </div>
+
+  <div>
+    <h5>Restaurants:</h5>
+    <ul>
+      <% amenities.restaurants.forEach((o) => { %>
+      <li><strong><%= o.name %></strong> - <%= o.cuisine %></li>
+      <% }); %>
+    </ul>
+  </div>
+
+  <div>
+    <h5>Parks and Recreation:</h5>
+    <ul>
+      <% amenities.parks.forEach((o) => { %>
+      <li><strong><%= o.park_name %></strong> - <%= o.facility %></li>
+      <% }); %>
+    </ul>
+  </div>
+
+  <div>
+    <h5>Transit Types:</h5>
+    <ul>
+      <% transit.forEach((o) => { %>
+      <li><%= o.route %> - <%= o.type %></li>
+      <% }); %>
+    </ul>
+  </div>
+</div>
+
+<div>
+  <h5>Please contact <%= post.landlord.name %>:</h5>
+  <ul>
+    <li><strong>Email</strong> - <%= post.landlord.email %></li>
+    <li><strong>Phone</strong> - <%= post.landlord.phone %></li>
+  </ul>
+</div>
+
+
+
+<div class="flex-item">
+<div id='map' style='width: 800px; height: 600px;'></div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiY2h1bmt5dG9mdTE1NyIsImEiOiJjangwMXVoNjgxNXV1NDhvNmFiY2o1ZGU5In0.xR3QHoTmnIUe1jl2u9bTHQ';
+var map = new mapboxgl.Map({
+container: 'map',
+center: [-123.1207, 49.2827],
+zoom: 10, 
+style: 'mapbox://styles/mapbox/streets-v11'
+
+});
+map.addControl(new mapboxgl.NavigationControl());
+</script>
+</div>
+</div>
+
+</body>
 </html>

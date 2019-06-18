@@ -8,6 +8,16 @@
     #rental-unit-table-body>tr>td>button {
         margin-right: 10px;
     }
+
+    .button {
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+}
+
+.button:hover {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
 </style>
 
 <head>
@@ -21,6 +31,16 @@
 </head>
 
 <body>
+
+
+<button class="button" onclick="window.location.href = 'http://localhost:2019/housing-options.html#';">View rentals</a>
+    <button class="button" onclick="window.location.href = 'http://localhost:2019/update-rental-unit.html#';">Update my posts</a>
+    
+    
+        <div class="w3-bar">
+                <a href="http://localhost:2019/housing-options.html#;" class="w3-bar-item w3-button">View rentals</a>
+                <a href="http://localhost:2019/update-rental-unit.html;" class="w3-bar-item w3-button">Update my posts</a>
+              </div>
     <container>
         <row>
             <div class="col-md-12 text-center">
@@ -37,20 +57,31 @@
                     <tbody id="rental-unit-table-body">
                     </tbody>
                 </table>
+
             </div>
         </row>
         <row>
-            <div class="col-md-12"></div>
+            <div class="col-md-12">
+                    <button onclick="window.location.assign('update-rental-unit.html')">+ Update rental unit</button>
+            </div>
         </row>
         <row>
             <div class="col-md-12">
                 <button onclick="window.location.assign('post-rental-unit.html')">+ Add new rental unit</button>
-            </div>
+            </div>    
         </row>
+        <row>
+                <div class="col-md-12">
+                    <button onclick="window.location.assign('.html')">+ Delete rental unit</button>
+                </div>    
+            </row>
     </container>
     <script>
         getRentalUnitsByLandlordId();
     </script>
+
+
+
 </body>
 
 </html>
