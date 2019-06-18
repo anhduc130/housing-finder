@@ -8,6 +8,8 @@ const addFeatureListToRentalUnit = require("./add-feature-list-to-rental-unit");
 const getRentalUnitsByLandlordId = require("./get-rental-units-by-landlord-id");
 const getAllRentalUnits = require("./get-all-rental-units");
 const deleteRentalUnit = require("./delete-rental-unit");
+const updateRentalUnit = require("./update-rental-unit");
+const updateFeatureList = require("./update-feature-list");
 const postJSON = require("./post");
 
 app.use(express.static("public"));
@@ -168,6 +170,24 @@ app.delete("/rental-units/:unitId", async function (request, response) {
     }
     deleteRentalUnit(unitId, connection);
     response.status(200).send("Successfully deleted a rental unit.");
+  } catch (error) {
+    response.status(400).send(error);
+  }
+});
+
+app.put("/rental-units/:unitId", async function (request, response) {
+  const unitId = request.params.unitId;
+  const rentalUnit = request.body.rentalUnit;
+  const unitFeatureList = request.body.unitFeatureList;
+  const cookies = parseCookies(request);
+  try {
+    if (!cookies['landlord-id'] || !cookies['logged-in-key']) {
+      response.status(401).send('Session has expired. Please log in again.');
+      return;
+    }
+    await updateRentalUnit(unitId, rentalUnit, connection);
+    await updateFeatureList(unitId, unitFeatureList, connection);
+    response.status(200).send("Successfully updated a rental unit.");
   } catch (error) {
     response.status(400).send(error);
   }
