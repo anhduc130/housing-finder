@@ -14,7 +14,10 @@ const post = {
                               }
                 },
     'features': {
-
+                  'rooms':'',
+                  'parking':'',
+                  'smoking':'',
+                  'pets':''
                 },                  
     'amenities':{
                   'supermarkets': [

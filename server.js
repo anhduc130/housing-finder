@@ -95,8 +95,7 @@ app.get("/rental-units/:unitId", function (request, response) {
                         WHERE R.postal_code = '${unit[0].postal_code}' AND R.landlord_id = L.landlord_id AND R.postal_code = N.postal_code AND
                         N.city_id = C.city_id AND C.province_name = P.province_name AND R.unit_id = F.unit_id;`,
           (err, result) => {
-            console.log(result);
-            // postJSON.post.title = result.unit_title;
+            postJSON.post.title = result[0].unit_title;
             postJSON.post.address = result[0].unit_address;
             postJSON.post.city = result[0].city_name;
             postJSON.post.province = result[0].province_name;
@@ -104,14 +103,13 @@ app.get("/rental-units/:unitId", function (request, response) {
             postJSON.post.price = result[0].price;
             postJSON.post.type = result[0].unit_type;
             postJSON.post.landlord.name = result[0].landlord_name;
-            postJSON.post.landlord.email = result[0].email;
-            postJSON.post.landlord.phone = result[0].phone_number;
+            postJSON.post.landlord.email = result[0].landlord_email;
+            postJSON.post.landlord.phone = result[0].landlord_phone_number;
             postJSON.features.rooms = result[0].number_of_rooms;
             postJSON.features.parking = result[0].parking;
             postJSON.features.smoking = result[0].smoking;
             postJSON.features.pets = result[0].pets;
-
-            connection.query(`SELECT * FROM resta WHERE resta.postal_code = '${unit[0].postal_code}'`, 
+            connection.query(`SELECT * FROM restaurant WHERE restaurant.postal_code = '${unit[0].postal_code}'`, 
             (err, restaurants) => {
               postJSON.amenities.restaurants = restaurants;
               connection.query(`SELECT * FROM supermarket WHERE supermarket.postal_code = '${unit[0].postal_code}'`, 
@@ -126,16 +124,12 @@ app.get("/rental-units/:unitId", function (request, response) {
                           connection.query(`SELECT * FROM parks_recreation WHERE parks_recreation.postal_code = '${unit[0].postal_code}'`, 
                             (err, parks) => {
                               postJSON.amenities.parks = parks;
-                              console.log(postJSON);
                             })
                         })
                     })
                 })
             })
-                        // , school S,  hospital H, resta Re, parks_recreation Pa, supermarket Su
-                        // AND N.postal_code = S.postal_code AND N.postal_code = H.postal_code AND 
-                        // N.postal_code = Re.postal_code AND N.postal_code = Pa.postal_code AND N.postal_code = Su.postal_code
-            response.render('housing-posting', {post:postJSON});
+            response.render('housing-posting', {post:postJSON.post, features:postJSON.features, amenities:postJSON.amenities, transit:postJSON.transit});
           })
     }
   });
@@ -169,6 +163,7 @@ app.post("/signup", async function (request, response) {
     await signUp(request.body, connection);
     response.status(201).send("You are successfully signed up! Please sign in now.");
   } catch (error) {
+    console.log(error);
     response.status(400).send("Email was already registered");
   }
 });

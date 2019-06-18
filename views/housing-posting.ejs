@@ -13,19 +13,19 @@
   <body>
 
 
-    <h1><%= post.post.title %> - <strong><%= post.post.price %></strong> (<%= post.post.address %>)</h1>
-Hello man
+    <h2><%= post.title %> - <strong><%= post.price %>$</strong>  (<%= post.address %>)</h2>
+
     <div> 
       <h3>The Landlord's Description:</h3>
-      <p><%= post.post.description %></p>
+      <p><%= post.description %></p>
     </div>
 
     <div>
       <ul>
-        <li><%= post.features.rooms %> Bedroom</li>
-        <li>Parking Available: <%= post.features.parking %></li>
-        <li>Smoking Allowed: <%= post.features.smoking %></li>
-        <li>Pets Allowed: <%= post.features.pets %></li>
+        <li><%= features.rooms %> Bedroom</li>
+        <li>Parking Available: <%= features.parking %></li>
+        <li>Smoking Allowed: <%= features.smoking %></li>
+        <li>Pets Allowed: <%= features.pets %></li>
       </ul>
     </div>
 
@@ -34,7 +34,7 @@ Hello man
       <div>
         <h5>Supermarkets:</h5>
         <ul>
-          <% post.amenities.supermarkets.forEach((o) => { %>
+          <% amenities.supermarkets.forEach((o) => { %>
           <li><strong><%= o.supermarket_name %></strong> - <%= o.supermarket_type %></li>
           <% }); %>
         </ul>
@@ -43,7 +43,7 @@ Hello man
       <div>
         <h5>Schools:</h5>
         <ul>
-          <% post.amenities.schools.forEach((o) => { %>
+          <% amenities.schools.forEach((o) => { %>
           <li><strong><%= o.school_name %></strong> - <%= o.school_type %></li>
           <% }); %>
         </ul>
@@ -52,7 +52,7 @@ Hello man
       <div>
         <h5>Hospitals:</h5>
         <ul>
-          <% post.amenities.hospitals.forEach((o) => { %>
+          <% amenities.hospitals.forEach((o) => { %>
           <li><strong><%= o.hospital_name %></strong> - <%= o.hospital_type %></li>
           <% }); %>
         </ul>
@@ -61,7 +61,7 @@ Hello man
       <div>
         <h5>Restaurants:</h5>
         <ul>
-          <% post.amenities.restaurants.forEach((o) => { %>
+          <% amenities.restaurants.forEach((o) => { %>
           <li><strong><%= o.name %></strong> - <%= o.cuisine %></li>
           <% }); %>
         </ul>
@@ -70,7 +70,7 @@ Hello man
       <div>
         <h5>Parks and Recreation:</h5>
         <ul>
-          <% post.amenities.parks.forEach((o) => { %>
+          <% amenities.parks.forEach((o) => { %>
           <li><strong><%= o.park_name %></strong> - <%= o.facility %></li>
           <% }); %>
         </ul>
@@ -79,7 +79,7 @@ Hello man
       <div>
         <h5>Transit Types:</h5>
         <ul>
-          <% post.transit.forEach((o) => { %>
+          <% transit.forEach((o) => { %>
           <li><%= o.route %> - <%= o.type %></li>
           <% }); %>
         </ul>
@@ -87,10 +87,10 @@ Hello man
     </div>
 
     <div>
-      <h5>Please contact <%= post.post.landlord.name %>:</h5>
+      <h5>Please contact <%= post.landlord.name %>:</h5>
       <ul>
-        <li><strong>Email</strong> - <%= post.post.landlord.email %></li>
-        <li><strong>Phone</strong> - <%= post.post.landlord.phone %></li>
+        <li><strong>Email</strong> - <%= post.landlord.email %></li>
+        <li><strong>Phone</strong> - <%= post.landlord.phone %></li>
       </ul>
     </div>
 
