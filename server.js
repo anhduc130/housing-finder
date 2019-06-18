@@ -98,6 +98,7 @@ app.get("/rental-units/:unitId", function (request, response) {
           (err, result) => {
             postJSON.post.title = result[0].unit_title;
             postJSON.post.address = result[0].unit_address;
+            postJSON.post.postal_code = result[0].postal_code;
             postJSON.post.city = result[0].city_name;
             postJSON.post.province = result[0].province_name;
             postJSON.post.description = result[0].unit_description;
