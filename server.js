@@ -8,7 +8,6 @@ const addFeatureListToRentalUnit = require("./add-feature-list-to-rental-unit");
 const getRentalUnitsByLandlordId = require("./get-rental-units-by-landlord-id");
 const getAllRentalUnits = require("./get-all-rental-units");
 const deleteRentalUnit = require("./delete-rental-unit");
-// const initialize = require("./seedDB");
 const postJSON = require("./post");
 
 app.use(express.static("public"));
@@ -59,11 +58,6 @@ connection.connect(function (err) {
     // throw err;
     console.log("Connected!");
 });
-
-/**
- * Uncomment this line to initialize
- */
-// initialize(connection);
 
 app.get("/rental-units", async function (request, response) {
   const cookies = parseCookies(request);
