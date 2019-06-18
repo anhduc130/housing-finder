@@ -34,11 +34,10 @@ const renderRentalUnit = () => {
 
     getRentalUnitByUnitId(unitId,
         (responseSuccess) => {
-            debugger
             document.getElementById('rentalUnitTitle').value = responseSuccess.post.title
             document.getElementById('rentalUnitAddress').value = responseSuccess.post.address
             document.getElementById('rentalUnitPrice').value = responseSuccess.post.price
-            document.getElementById('rentalUnitPostalCode').value = responseSuccess.post.postalCode
+            document.getElementById('rentalUnitPostalCode').value = responseSuccess.post.postal_code
             document.getElementById('rentalUnitType').value = responseSuccess.post.type
             document.getElementById('rentalUnitDescription').value = responseSuccess.post.description
 

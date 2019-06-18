@@ -35,13 +35,13 @@ const addCellsToElement = (rentalUnitElement, rentalUnit) => {
     const button1 = document.createElement("button");
     button1.innerHTML = "View";
     button1.addEventListener("click", () => {
-
+        window.open(`rental-units/${rentalUnit.unit_id}`);
     });
 
     const button2 = document.createElement("button");
     button2.innerHTML = "Edit";
     button2.addEventListener("click", () => {
-
+        window.open(`update-rental-unit.html?id=${rentalUnit.unit_id}`);
     });
 
     const button3 = document.createElement("button");
