@@ -14,7 +14,7 @@
 
 
     <h1><%= post.post.title %> - <strong><%= post.post.price %></strong> (<%= post.post.address %>)</h1>
-
+Hello man
     <div> 
       <h3>The Landlord's Description:</h3>
       <p><%= post.post.description %></p>
@@ -22,10 +22,10 @@
 
     <div>
       <ul>
-        <li><%= post.features %></li>
-        <li><%= post.features %></li>
-        <li><%= post.features %></li>
-        <li><%= post.features %></li>
+        <li><%= post.features.rooms %> Bedroom</li>
+        <li>Parking Available: <%= post.features.parking %></li>
+        <li>Smoking Allowed: <%= post.features.smoking %></li>
+        <li>Pets Allowed: <%= post.features.pets %></li>
       </ul>
     </div>
 
@@ -35,7 +35,7 @@
         <h5>Supermarkets:</h5>
         <ul>
           <% post.amenities.supermarkets.forEach((o) => { %>
-          <li><strong><%= o.name %></strong> - <%= o.type %></li>
+          <li><strong><%= o.supermarket_name %></strong> - <%= o.supermarket_type %></li>
           <% }); %>
         </ul>
       </div>
@@ -44,7 +44,7 @@
         <h5>Schools:</h5>
         <ul>
           <% post.amenities.schools.forEach((o) => { %>
-          <li><strong><%= o.name %></strong> - <%= o.type %></li>
+          <li><strong><%= o.school_name %></strong> - <%= o.school_type %></li>
           <% }); %>
         </ul>
       </div>
@@ -53,7 +53,7 @@
         <h5>Hospitals:</h5>
         <ul>
           <% post.amenities.hospitals.forEach((o) => { %>
-          <li><strong><%= o.name %></strong> - <%= o.type %></li>
+          <li><strong><%= o.hospital_name %></strong> - <%= o.hospital_type %></li>
           <% }); %>
         </ul>
       </div>
@@ -71,7 +71,7 @@
         <h5>Parks and Recreation:</h5>
         <ul>
           <% post.amenities.parks.forEach((o) => { %>
-          <li><strong><%= o.name %></strong> - <%= o.facility %></li>
+          <li><strong><%= o.park_name %></strong> - <%= o.facility %></li>
           <% }); %>
         </ul>
       </div>

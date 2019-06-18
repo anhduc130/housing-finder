@@ -83,27 +83,63 @@ app.get("/rental-units", async function (request, response) {
   }
 });
 
+// CHANGE THE RESTAURANT TABLE NAME IN THE BELOW QUERY
 app.get("/rental-units/:unitId", function (request, response) {
-  // connection.query(`SELECT * FROM rental_unit WHERE unit_id = ${request.params.unitId}`, (err, unit) => {
-  //   if(err || !unit.unit_id) {
-  //     response.redirect('/rental-units');
-  //   }
-  //   connection.query(`SELECT * FROM landlord L, neighbourhood N, city C, province P, school S,  hospital H,
-  //                     restaurant R, parks Pa, supermarket Su
-  //                     WHERE L.landlord_id = ${unit.landlord_id} AND N.postal_code = ${unit.postal_code} AND 
-  //                     C.city_id = N.city_id AND P.province_name = C.province_name AND S.postal_code = N.postal_code AND
-  //                     H.postal_code = N.postal_code AND S.postal_code = N.postal_code AND S.postal_code = N.postal_code`, (err, result) => {
-  //                       postJSON.post.title = result.unit_title;
-  //                       postJSON.post.address = result.unit_address;
-  //                       postJSON.post.city = result.city_name
-  //                       postJSON.post.province = result.province_name
-  //                       postJSON.post.
-  //                       postJSON.post.
-  //                       postJSON.post.
-  //                     })
-  // });
-  response.render('housing-posting', {post:post});
-  // response.send("GET rental-units/housingId endpoint");
+  connection.query(`SELECT * FROM rental_unit WHERE unit_id = '${request.params.unitId}';`, (err, unit) => {
+    if(err) {
+      console.log(err);
+    }
+    if(unit.length > 0) {
+      console.log(unit[0].unit_id);
+      connection.query(`SELECT * FROM landlord L, rental_unit R, neighbourhood N, city C, province P, feature_list F
+                        WHERE R.postal_code = '${unit[0].postal_code}' AND R.landlord_id = L.landlord_id AND R.postal_code = N.postal_code AND
+                        N.city_id = C.city_id AND C.province_name = P.province_name AND R.unit_id = F.unit_id;`,
+          (err, result) => {
+            console.log(result);
+            // postJSON.post.title = result.unit_title;
+            postJSON.post.address = result[0].unit_address;
+            postJSON.post.city = result[0].city_name;
+            postJSON.post.province = result[0].province_name;
+            postJSON.post.description = result[0].unit_description;
+            postJSON.post.price = result[0].price;
+            postJSON.post.type = result[0].unit_type;
+            postJSON.post.landlord.name = result[0].landlord_name;
+            postJSON.post.landlord.email = result[0].email;
+            postJSON.post.landlord.phone = result[0].phone_number;
+            postJSON.features.rooms = result[0].number_of_rooms;
+            postJSON.features.parking = result[0].parking;
+            postJSON.features.smoking = result[0].smoking;
+            postJSON.features.pets = result[0].pets;
+
+            connection.query(`SELECT * FROM resta WHERE resta.postal_code = '${unit[0].postal_code}'`, 
+            (err, restaurants) => {
+              postJSON.amenities.restaurants = restaurants;
+              connection.query(`SELECT * FROM supermarket WHERE supermarket.postal_code = '${unit[0].postal_code}'`, 
+                (err, supermarkets) => {
+                  postJSON.amenities.supermarkets = supermarkets;
+                  connection.query(`SELECT * FROM school WHERE school.postal_code = '${unit[0].postal_code}'`, 
+                    (err, schools) => {
+                      postJSON.amenities.schools = schools;
+                      connection.query(`SELECT * FROM hospital WHERE hospital.postal_code = '${unit[0].postal_code}'`, 
+                        (err, hospitals) => {
+                          postJSON.amenities.hospitals = hospitals;
+                          connection.query(`SELECT * FROM parks_recreation WHERE parks_recreation.postal_code = '${unit[0].postal_code}'`, 
+                            (err, parks) => {
+                              postJSON.amenities.parks = parks;
+                              console.log(postJSON);
+                            })
+                        })
+                    })
+                })
+            })
+                        // , school S,  hospital H, resta Re, parks_recreation Pa, supermarket Su
+                        // AND N.postal_code = S.postal_code AND N.postal_code = H.postal_code AND 
+                        // N.postal_code = Re.postal_code AND N.postal_code = Pa.postal_code AND N.postal_code = Su.postal_code
+            response.render('housing-posting', {post:postJSON});
+          })
+    }
+  });
+  // response.send("This housing unit no longer exists");
 });
 
 app.post("/rental-units", async function (request, response) {

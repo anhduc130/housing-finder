@@ -41,35 +41,40 @@ async function storeStatic(db, file) {
 
 // Initialize the DB with all required static data and 3rd party API data
 async function initialize(db) {
-  // success = await storeStatic(db, 'province.sql').catch((err) => console.log(err));
-  // success = await storeStatic(db, 'city.sql').catch((err) => console.log(err));
-  // success = await storeStatic(db, 'neighbourhood.sql').catch((err) => console.log(err));
-  // success = await storeStatic(db, 'parks_recreation.sql').catch((err) => console.log(err));
-  // success = await storeStatic(db, 'hospital.sql').catch((err) => console.log(err));
-  // success = await storeStatic(db, 'school.sql').catch((err) => console.log(err));
-  // success = await storeStatic(db, 'landlord.sql').catch((err) => console.log(err));
-  // success = await storeStatic(db, 'rental_unit.sql').catch((err) => console.log(err));
 
+  //running predefined SQL scripts
+  success = await storeStatic(db, 'province.sql').catch((err) => console.log(err));
+  success = await storeStatic(db, 'city.sql').catch((err) => console.log(err));
+  success = await storeStatic(db, 'neighbourhood.sql').catch((err) => console.log(err));
+  success = await storeStatic(db, 'parks_recreation.sql').catch((err) => console.log(err));
+  success = await storeStatic(db, 'hospital.sql').catch((err) => console.log(err));
+  success = await storeStatic(db, 'school.sql').catch((err) => console.log(err));
+  success = await storeStatic(db, 'landlord.sql').catch((err) => console.log(err));
+  success = await storeStatic(db, 'rental_unit.sql').catch((err) => console.log(err));
+  success = await storeStatic(db, 'feature_list.sql').catch((err) => console.log(err));
+  success = await storeStatic(db, 'tables.sql').catch((err) => console.log(err));
+
+  //Inserting data from Yelp and Translink APIs for each neighbourhood
   db.query('SELECT postal_code FROM neighbourhood;', (err, neighbourhoods) => {
     neighbourhoods.forEach(async neighbourhood => {
-      // superagent
-      // .get(`http://geocoder.ca?postal=${neighbourhoods[0].postal_code}1c3&geoit=XML`)
-      // .then(async (response) => {
-      //   // setTimeout(() => next(), 25);
-      //   var json = JSON.parse(parser.toJson(response.text, {reversible: false}));
-      //       var long = json.geodata.longt;
-      //       var latt = json.geodata.latt;
-      //       console.log(long);
-      //       console.log(latt);
-      //       await superagent
-      //           .get(`https://api.translink.ca/rttiapi/v1/stops?apikey=h1jF1krhbuNxsjSP5x4s&lat=${JSON.stringify(latt).replace('"', '').replace('"', '')}&long=${JSON.stringify(long).replace('"', '').replace('"', '')}`)
-      //           .then(busStops => {
-      //             var json2 = JSON.parse(parser.toJson(busStops.stops, {reversible: false}));
-      //             console.log(json2);
-      //           })
-      //           .catch(err => console.log(err))
-      //         }
-      //     ).catch(err => console.log(err))
+    //   superagent
+    //   .get(`http://geocoder.ca?postal=${neighbourhoods[0].postal_code}1c3&geoit=XML`)
+    //   .then(async (response) => {
+    //     // setTimeout(() => next(), 25);
+    //     var json = JSON.parse(parser.toJson(response.text, {reversible: false}));
+    //         var long = json.geodata.longt;
+    //         var latt = json.geodata.latt;
+    //         console.log(long);
+    //         console.log(latt);
+    //         await superagent
+    //             .get(`https://api.translink.ca/rttiapi/v1/stops?apikey=h1jF1krhbuNxsjSP5x4s&lat=${JSON.stringify(latt).replace('"', '').replace('"', '')}&long=${JSON.stringify(long).replace('"', '').replace('"', '')}`)
+    //             .then(busStops => {
+    //               var json2 = JSON.parse(parser.toJson(busStops.stops, {reversible: false}));
+    //               console.log(json2);
+    //             })
+    //             .catch(err => console.log(err))
+    //           }
+    //       ).catch(err => console.log(err))
       await superagent
       .get(`http://geocoder.ca?postal=${neighbourhood.postal_code}1c3&geoit=XML`)
       .then(response => {
@@ -124,38 +129,6 @@ async function initialize(db) {
       .catch(err => console.log(err))
     });
   })
-
-          
-
-  // db.query('SELECT * FROM neighbourhood', (neighbourhoods) => {
-  //   neighbourhoods.forEach((neighbourhood) => {
-  //     //get the postal code for each neighbourhood
-  //     //turn that postal code into longitude and latitude
-  //     var longitude;
-  //     var latitude;
-  //     superagent
-  //     .get("translink api ?" + longitude + "&" + latitude)
-  //     .then(response => {
-  //       db.query('INSERT INTO transit VALUES ( routenumber + routename)', (err, rows) => {
-  //         if(err) console.log(err);
-  //       })
-  //     })
-  //   })
-  // })
-
-  // superagent
-  // .get('https://api.yelp.com/v3/businesses/search?term=restaurant&latitude=49.263372&longitude=-123.119660&radius=2500&limit=50')
-  // .query(null)
-  // .set('Accept', 'application/json')
-  // .set('Authorization', 'Bearer uqiByH8CvARU3-_0UHYblksffNoFkxNCh4GefygRJsUGktYgG0DDFyhV-cIvYbzxKXNHmb8CkC4pYiGnH5_o384lO8IqiHlR6588br8RPjjWoLuLcq9ngyCH7Uv1XHYx')
-  // .then( response => {
-  //   response.body.businesses.forEach(business => {
-  //     db.query(`INSERT INTO restaurants VALUES (${JSON.stringify(business.location.address1)}, ${JSON.stringify(business.name)}, ${JSON.stringify(business.categories[0].title)}, ${JSON.stringify(business.location.zip_code)})`,
-  //               (err, rows) => {
-  //                 if(err) console.log(err);
-  //               })
-  //   })
-  // })
 }
 
 module.exports = initialize;

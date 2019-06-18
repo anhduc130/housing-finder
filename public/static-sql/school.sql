@@ -3,7 +3,7 @@ CREATE TABLE school
     school_address	varchar(255) NOT NULL PRIMARY KEY,
     school_name	varchar(50),
     school_type varchar(20),
-    postal_code varchar(20) NOT NULL, 
+    postal_code varchar(10) NOT NULL, 
     FOREIGN KEY (postal_code) references neighbourhood(postal_code));
 
 -- UNIVERSITIES ONLY

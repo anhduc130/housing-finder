@@ -3,7 +3,7 @@ CREATE TABLE hospital
     hospital_address varchar(255) NOT NULL PRIMARY KEY,
     hospital_name varchar(50),
     hospital_type varchar(50),
-    postal_code varchar(20) NOT NULL,
+    postal_code varchar(10) NOT NULL,
     FOREIGN KEY (postal_code) references neighbourhood(postal_code)
 );
 
