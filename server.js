@@ -95,7 +95,7 @@ app.get("/rental-units/:unitId", function (request, response) {
       connection.query(`SELECT * FROM landlord L, rental_unit R, neighbourhood N, city C, province P, feature_list F
                         WHERE R.postal_code = '${unit[0].postal_code}' AND R.landlord_id = L.landlord_id AND R.postal_code = N.postal_code AND
                         N.city_id = C.city_id AND C.province_name = P.province_name AND R.unit_id = F.unit_id;`,
-          (err, result) => {
+          async (err, result) => {
             postJSON.post.title = result[0].unit_title;
             postJSON.post.address = result[0].unit_address;
             postJSON.post.postal_code = result[0].postal_code;
@@ -111,29 +111,30 @@ app.get("/rental-units/:unitId", function (request, response) {
             postJSON.features.parking = result[0].parking;
             postJSON.features.smoking = result[0].smoking;
             postJSON.features.pets = result[0].pets;
-            connection.query(`SELECT * FROM restaurants WHERE restaurants.postal_code = '${unit[0].postal_code}'`, 
+            await connection.query(`SELECT * FROM restaurants WHERE restaurants.postal_code = '${unit[0].postal_code}'`, 
             (err, restaurants) => {
               postJSON.amenities.restaurants = restaurants;
-              connection.query(`SELECT * FROM supermarket WHERE supermarket.postal_code = '${unit[0].postal_code}'`,
-                (err, supermarkets) => {
-                  postJSON.amenities.supermarkets = supermarkets;
-                  connection.query(`SELECT * FROM school WHERE school.postal_code = '${unit[0].postal_code}'`,
-                    (err, schools) => {
-                      postJSON.amenities.schools = schools;
-                      connection.query(`SELECT * FROM hospital WHERE hospital.postal_code = '${unit[0].postal_code}'`,
-                        (err, hospitals) => {
-                          postJSON.amenities.hospitals = hospitals;
-                          connection.query(`SELECT * FROM parks_recreation WHERE parks_recreation.postal_code = '${unit[0].postal_code}'`,
-                            (err, parks) => {
-                              postJSON.amenities.parks = parks;
-                            })
-                        })
-                    })
-                })
+            })
+            await connection.query(`SELECT * FROM supermarket WHERE supermarket.postal_code = '${unit[0].postal_code}'`,
+            (err, supermarkets) => {
+              postJSON.amenities.supermarkets = supermarkets;
+            })
+            await connection.query(`SELECT * FROM school WHERE school.postal_code = '${unit[0].postal_code}'`,
+            (err, schools) => {
+              postJSON.amenities.schools = schools;
+            })
+            await connection.query(`SELECT * FROM hospital WHERE hospital.postal_code = '${unit[0].postal_code}'`,
+            (err, hospitals) => {
+              postJSON.amenities.hospitals = hospitals;
+            })
+            await connection.query(`SELECT * FROM parks_recreation WHERE parks_recreation.postal_code = '${unit[0].postal_code}'`,
+            (err, parks) => {
+              postJSON.amenities.parks = parks;
             })
             if (request.query.jsonOnly) {
               response.status(200).send({post:postJSON.post, features:postJSON.features, amenities:postJSON.amenities, transit:postJSON.transit})
             } else {
+              console.log(postJSON);
               response.render('housing-posting', {post:postJSON.post, features:postJSON.features, amenities:postJSON.amenities, transit:postJSON.transit});
             }
           })
