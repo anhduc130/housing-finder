@@ -7,7 +7,7 @@ const createRentalUnit = require("./create-rental-unit");
 const addFeatureListToRentalUnit = require("./add-feature-list-to-rental-unit");
 const getRentalUnitsByLandlordId = require("./get-rental-units-by-landlord-id");
 const getAllRentalUnits = require("./get-all-rental-units");
-const initialize = require("./seedDB");
+// const initialize = require("./seedDB");
 const postJSON = require("./post");
 
 app.use(express.static("public"));
