@@ -2,6 +2,7 @@ const post = {
     'post':     {
                   'title':'',
                   'address':'',
+                  'postal_code':'',
                   'city':'',
                   'province':'',
                   'description':'',
