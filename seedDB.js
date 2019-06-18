@@ -1,6 +1,25 @@
 const superagent = require('superagent');
 const fs         = require('fs');
 const parser     = require('xml2json');
+const mysql = require("mysql");
+
+/**
+ * Create DB connection
+ */
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "root",
+  port: 8889,
+  database: "housing-finder",
+  socketPath: "/Applications/MAMP/tmp/mysql/mysql.sock"
+});
+
+connection.connect(function (err) {
+  if (err)
+    // throw err;
+    console.log("Connected!");
+});
 
 //Parse the specified hard-coded SQL file and return an list of valid string SQL statements
 function parseSQL(file) {
@@ -31,7 +50,7 @@ async function storeStatic(db, file) {
         if(err) {
           console.log(err);
         } else {
-          console.log('Success');
+          console.log(`Successfully executed ${statement}`);
         }
       })
     })
@@ -130,5 +149,7 @@ async function initialize(db) {
     });
   })
 }
+
+initialize(connection);
 
 module.exports = initialize;

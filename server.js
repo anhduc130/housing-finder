@@ -8,7 +8,8 @@ const addFeatureListToRentalUnit = require("./add-feature-list-to-rental-unit");
 const getRentalUnitsByLandlordId = require("./get-rental-units-by-landlord-id");
 const getAllRentalUnits = require("./get-all-rental-units");
 const deleteRentalUnit = require("./delete-rental-unit");
-// const initialize = require("./seedDB");
+const updateRentalUnit = require("./update-rental-unit");
+const updateFeatureList = require("./update-feature-list");
 const postJSON = require("./post");
 
 app.use(express.static("public"));
@@ -60,11 +61,6 @@ connection.connect(function (err) {
     console.log("Connected!");
 });
 
-/**
- * Uncomment this line to initialize
- */
-// initialize(connection);
-
 app.get("/rental-units", async function (request, response) {
   const cookies = parseCookies(request);
   let rentalUnits;
@@ -111,7 +107,7 @@ app.get("/rental-units/:unitId", function (request, response) {
             postJSON.features.parking = result[0].parking;
             postJSON.features.smoking = result[0].smoking;
             postJSON.features.pets = result[0].pets;
-            await connection.query(`SELECT * FROM restaurants WHERE restaurants.postal_code = '${unit[0].postal_code}'`, 
+            await connection.query(`SELECT * FROM restaurant WHERE restaurant.postal_code = '${unit[0].postal_code}'`, 
             (err, restaurants) => {
               postJSON.amenities.restaurants = restaurants;
             })
@@ -175,6 +171,24 @@ app.delete("/rental-units/:unitId", async function (request, response) {
     }
     deleteRentalUnit(unitId, connection);
     response.status(200).send("Successfully deleted a rental unit.");
+  } catch (error) {
+    response.status(400).send(error);
+  }
+});
+
+app.put("/rental-units/:unitId", async function (request, response) {
+  const unitId = request.params.unitId;
+  const rentalUnit = request.body.rentalUnit;
+  const unitFeatureList = request.body.unitFeatureList;
+  const cookies = parseCookies(request);
+  try {
+    if (!cookies['landlord-id'] || !cookies['logged-in-key']) {
+      response.status(401).send('Session has expired. Please log in again.');
+      return;
+    }
+    await updateRentalUnit(unitId, rentalUnit, connection);
+    await updateFeatureList(unitId, unitFeatureList, connection);
+    response.status(200).send("Successfully updated a rental unit.");
   } catch (error) {
     response.status(400).send(error);
   }

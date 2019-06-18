@@ -1,7 +1,13 @@
+const urlStr = window.location.href
+const url = new URL(urlStr);
+const unitId = url.searchParams.get("id");
+
 const updateRentalUnitError = response => {
     if (response.statusText == "Unauthorized") {
         alert(`${response.responseText}`)
         window.location.replace("signin.html");
+    } else if (response.statusText == "OK") {
+        location.reload();
     }
 };
 
@@ -13,25 +19,52 @@ const updateRentalUnitSuccess = response => {
  * Update Rental Unit
  */
 const updateRentalUnit = () => {
-    debugger
+    const unitTitle = document.getElementById('rentalUnitTitle').value
+    const unitAddress = document.getElementById('rentalUnitAddress').value
+    const unitPrice = document.getElementById('rentalUnitPrice').value
+    const unitPostalCode = document.getElementById('rentalUnitPostalCode').value.substring(0, 3)
+    const unitType = document.getElementById('rentalUnitType').value
+    const unitDescription = document.getElementById('rentalUnitDescription').value
+
+    const numOfRooms = document.getElementById('rentalUnitRoomNum').value
+    const parkingYes = document.getElementById('parkingYes').checked
+    const smokingYes = document.getElementById('smokingYes').checked
+    const petsYes = document.getElementById('petsYes').checked
+
+    if (!unitTitle || !unitAddress || !unitPostalCode) {
+        return;
+    }
+
+    const rentalUnit = {
+        unitTitle,
+        unitAddress,
+        unitPrice,
+        unitPostalCode,
+        unitType,
+        unitDescription
+    }
+
+    const unitFeatureList = {
+        numOfRooms,
+        parking: parkingYes ? 'yes' : 'no',
+        smoking: smokingYes ? 'yes' : 'no',
+        pets: petsYes ? 'yes' : 'no',
+    }
+
     $.ajax({
         type: "PUT",
         headers: {
             'Content-Type': 'application/json'
         },
         url: `${rentalUnitsUrl}/${unitId}`,
-        error: errorCallback,
-        success: successCallback,
-        data: { rentalUnit },
+        error: updateRentalUnitError,
+        success: updateRentalUnitSuccess,
+        data: JSON.stringify({ rentalUnit, unitFeatureList }),
         dataType: 'json'
     });
 }
 
 const renderRentalUnit = () => {
-    const urlStr = window.location.href
-    const url = new URL(urlStr);
-    const unitId = url.searchParams.get("id");
-
     getRentalUnitByUnitId(unitId,
         (responseSuccess) => {
             document.getElementById('rentalUnitTitle').value = responseSuccess.post.title
