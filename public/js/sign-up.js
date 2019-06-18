@@ -1,9 +1,12 @@
 const signUpUrl = "http://localhost:2019/signup";
-const signUpError = (request) => {
-    alert(`${request.responstText}`)
+const signUpError = (response) => {
+    alert(`${response.responseText}`)
+    if (response.statusText == "Created") {
+        location.reload()
+    }
 };
-const signUpSuccess = (request) => {
-    console.log(request.responstText)
+const signUpSuccess = (response) => {
+    location.reload()
 }
 
 /**
