@@ -5,7 +5,7 @@ const signInError = (response) => {
 };
 const signInSuccess = (response) => {
     console.log(response)
-    window.location.replace("post-rental-unit.html");    
+    window.location.replace("my-rental-units.html");    
 }
 
 /**

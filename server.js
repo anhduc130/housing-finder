@@ -5,6 +5,8 @@ const signUp = require("./sign-up");
 const signIn = require("./sign-in");
 const createRentalUnit = require("./create-rental-unit");
 const addFeatureListToRentalUnit = require("./add-feature-list-to-rental-unit");
+const getRentalUnitsByLandlordId = require("./get-rental-units-by-landlord-id");
+const getAllRentalUnits = require("./get-all-rental-units");
 const initialize = require("./seedDB");
 
 app.use(express.static("public"));
@@ -60,8 +62,23 @@ connection.connect(function (err) {
  */
 // initialize(connection);
 
-app.get("/rental-units", function (request, response) {
-  response.send("GET rental-units endpoint");
+app.get("/rental-units", async function (request, response) {
+  const cookies = parseCookies(request);
+  let rentalUnits;
+  try {
+    if (request.query.onlyLandlordUnits) {
+      if (!cookies['landlord-id'] || !cookies['logged-in-key']) {
+        response.status(401).send('Session has expired. Please log in again.');
+        return;
+      }
+      rentalUnits = await getRentalUnitsByLandlordId(cookies['landlord-id'], connection);
+    } else {
+      rentalUnits = await getAllRentalUnits(connection);
+    }
+    response.send(rentalUnits);
+  } catch (error) {
+    response.status(400).send(error);
+  }
 });
 
 app.get("/rental-units/:housingId", function (request, response) {

@@ -1,0 +1,51 @@
+<html>
+<style>
+    #rental-unit-table {
+        margin: auto;
+        width: 100%;
+    }
+</style>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="js/get-rental-units.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css"
+          integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <container>
+        <row>
+            <div class="col-md-12 text-center">
+                <table id="rental-unit-table" class="pure-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Address</th>
+                            <th>Type</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rental-unit-table-body">
+                    </tbody>
+                </table>
+            </div>
+        </row>
+        <row>
+            <div class="col-md-12"></div>
+        </row>
+        <row>
+            <div class="col-md-12">
+                <button onclick="window.location.assign('post-rental-unit.html')">+ Add new rental unit</button>
+            </div>
+        </row>
+    </container>
+    <script>
+        getRentalUnitsByLandlordId();
+    </script>
+</body>
+
+</html>
