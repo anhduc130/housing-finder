@@ -1,4 +1,18 @@
-
+<script type="text/javascript">
+	function selectAll() {
+        var a = document.getElementById("Title");
+        var b = document.getElementById("Address");
+        var c = document.getElementById("Unit_Type");
+        a.checked = true;
+        b.checked = true;
+        c.checked = true;
+    }
+    function checkSelectAll(){
+    	var a = document.getElementById("All");
+    	a.checked = false;
+    }
+	
+</script>
 <style>
 body {
 padding-top: 20px;
@@ -36,6 +50,8 @@ width: 300px;
 }
 .flex-item{
 flex-grow: 1;
+/*margin-left:300px;*/
+/*width: 800px;*/
 /* padding: 10px;  */
 /* padding-left: 200 px; */
 
@@ -196,16 +212,16 @@ flex-grow: 1;
               </div>
               <label for="Selction" class="radio-label">Select By Attributes (Projection)</label>
               <div class="flex-item">
-                  <input type="checkbox" name="All" id="All" checked>
+                  <input type="checkbox" name="checkAll" id="All" onclick="selectAll()">
                   <label for="All">All</label>
                   <span class="check"></span>
-                  <input type="checkbox" name="Title" id="Title">
+                  <input type="checkbox" name="Title" id="Title" onclick="checkSelectAll()">
                   <label for="Title">Title</label>
                   <span class="check"></span>
-                  <input type="checkbox" name="Address" id="Address">
+                  <input type="checkbox" name="Address" id="Address" onclick="checkSelectAll()">
                   <label for="Address">Address</label>
                   <span class="checkbox"></span>
-                  <input type="checkbox" name="Unit_Type" id="Unit_Type">
+                  <input type="checkbox" name="Unit_Type" id="Unit_Type" onclick="checkSelectAll()">
                   <label for="Unit_Type">Unit_Type</label>
                   <span class="check"></span>
               </div>
