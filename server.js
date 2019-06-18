@@ -111,7 +111,7 @@ app.get("/rental-units/:unitId", function (request, response) {
             postJSON.features.parking = result[0].parking;
             postJSON.features.smoking = result[0].smoking;
             postJSON.features.pets = result[0].pets;
-            connection.query(`SELECT * FROM restaurant WHERE restaurant.postal_code = '${unit[0].postal_code}'`, 
+            connection.query(`SELECT * FROM restaurants WHERE restaurants.postal_code = '${unit[0].postal_code}'`, 
             (err, restaurants) => {
               postJSON.amenities.restaurants = restaurants;
               connection.query(`SELECT * FROM supermarket WHERE supermarket.postal_code = '${unit[0].postal_code}'`,

@@ -51,7 +51,7 @@ body { margin:0; padding:0; }
 </div>
 
 <div>
-  <h5>Schools:</h5>
+  <h5>This unit's features:</h5>
   <ul>
     <li><%= features.rooms %> Bedroom</li>
     <li>Parking Available: <%= features.parking %></li>
@@ -125,32 +125,7 @@ body { margin:0; padding:0; }
   </ul>
 </div>
 
-<div>
-  <h5>Parks and Recreation:</h5>
-  <ul>
-    <% post.amenities.parks.forEach((o) => { %>
-    <li><strong><%= o.park_name %></strong> - <%= o.facility %></li>
-    <% }); %>
-  </ul>
-</div>
 
-<div>
-  <h5>Transit Types:</h5>
-  <ul>
-    <% post.transit.forEach((o) => { %>
-    <li><%= o.route %> - <%= o.type %></li>
-    <% }); %>
-  </ul>
-</div>
-</div>
-
-<div>
-<h5>Please contact <%= post.post.landlord.name %>:</h5>
-<ul>
-  <li><strong>Email</strong> - <%= post.post.landlord.email %></li>
-  <li><strong>Phone</strong> - <%= post.post.landlord.phone %></li>
-</ul>
-</div>
 
 <div class="flex-item">
 <div id='map' style='width: 800px; height: 600px;'></div>
