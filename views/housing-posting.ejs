@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <!-- Jquery 3.4.1.min.js -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  </head>
+  <body>
+
+
+    <h1><%= post.post.title %> - <strong><%= post.post.price %></strong> (<%= post.post.address %>)</h1>
+
+    <div> 
+      <h3>The Landlord's Description:</h3>
+      <p><%= post.post.description %></p>
+    </div>
+
+    <div>
+      <ul>
+        <li><%= post.features %></li>
+        <li><%= post.features %></li>
+        <li><%= post.features %></li>
+        <li><%= post.features %></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3>Some of the amazing amenities here are:</h3>
+      <div>
+        <h5>Supermarkets:</h5>
+        <ul>
+          <% post.amenities.supermarkets.forEach((o) => { %>
+          <li><strong><%= o.name %></strong> - <%= o.type %></li>
+          <% }); %>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Schools:</h5>
+        <ul>
+          <% post.amenities.schools.forEach((o) => { %>
+          <li><strong><%= o.name %></strong> - <%= o.type %></li>
+          <% }); %>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Hospitals:</h5>
+        <ul>
+          <% post.amenities.hospitals.forEach((o) => { %>
+          <li><strong><%= o.name %></strong> - <%= o.type %></li>
+          <% }); %>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Restaurants:</h5>
+        <ul>
+          <% post.amenities.restaurants.forEach((o) => { %>
+          <li><strong><%= o.name %></strong> - <%= o.cuisine %></li>
+          <% }); %>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Parks and Recreation:</h5>
+        <ul>
+          <% post.amenities.parks.forEach((o) => { %>
+          <li><strong><%= o.name %></strong> - <%= o.facility %></li>
+          <% }); %>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Transit Types:</h5>
+        <ul>
+          <% post.transit.forEach((o) => { %>
+          <li><%= o.route %> - <%= o.type %></li>
+          <% }); %>
+        </ul>
+      </div>
+    </div>
+
+    <div>
+      <h5>Please contact <%= post.post.landlord.name %>:</h5>
+      <ul>
+        <li><strong>Email</strong> - <%= post.post.landlord.email %></li>
+        <li><strong>Phone</strong> - <%= post.post.landlord.phone %></li>
+      </ul>
+    </div>
+
+
+  </body>
+</html>

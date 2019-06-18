@@ -13,6 +13,7 @@
   "dependencies": {
     "bcrypt": "^3.0.6",
     "crypto-random-string": "^3.0.0",
+    "ejs": "^2.6.2",
     "express": "^4.17.1",
     "mysql": "^2.17.1",
     "nodemon": "^1.19.1",

@@ -13,7 +13,6 @@ function parseSQL(file) {
           sql.forEach((e) => {
             e.trim();
             var statement = e + ';';
-            // console.log(statement);
           })
           sql.pop();
           resolve(sql);
@@ -52,33 +51,81 @@ async function initialize(db) {
   // success = await storeStatic(db, 'rental_unit.sql').catch((err) => console.log(err));
 
   db.query('SELECT postal_code FROM neighbourhood;', (err, neighbourhoods) => {
-    neighbourhoods.forEach( async neighbourhood => { await
-      superagent
+    neighbourhoods.forEach(async neighbourhood => {
+      // superagent
+      // .get(`http://geocoder.ca?postal=${neighbourhoods[0].postal_code}1c3&geoit=XML`)
+      // .then(async (response) => {
+      //   // setTimeout(() => next(), 25);
+      //   var json = JSON.parse(parser.toJson(response.text, {reversible: false}));
+      //       var long = json.geodata.longt;
+      //       var latt = json.geodata.latt;
+      //       console.log(long);
+      //       console.log(latt);
+      //       await superagent
+      //           .get(`https://api.translink.ca/rttiapi/v1/stops?apikey=h1jF1krhbuNxsjSP5x4s&lat=${JSON.stringify(latt).replace('"', '').replace('"', '')}&long=${JSON.stringify(long).replace('"', '').replace('"', '')}`)
+      //           .then(busStops => {
+      //             var json2 = JSON.parse(parser.toJson(busStops.stops, {reversible: false}));
+      //             console.log(json2);
+      //           })
+      //           .catch(err => console.log(err))
+      //         }
+      //     ).catch(err => console.log(err))
+      await superagent
       .get(`http://geocoder.ca?postal=${neighbourhood.postal_code}1c3&geoit=XML`)
-      .then(async response => {
-        var json = JSON.parse(parser.toJson(response.text, {reversible: true}));
-        console.log(json.geodata.latt);
-        console.log(json.geodata.longt);
-        await superagent
-        .get(`https://api.yelp.com/v3/businesses/search?term=restaurant&latitude=${json.geodata.latt}&longitude=${json.geodata.longt}&radius=2500&limit=50`)
-        .set('Accept', 'application/json')
-        .set('Authorization', 'Bearer uqiByH8CvARU3-_0UHYblksffNoFkxNCh4GefygRJsUGktYgG0DDFyhV-cIvYbzxKXNHmb8CkC4pYiGnH5_o384lO8IqiHlR6588br8RPjjWoLuLcq9ngyCH7Uv1XHYx')
-        .then(async response => { await
-          console.log(response.body.businesses[0]);
-        //   response.body.businesses.forEach(business => {
-        //     if(business.location.zip_code.includes(neighbourhood.postal_code)) {
-        //       db.query(`INSERT INTO resta VALUES 
-        //               (${JSON.stringify(business.location.address1)}, ${JSON.stringify(business.name)}, 
-        //               ${JSON.stringify(business.categories[0].title)}, ${JSON.stringify(business.location.zip_code)})`,
-        //                 (err, rows) => {
-        //                   if(err) console.log(err);
-        //                 })
-        //     }
-        //   })
-        })
+      .then(response => {
+
+        setTimeout(() => {
+          var json = JSON.parse(parser.toJson(response.text, {reversible: false}));
+          console.log(JSON.stringify(json.geodata.latt));
+          console.log(JSON.stringify(json.geodata.longt));
+          superagent
+          .get(`https://api.yelp.com/v3/businesses/search?term=restaurant&latitude=${JSON.stringify(json.geodata.latt).replace('"', '').replace('"', '')}&longitude=${JSON.stringify(json.geodata.longt).replace('"', '').replace('"', '')}&radius=2500&limit=6`)
+          .set('Accept', 'application/json')
+          .set('Authorization', 'Bearer uqiByH8CvARU3-_0UHYblksffNoFkxNCh4GefygRJsUGktYgG0DDFyhV-cIvYbzxKXNHmb8CkC4pYiGnH5_o384lO8IqiHlR6588br8RPjjWoLuLcq9ngyCH7Uv1XHYx')
+          .then(response => {
+            console.log(response.body.businesses[0]);
+            response.body.businesses.forEach(business => {
+              if(business.location.zip_code.includes(neighbourhood.postal_code)) {
+                db.query(`INSERT INTO restaurant VALUES 
+                        (${JSON.stringify(business.location.address1)}, ${JSON.stringify(business.name)}, 
+                        ${JSON.stringify(business.categories[0].title)}, ${JSON.stringify(neighbourhood.postal_code)})`,
+                          (err, rows) => {
+                            if(err) console.log(err);
+                          })
+              }
+            })
+          }).catch(err => console.log(err))
+        }, 100);
+
+        setTimeout(() => {
+          var json = JSON.parse(parser.toJson(response.text, {reversible: false}));
+          console.log(JSON.stringify(json.geodata.latt));
+          console.log(JSON.stringify(json.geodata.longt));
+          superagent
+          .get(`https://api.yelp.com/v3/businesses/search?categories=grocery&latitude=${JSON.stringify(json.geodata.latt).replace('"', '').replace('"', '')}&longitude=${JSON.stringify(json.geodata.longt).replace('"', '').replace('"', '')}&radius=2500&limit=6`)
+          .set('Accept', 'application/json')
+          .set('Authorization', 'Bearer uqiByH8CvARU3-_0UHYblksffNoFkxNCh4GefygRJsUGktYgG0DDFyhV-cIvYbzxKXNHmb8CkC4pYiGnH5_o384lO8IqiHlR6588br8RPjjWoLuLcq9ngyCH7Uv1XHYx')
+          .then(response => {
+            console.log(response.body.businesses[0]);
+            response.body.businesses.forEach(business => {
+              if(business.location.zip_code.includes(neighbourhood.postal_code)) {
+                db.query(`INSERT INTO supermarket VALUES 
+                        (${JSON.stringify(business.location.address1)}, ${JSON.stringify(business.name)}, 
+                        ${JSON.stringify(business.categories[0].title)}, ${JSON.stringify(neighbourhood.postal_code)})`,
+                          (err, rows) => {
+                            if(err) console.log(err);
+                          })
+              }
+            })
+          }).catch(err => console.log(err))
+        }, 100);
+        
       })
+      .catch(err => console.log(err))
     });
   })
+
+          
 
   // db.query('SELECT * FROM neighbourhood', (neighbourhoods) => {
   //   neighbourhoods.forEach((neighbourhood) => {
