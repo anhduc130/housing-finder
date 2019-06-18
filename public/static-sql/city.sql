@@ -1,7 +1,7 @@
 CREATE TABLE city
 (
     city_id int PRIMARY KEY,
-    city_name varChar(20) NOT NULL PRIMARY KEY,
+    city_name varChar(20) NOT NULL,
     province_name varChar(20) NOT NULL,
     FOREIGN KEY (province_name) references province(province_name)
 );

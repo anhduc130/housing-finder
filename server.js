@@ -7,6 +7,7 @@ const createRentalUnit = require("./create-rental-unit");
 const addFeatureListToRentalUnit = require("./add-feature-list-to-rental-unit");
 const getRentalUnitsByLandlordId = require("./get-rental-units-by-landlord-id");
 const getAllRentalUnits = require("./get-all-rental-units");
+const deleteRentalUnit = require("./delete-rental-unit");
 // const initialize = require("./seedDB");
 const postJSON = require("./post");
 
@@ -86,10 +87,10 @@ app.get("/rental-units", async function (request, response) {
 // CHANGE THE RESTAURANT TABLE NAME IN THE BELOW QUERY
 app.get("/rental-units/:unitId", function (request, response) {
   connection.query(`SELECT * FROM rental_unit WHERE unit_id = '${request.params.unitId}';`, (err, unit) => {
-    if(err) {
+    if (err) {
       console.log(err);
     }
-    if(unit.length > 0) {
+    if (unit.length > 0) {
       console.log(unit[0].unit_id);
       connection.query(`SELECT * FROM landlord L, rental_unit R, neighbourhood N, city C, province P, feature_list F
                         WHERE R.postal_code = '${unit[0].postal_code}' AND R.landlord_id = L.landlord_id AND R.postal_code = N.postal_code AND
@@ -112,16 +113,16 @@ app.get("/rental-units/:unitId", function (request, response) {
             connection.query(`SELECT * FROM restaurant WHERE restaurant.postal_code = '${unit[0].postal_code}'`, 
             (err, restaurants) => {
               postJSON.amenities.restaurants = restaurants;
-              connection.query(`SELECT * FROM supermarket WHERE supermarket.postal_code = '${unit[0].postal_code}'`, 
+              connection.query(`SELECT * FROM supermarket WHERE supermarket.postal_code = '${unit[0].postal_code}'`,
                 (err, supermarkets) => {
                   postJSON.amenities.supermarkets = supermarkets;
-                  connection.query(`SELECT * FROM school WHERE school.postal_code = '${unit[0].postal_code}'`, 
+                  connection.query(`SELECT * FROM school WHERE school.postal_code = '${unit[0].postal_code}'`,
                     (err, schools) => {
                       postJSON.amenities.schools = schools;
-                      connection.query(`SELECT * FROM hospital WHERE hospital.postal_code = '${unit[0].postal_code}'`, 
+                      connection.query(`SELECT * FROM hospital WHERE hospital.postal_code = '${unit[0].postal_code}'`,
                         (err, hospitals) => {
                           postJSON.amenities.hospitals = hospitals;
-                          connection.query(`SELECT * FROM parks_recreation WHERE parks_recreation.postal_code = '${unit[0].postal_code}'`, 
+                          connection.query(`SELECT * FROM parks_recreation WHERE parks_recreation.postal_code = '${unit[0].postal_code}'`,
                             (err, parks) => {
                               postJSON.amenities.parks = parks;
                             })
@@ -153,6 +154,21 @@ app.post("/rental-units", async function (request, response) {
     await addFeatureListToRentalUnit(request.body.unitFeatureList, rentalUnitId, connection);
 
     response.status(201).send("A rental unit was successfully created!");
+  } catch (error) {
+    response.status(400).send(error);
+  }
+});
+
+app.delete("/rental-units/:unitId", async function (request, response) {
+  const unitId = request.params.unitId;
+  const cookies = parseCookies(request);
+  try {
+    if (!cookies['landlord-id'] || !cookies['logged-in-key']) {
+      response.status(401).send('Session has expired. Please log in again.');
+      return;
+    }
+    deleteRentalUnit(unitId, connection);
+    response.status(200).send("Successfully deleted a rental unit.");
   } catch (error) {
     response.status(400).send(error);
   }

@@ -56,7 +56,7 @@ async function initialize(db) {
 
   //Inserting data from Yelp and Translink APIs for each neighbourhood
   db.query('SELECT postal_code FROM neighbourhood;', (err, neighbourhoods) => {
-    neighbourhoods.forEach(async neighbourhood => {
+    neighbourhoods.forEach(async (neighbourhood, index) => {
     //   superagent
     //   .get(`http://geocoder.ca?postal=${neighbourhoods[0].postal_code}1c3&geoit=XML`)
     //   .then(async (response) => {
@@ -100,7 +100,7 @@ async function initialize(db) {
               }
             })
           }).catch(err => console.log(err))
-        }, 100);
+        }, index * 1000);
 
         setTimeout(() => {
           var json = JSON.parse(parser.toJson(response.text, {reversible: false}));
@@ -123,7 +123,7 @@ async function initialize(db) {
               }
             })
           }).catch(err => console.log(err))
-        }, 100);
+        }, index * 1000);
         
       })
       .catch(err => console.log(err))

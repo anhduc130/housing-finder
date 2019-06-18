@@ -34,12 +34,21 @@ const addCellsToElement = (rentalUnitElement, rentalUnit) => {
 
     const button1 = document.createElement("button");
     button1.innerHTML = "View";
+    button1.addEventListener("click", () => {
+
+    });
 
     const button2 = document.createElement("button");
     button2.innerHTML = "Edit";
+    button2.addEventListener("click", () => {
+
+    });
 
     const button3 = document.createElement("button");
     button3.innerHTML = "Delete";
+    button3.addEventListener("click", () => {
+        deleteRentalUnit(rentalUnit.unit_id);
+    });
 
     actions.append(button1);
     actions.append(button2);
@@ -47,7 +56,6 @@ const addCellsToElement = (rentalUnitElement, rentalUnit) => {
 }
 
 const getRentalUnitSuccess = response => {
-    debugger
     for (let i = 0; i < response.length; i++) {
         const rentalUnit = response[i];
         const tableRef = document.getElementById('rental-unit-table-body');
@@ -61,7 +69,6 @@ const getRentalUnitSuccess = response => {
  * GET RENTAL UNITS BY LANDLORD ID
  */
 const getRentalUnitsByLandlordId = () => {
-    debugger
     $.ajax({
         type: "GET",
         headers: {
