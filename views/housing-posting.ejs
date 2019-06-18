@@ -2,7 +2,7 @@
 
 
 .container{
-  display: flex; 
+display: flex; 
 }
 
 .signup-form{
@@ -43,92 +43,65 @@ body { margin:0; padding:0; }
 
 
 <div class = container> 
-  <h2><%= post.title %> - <strong><%= post.price %>$</strong>  (<%= post.address %>)</h2>
+<h2><%= post.title %> - <strong><%= post.price %>$</strong>  (<%= post.address %>)</h2>
 
-  <div> 
-    <h3>The Landlord's Description:</h3>
-    <p><%= post.description %></p>
+<div> 
+  <h3>The Landlord's Description:</h3>
+  <p><%= post.description %></p>
+</div>
+
+<div>
+  <h5>Schools:</h5>
+  <ul>
+    <li><%= features.rooms %> Bedroom</li>
+    <li>Parking Available: <%= features.parking %></li>
+    <li>Smoking Allowed: <%= features.smoking %></li>
+    <li>Pets Allowed: <%= features.pets %></li>
+  </ul>
+</div>
+
+<div>
+  <h3>Some of the amazing amenities here are:</h3>
+  <div>
+    <h5>Supermarkets:</h5>
+    <ul>
+      <% amenities.supermarkets.forEach((o) => { %>
+      <li><strong><%= o.supermarket_name %></strong> - <%= o.supermarket_type %></li>
+      <% }); %>
+    </ul>
   </div>
 
   <div>
     <h5>Schools:</h5>
     <ul>
-      <li><%= features.rooms %> Bedroom</li>
-      <li>Parking Available: <%= features.parking %></li>
-      <li>Smoking Allowed: <%= features.smoking %></li>
-      <li>Pets Allowed: <%= features.pets %></li>
+      <% amenities.schools.forEach((o) => { %>
+      <li><strong><%= o.school_name %></strong> - <%= o.school_type %></li>
+      <% }); %>
     </ul>
   </div>
 
   <div>
-    <h3>Some of the amazing amenities here are:</h3>
-    <div>
-      <h5>Supermarkets:</h5>
-      <ul>
-        <% amenities.supermarkets.forEach((o) => { %>
-        <li><strong><%= o.supermarket_name %></strong> - <%= o.supermarket_type %></li>
-        <% }); %>
-      </ul>
-    </div>
-
-    <div>
-      <h5>Schools:</h5>
-      <ul>
-        <% amenities.schools.forEach((o) => { %>
-        <li><strong><%= o.school_name %></strong> - <%= o.school_type %></li>
-        <% }); %>
-      </ul>
-    </div>
-
-    <div>
-      <h5>Hospitals:</h5>
-      <ul>
-        <% amenities.hospitals.forEach((o) => { %>
-        <li><strong><%= o.hospital_name %></strong> - <%= o.hospital_type %></li>
-        <% }); %>
-      </ul>
-    </div>
-
-    <div>
-      <h5>Restaurants:</h5>
-      <ul>
-        <% amenities.restaurants.forEach((o) => { %>
-        <li><strong><%= o.name %></strong> - <%= o.cuisine %></li>
-        <% }); %>
-      </ul>
-    </div>
-
-    <div>
-      <h5>Parks and Recreation:</h5>
-      <ul>
-        <% amenities.parks.forEach((o) => { %>
-        <li><strong><%= o.park_name %></strong> - <%= o.facility %></li>
-        <% }); %>
-      </ul>
-    </div>
-
-    <div>
-      <h5>Transit Types:</h5>
-      <ul>
-        <% transit.forEach((o) => { %>
-        <li><%= o.route %> - <%= o.type %></li>
-        <% }); %>
-      </ul>
-    </div>
+    <h5>Hospitals:</h5>
+    <ul>
+      <% amenities.hospitals.forEach((o) => { %>
+      <li><strong><%= o.hospital_name %></strong> - <%= o.hospital_type %></li>
+      <% }); %>
+    </ul>
   </div>
 
   <div>
-    <h5>Please contact <%= post.landlord.name %>:</h5>
+    <h5>Restaurants:</h5>
     <ul>
-      <li><strong>Email</strong> - <%= post.landlord.email %></li>
-      <li><strong>Phone</strong> - <%= post.landlord.phone %></li>
+      <% amenities.restaurants.forEach((o) => { %>
+      <li><strong><%= o.name %></strong> - <%= o.cuisine %></li>
+      <% }); %>
     </ul>
   </div>
 
   <div>
     <h5>Parks and Recreation:</h5>
     <ul>
-      <% post.amenities.parks.forEach((o) => { %>
+      <% amenities.parks.forEach((o) => { %>
       <li><strong><%= o.park_name %></strong> - <%= o.facility %></li>
       <% }); %>
     </ul>
@@ -137,7 +110,7 @@ body { margin:0; padding:0; }
   <div>
     <h5>Transit Types:</h5>
     <ul>
-      <% post.transit.forEach((o) => { %>
+      <% transit.forEach((o) => { %>
       <li><%= o.route %> - <%= o.type %></li>
       <% }); %>
     </ul>
@@ -145,14 +118,41 @@ body { margin:0; padding:0; }
 </div>
 
 <div>
-  <h5>Please contact <%= post.post.landlord.name %>:</h5>
+  <h5>Please contact <%= post.landlord.name %>:</h5>
   <ul>
-    <li><strong>Email</strong> - <%= post.post.landlord.email %></li>
-    <li><strong>Phone</strong> - <%= post.post.landlord.phone %></li>
+    <li><strong>Email</strong> - <%= post.landlord.email %></li>
+    <li><strong>Phone</strong> - <%= post.landlord.phone %></li>
   </ul>
 </div>
 
-<div class="flex-item"
+<div>
+  <h5>Parks and Recreation:</h5>
+  <ul>
+    <% post.amenities.parks.forEach((o) => { %>
+    <li><strong><%= o.park_name %></strong> - <%= o.facility %></li>
+    <% }); %>
+  </ul>
+</div>
+
+<div>
+  <h5>Transit Types:</h5>
+  <ul>
+    <% post.transit.forEach((o) => { %>
+    <li><%= o.route %> - <%= o.type %></li>
+    <% }); %>
+  </ul>
+</div>
+</div>
+
+<div>
+<h5>Please contact <%= post.post.landlord.name %>:</h5>
+<ul>
+  <li><strong>Email</strong> - <%= post.post.landlord.email %></li>
+  <li><strong>Phone</strong> - <%= post.post.landlord.phone %></li>
+</ul>
+</div>
+
+<div class="flex-item">
 <div id='map' style='width: 800px; height: 600px;'></div>
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoiY2h1bmt5dG9mdTE1NyIsImEiOiJjangwMXVoNjgxNXV1NDhvNmFiY2o1ZGU5In0.xR3QHoTmnIUe1jl2u9bTHQ';
