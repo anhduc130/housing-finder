@@ -81,3 +81,20 @@ const getRentalUnitsByLandlordId = () => {
         dataType: 'json'
     });
 }
+
+/**
+ * GET RENTAL UNITS BY UNIT ID
+ */
+const getRentalUnitByUnitId = (unitId, successCallback, errorCallback) => {
+    $.ajax({
+        type: "GET",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        url: `${rentalUnitsUrl}/${unitId}`,
+        error: errorCallback,
+        success: successCallback,
+        data: { jsonOnly: true },
+        dataType: 'json'
+    });
+}
