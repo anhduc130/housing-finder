@@ -1,6 +1,5 @@
 const signInUrl = "http://localhost:2019/signin";
 const signInError = (response) => {
-    debugger
     alert(`${response.responseText}`)
 };
 const signInSuccess = (response) => {

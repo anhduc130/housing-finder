@@ -1,12 +1,9 @@
 const rentalUnitsUrl = "http://localhost:2019/rental-units";
 
 const getRentalUnitError = response => {
-    debugger
-    alert(`${response.responseText}`)
     if (response.statusText == "Unauthorized") {
+        alert(`${response.responseText}`)
         window.location.replace("signin.html");
-    } else if (response.statusText == "Created") {
-        window.location.replace("my-rental-units.html");
     }
 };
 
