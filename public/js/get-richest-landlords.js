@@ -11,7 +11,7 @@ const addCellsToElement = (richestLandlordElement, richestLandlord) => {
     numOfHouses.append(numOfHousesText);
 
     const income = richestLandlordElement.insertCell(2);
-    const incomeText = document.createTextNode(richestLandlord.totalIncome);
+    const incomeText = document.createTextNode(`$${richestLandlord.totalIncome}`);
     income.append(incomeText);
 }
 
