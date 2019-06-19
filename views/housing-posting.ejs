@@ -140,7 +140,7 @@
               <h5>Parks and Recreation:</h5>
               <!-- <ul> -->
                 <% amenities.parks.forEach((o) => { %>
-                <li><strong><%= o.park_name %></strong> - <%= o.facility %></li>
+                <li><strong><%= o.park_name %></strong> <% if(o.facility != 'Null'){ %> - <%= o.facility %><% } %></li>
                 <% }); %>
                 <% } %>
               <!-- </ul> -->
@@ -190,7 +190,7 @@
             <h5>Hospitals:</h5>
             <!-- <ul> -->
               <% amenities.hospitals.forEach((o) => { %>
-              <li><strong><%= o.hospital_name %></strong> - <%= o.hospital_type %></li>
+              <li><strong><%= o.hospital_name %></strong> - <%= o.hospital_address %></li>
               <% }); %>
             <!-- </ul> -->
             <% } %>
