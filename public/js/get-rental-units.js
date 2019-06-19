@@ -44,7 +44,7 @@ const addCellsToElement = (rentalUnitElement, rentalUnit) => {
     const button2 = document.createElement("button");
     button2.innerHTML = "Edit";
     button2.addEventListener("click", () => {
-        window.open(`update-rental-unit.html?id=${rentalUnit.unit_id}`);
+        window.location.assign(`update-rental-unit.html?id=${rentalUnit.unit_id}`);
     });
 
     const button3 = document.createElement("button");
@@ -66,15 +66,23 @@ const getRentalUnitSuccess = response => {
         const rentalUnitElement = tableRef.insertRow(-1);
         addCellsToElement(rentalUnitElement, rentalUnit);
     }
-    
+
     const rentalUnitElement = tableRef.insertRow(-1);
     const averagePriceText = document.createTextNode(`AVERAGE: $${response.averagePriceOfAllRentalUnits}`);
     rentalUnitElement.insertCell(0)
     rentalUnitElement.insertCell(1)
     rentalUnitElement.insertCell(2)
+
     const avgPrice = rentalUnitElement.insertCell(3)
     avgPrice.append(averagePriceText)
-    rentalUnitElement.insertCell(4)
+
+    const addButton = rentalUnitElement.insertCell(4)
+    const myButton = document.createElement("button");
+    myButton.innerHTML = "+ Add new rental unit";
+    myButton.addEventListener("click", () => {
+        window.location.assign('post-rental-unit.html')
+    });
+    addButton.append(myButton)
 };
 
 /**
@@ -112,7 +120,7 @@ const getRentalUnitByUnitId = (unitId, successCallback, errorCallback) => {
 }
 
 const addCellsToElementAttribute = (rentalUnitElement, rentalUnit) => {
-    
+
     const unitId = rentalUnitElement.insertCell(0);
     rentalUnit.unit_id
     const unitIdText = document.createElement('p');
@@ -136,9 +144,11 @@ const addCellsToElementAttribute = (rentalUnitElement, rentalUnit) => {
     price.append(priceText);
 }
 const getRentalUnitsByAttributesSuccess = (response) => {
-    
     const rentalUnits = response.rentalUnits;
     const tableRef = document.getElementById('housing-options-table')
+
+    document.getElementById('minMarketPrice').innerHTML = `$${response.minMarketPrice}`
+    document.getElementById('maxMarketPrice').innerHTML = `$${response.maxMarketPrice}`
 
     for (var i = tableRef.rows.length - 1; i >= 0; i--) {
         tableRef.deleteRow(i);
@@ -175,7 +185,7 @@ const getRentalUnitsByAttributesSuccess = (response) => {
     const checkTitle = document.getElementById('checkTitle').checked
     const checkAddress = document.getElementById('checkAddress').checked
     const checkUnitType = document.getElementById('checkUnitType').checked
-    
+
     if (!checkTitle && !checkAddress && !checkUnitType) {
         return
     }
@@ -209,7 +219,7 @@ const getRentalUnitsByAttributes = () => {
         attributes = ['unit_title', 'unit_address', 'unit_type']
     }
     attributes = attributes.join(',')
-    
+
     $.ajax({
         type: "GET",
         headers: {
@@ -235,7 +245,7 @@ const hideColumn = (col) => {
         for (var i = 0; i < tbl.rows.length; i++) {
             for (var j = 0; j < tbl.rows[i].cells.length; j++) {
                 // tbl.rows[i].cells[j].style.display = "";
-                
+
                 if (tbl.rows[i].cells[j].textContent == col ||
                     tbl.rows[i].cells[j].textContent == 'undefined')
                     tbl.rows[i].cells[j].style.display = "none";

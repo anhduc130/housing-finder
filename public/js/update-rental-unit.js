@@ -7,7 +7,8 @@ const updateRentalUnitError = response => {
         alert(`${response.responseText}`)
         window.location.replace("signin.html");
     } else if (response.statusText == "OK") {
-        location.reload();
+        alert('Successfully updated rental unit!')
+        window.location.replace("my-rental-units.html");
     }
 };
 

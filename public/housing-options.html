@@ -114,7 +114,7 @@
       </div> -->
         <div class="signup-form">
           <form onsubmit="return false;" class="register-form" id="register-form">
-            <h4>Categories</h4>
+            <h4 style="margin-top: 20px;">Filter Options</h4>
         </div>
         <!-- <label for="postal_code">OR</label>
               <div class="form-group">
@@ -122,29 +122,49 @@
                   <input type="text" name="postal_code" id="postal_code" placeholder="Desired postal code"/>
             </div> -->
         <div class="form-group">
-          <label for="price">Price</label>
+          <label for="price" style="margin-top:20px;font-size:18px">Price</label>
+          <br>
           <input type="text" name="Price" style="width: 100px" id="minPrice" placeholder="min" min="0" max="10000" />
           <input type="text" name="Price" style="width: 100px" id="maxPrice" placeholder="max" min="0" max="10000" />
         </div>
-        <label for="Selection" class="radio-label">Select By Attributes (Projection)</label>
+        <label for="Selection" style="margin-top:10px;font-size:18px" class="radio-label">Show columns:</label>
         <div class="flex-item">
-          <input type="checkbox" name="checkAll" id="checkAll" onclick="selectAll()">
+          <input style="width: 15px;height:15px;" type="checkbox" name="checkAll" id="checkAll" onclick="selectAll()">
           <label for="All">All</label>
           <span class="check"></span>
-          <input type="checkbox" name="Title" id="checkTitle" onclick="checkSelectAll()">
+          <input style="width: 15px;height:15px;" type="checkbox" name="Title" id="checkTitle"
+                 onclick="checkSelectAll()">
           <label for="Title">Title</label>
           <span class="check"></span>
-          <input type="checkbox" name="Address" id="checkAddress" onclick="checkSelectAll()">
+          <input style="width: 15px;height:15px;" type="checkbox" name="Address" id="checkAddress"
+                 onclick="checkSelectAll()">
           <label for="Address">Address</label>
           <span class="checkbox"></span>
-          <input type="checkbox" name="Unit_Type" id="checkUnitType" onclick="checkSelectAll()">
+          <input style="width: 15px;height:15px;" type="checkbox" name="Unit_Type" id="checkUnitType"
+                 onclick="checkSelectAll()">
           <label for="Unit_Type">Unit_Type</label>
           <span class="check"></span>
         </div>
 
-        <div>
+        <div style="margin-top: 30px;">
           <button onclick="getRentalUnitsByAttributes()">Update search</button>
           <!--  <button onclick = "updateTable()">update search</button> -->
+        </div>
+
+        <h4 style="margin-top: 100px;">Statistics</h4>
+        <div style="margin-top:20px;font-size:18px">
+          Highest market price: <span id="maxMarketPrice">0</span>
+        </div>
+        <div style="margin-top:20px;font-size:18px">
+          Lowest market price: <span id="minMarketPrice">0</span>
+        </div>
+        <div style="margin-top: 200px;">
+          <button onclick="window.location.assign('my-rental-units.html')">&raquo; View my rental
+            units</button>
+        </div>
+        <div>
+          <button onclick="window.open('richest-landlords.html')">&raquo; Visit richest landlords in
+            town</button>
         </div>
         </form>
       </div>

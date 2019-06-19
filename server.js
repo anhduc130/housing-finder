@@ -73,20 +73,12 @@ app.get("/rental-units", async function (request, response) {
     if (!maxPrice) {
       maxPrice = Number.MAX_VALUE
     }
-    connection.query(`SELECT ${attributes}, unit_id, price
-                        FROM rental_unit
-                        WHERE price BETWEEN ${minPrice} AND ${maxPrice}`,
-      (error, result) => {
-        if (error) throw error;
-        response.status(200).send({ rentalUnits: result })
-      })
-  } else if (request.query.jsonOnly && request.query.getStats) {
     const maxMarketPrice = await new Promise((resolve) => {
       connection.query(`SELECT MAX(price) as maxMarketPrice
                       FROM rental_unit`,
         (error, result) => {
           if (error) throw error;
-          if (result) {
+          if (result.length > 0) {
             resolve(result[0].maxMarketPrice)
           } else {
             resolve(0)
@@ -98,14 +90,20 @@ app.get("/rental-units", async function (request, response) {
                       FROM rental_unit`,
         (error, result) => {
           if (error) throw error;
-          if (result) {
+          if (result.length > 0) {
             resolve(result[0].minMarketPrice)
           } else {
             resolve(0)
           }
         })
     })
-    response.status(200).send({ maxMarketPrice, minMarketPrice })
+    connection.query(`SELECT ${attributes}, unit_id, price
+                        FROM rental_unit
+                        WHERE price BETWEEN ${minPrice} AND ${maxPrice}`,
+      (error, result) => {
+        if (error) throw error;
+        response.status(200).send({ rentalUnits: result, maxMarketPrice, minMarketPrice })
+      })
   } else {
     const cookies = parseCookies(request);
     let rentalUnits;
