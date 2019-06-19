@@ -1,6 +1,6 @@
 const superagent = require('superagent');
 const fs         = require('fs');
-// const parser     = require('xml2json');
+const parser     = require('xml2json');
 const mysql = require("mysql");
 
 /**
