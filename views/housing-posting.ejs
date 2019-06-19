@@ -110,6 +110,12 @@
       });
       map.addControl(new mapboxgl.NavigationControl());
 
+
+// THIS IS THE GEOLOCATION
+      JSON.stringify(geotag.latt);
+      JSON.stringify(geotag.longt);
+
+
 var marker = new mapboxgl.Marker() // initialize a new marker
   .setLngLat([-123.1207, 49.2827]) // Marker [lng, lat] coordinates
   .addTo(map); // Add the marker to the map
@@ -158,7 +164,6 @@ map.on('load', function() {
 });
  </script>
   
-      
       
       <div class = "center"> 
           <!-- <img src="images/gastown.jpg"> -->
