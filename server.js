@@ -130,8 +130,9 @@ app.get("/rental-units/:unitId", function (request, response) {
             if (request.query.jsonOnly) {
               response.status(200).send({post:postJSON.post, features:postJSON.features, amenities:postJSON.amenities, transit:postJSON.transit})
             } else {
-              console.log(postJSON);
-              response.render('housing-posting', {post:postJSON.post, features:postJSON.features, amenities:postJSON.amenities, transit:postJSON.transit});
+              setTimeout(() => {
+                response.render('housing-posting', {post:postJSON.post, features:postJSON.features, amenities:postJSON.amenities, transit:postJSON.transit});
+              }, 300);
             }
           })
     }

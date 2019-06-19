@@ -63,51 +63,62 @@ body { margin:0; padding:0; }
 <div>
   <h3>Some of the amazing amenities here are:</h3>
   <div>
+    <% if(amenities.supermarkets.length > 0) { %>
     <h5>Supermarkets:</h5>
     <ul>
       <% amenities.supermarkets.forEach((o) => { %>
       <li><strong><%= o.supermarket_name %></strong> - <%= o.supermarket_type %></li>
       <% }); %>
     </ul>
+    <% } %>
   </div>
 
   <div>
+      <% if(amenities.schools.length > 0) { %>
     <h5>Schools:</h5>
     <ul>
       <% amenities.schools.forEach((o) => { %>
       <li><strong><%= o.school_name %></strong> - <%= o.school_type %></li>
       <% }); %>
     </ul>
+    <% } %>
   </div>
 
   <div>
+      <% if(amenities.hospitals.length > 0) { %>
     <h5>Hospitals:</h5>
     <ul>
       <% amenities.hospitals.forEach((o) => { %>
       <li><strong><%= o.hospital_name %></strong> - <%= o.hospital_type %></li>
       <% }); %>
     </ul>
+    <% } %>
   </div>
 
   <div>
+      <% if(amenities.restaurants.length > 0) { %>
     <h5>Restaurants:</h5>
     <ul>
       <% amenities.restaurants.forEach((o) => { %>
-      <li><strong><%= o.name %></strong> - <%= o.cuisine %></li>
+      <li><strong><%= o.restaurant_name %></strong> - <%= o.restaurant_cuisine %></li>
       <% }); %>
     </ul>
+    <% } %>
   </div>
 
   <div>
+      <% if(amenities.parks.length > 0) { %>
     <h5>Parks and Recreation:</h5>
     <ul>
       <% amenities.parks.forEach((o) => { %>
       <li><strong><%= o.park_name %></strong> - <%= o.facility %></li>
       <% }); %>
     </ul>
+    <% } %>
   </div>
 
   <div>
+      <% if(transit.length > 0) { %>
     <h5>Transit Types:</h5>
     <ul>
       <% transit.forEach((o) => { %>
@@ -115,6 +126,7 @@ body { margin:0; padding:0; }
       <% }); %>
     </ul>
   </div>
+  <% } %>
 </div>
 
 <div>
@@ -127,7 +139,7 @@ body { margin:0; padding:0; }
 
 
 
-<div class="flex-item">
+<!-- <div class="flex-item">
 <div id='map' style='width: 800px; height: 600px;'></div>
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoiY2h1bmt5dG9mdTE1NyIsImEiOiJjangwMXVoNjgxNXV1NDhvNmFiY2o1ZGU5In0.xR3QHoTmnIUe1jl2u9bTHQ';
@@ -139,7 +151,7 @@ style: 'mapbox://styles/mapbox/streets-v11'
 
 });
 map.addControl(new mapboxgl.NavigationControl());
-</script>
+</script> -->
 </div>
 </div>
 
