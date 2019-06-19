@@ -128,6 +128,14 @@ app.get("/rental-units/:unitId", function (request, response) {
             (err, parks) => {
               postJSON.amenities.parks = parks;
             })
+            await connection.query(`SELECT TT.route_name FROM translink T, translinkType TT WHERE T.postal_code = '${unit[0].postal_code}' AND T.route_name = TT.route_name AND TT.route_type = 'bus'`,
+            (err, buses) => {
+              postJSON.transit.buses = buses;
+            })
+            await connection.query(`SELECT TT.route_name FROM translink T, translinkType TT WHERE T.postal_code = '${unit[0].postal_code}' AND T.route_name = TT.route_name AND TT.route_type = 'skyTrain'`,
+            (err, skytrains) => {
+              postJSON.transit.skytrains = skytrains;
+            })
             if (request.query.jsonOnly) {
               response.status(200).send({post:postJSON.post, features:postJSON.features, amenities:postJSON.amenities, transit:postJSON.transit})
             } else {

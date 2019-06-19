@@ -145,14 +145,7 @@
                 <% } %>
               <!-- </ul> -->
                   <p> </p>
-                  <% if(transit.length > 0) { %>
-              <h5>Transit Types:</h5>
-              <!-- <ul> -->
-                <% transit.forEach((o) => { %>
-                <li><%= o.route %> - <%= o.type %></li>
-                <% }); %>
-                <% } %>
-        
+              
               <!-- </ul> -->
                 </div>
             <div class= "side">
@@ -194,6 +187,23 @@
               <% }); %>
             <!-- </ul> -->
             <% } %>
+
+            <% if(transit.buses.length > 0) { %>
+              <h5>Buses:</h5>
+              <!-- <ul> -->
+                <% transit.buses.forEach((o) => { %>
+                <li><strong><%= o.route_name %></strong></li>
+                <% }); %>
+                <p></p>
+                <% } %>
+
+                <% if(transit.skytrains.length > 0) { %>
+                  <h5>Skytrains:</h5>
+                  <!-- <ul> -->
+                    <% transit.skytrains.forEach((o) => { %>
+                    <li><strong><%= o.route_name %></strong></li>
+                    <% }); %>
+                    <% } %>
           </div>
         </div>
         </div>
