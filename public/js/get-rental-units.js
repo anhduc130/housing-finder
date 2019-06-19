@@ -76,13 +76,7 @@ const getRentalUnitSuccess = response => {
     const avgPrice = rentalUnitElement.insertCell(3)
     avgPrice.append(averagePriceText)
 
-    const addButton = rentalUnitElement.insertCell(4)
-    const myButton = document.createElement("button");
-    myButton.innerHTML = "+ Add new rental unit";
-    myButton.addEventListener("click", () => {
-        window.location.assign('post-rental-unit.html')
-    });
-    addButton.append(myButton)
+    rentalUnitElement.insertCell(4)
 };
 
 /**
