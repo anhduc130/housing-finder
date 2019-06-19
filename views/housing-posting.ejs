@@ -13,8 +13,46 @@ width: 300px;
 flex-grow: 1;
 /* padding: 10px;  */
 /* padding-left: 200 px; */
-
 }
+
+.right-side {
+  text-align: right; 
+  padding: 20; 
+}
+
+.left-side {
+  text-align: left; 
+  padding: 20; 
+}
+
+.center{
+  text-align: center; 
+  padding: 20; 
+  /* width: 300px;  */
+}
+
+
+.row {
+    display: -ms-flexbox; /* IE10 */
+    display: flex;
+    -ms-flex-wrap: wrap; /* IE10 */
+    flex-wrap: wrap;
+}
+.side {
+    padding: 25;
+    -ms-flex: 30%; /* IE10 */
+    flex: 30%;
+    background-color: rgb(158, 238, 205)
+   
+    /* padding: 20; */
+}
+
+p {
+  margin: 10; 
+  padding: 10; 
+  width: 150 px; 
+}
+
 </style>
 
 
@@ -30,112 +68,109 @@ flex-grow: 1;
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
 integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
-<meta charset='utf-8' />
+<!-- <meta charset='utf-8' />
 <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
-<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' /> -->
 
-
-<style>
-body { margin:0; padding:0; }
-#map { position:absolute; top:0; bottom:0; width:100%; }
-</style>
-
-
-<div class = container> 
+<div class="center">
 <h2><%= post.title %> - <strong><%= post.price %>$</strong>  (<%= post.address %>)</h2>
-
-<div> 
+<p></p>
+<!-- <div >  -->
   <h3>The Landlord's Description:</h3>
   <p><%= post.description %></p>
+  <p></p>
 </div>
 
-<div>
+
+<div class = "center"> 
+    <img src="images/gastown.jpg">
+<div class = "right-side">
   <h5>This unit's features:</h5>
-  <ul>
-    <li><%= features.rooms %> Bedroom</li>
+  <ur>
+    <li> <%= features.rooms %> Bedroom</li>
     <li>Parking Available: <%= features.parking %></li>
     <li>Smoking Allowed: <%= features.smoking %></li>
     <li>Pets Allowed: <%= features.pets %></li>
-  </ul>
+  </ur>
+  <p></p>
+  <h5>Please contact <%= post.landlord.name %>:</h5>
+    <ur></ur>
+      <li><strong>Email</strong> - <%= post.landlord.email %></li>
+      <li><strong>Phone</strong> - <%= post.landlord.phone %></li>
+    </ur>
+</div>
 </div>
 
-<div>
-  <h3>Some of the amazing amenities here are:</h3>
-  <div>
-    <% if(amenities.supermarkets.length > 0) { %>
-    <h5>Supermarkets:</h5>
-    <ul>
-      <% amenities.supermarkets.forEach((o) => { %>
-      <li><strong><%= o.supermarket_name %></strong> - <%= o.supermarket_type %></li>
-      <% }); %>
-    </ul>
-    <% } %>
-  </div>
 
-  <div>
-      <% if(amenities.schools.length > 0) { %>
-    <h5>Schools:</h5>
-    <ul>
-      <% amenities.schools.forEach((o) => { %>
-      <li><strong><%= o.school_name %></strong> - <%= o.school_type %></li>
-      <% }); %>
-    </ul>
-    <% } %>
-  </div>
+<div class = "center">
+  <h4>Some of the amazing amenities here are:</h4>
+</div>
 
-  <div>
-      <% if(amenities.hospitals.length > 0) { %>
-    <h5>Hospitals:</h5>
-    <ul>
-      <% amenities.hospitals.forEach((o) => { %>
-      <li><strong><%= o.hospital_name %></strong> - <%= o.hospital_type %></li>
-      <% }); %>
-    </ul>
-    <% } %>
-  </div>
+<div class="row">
+  <div class = "side">
+      <% if(amenities.parks.length > 0) { %>
+      <h5>Parks and Recreation:</h5>
+      <!-- <ul> -->
+        <% amenities.parks.forEach((o) => { %>
+        <li><strong><%= o.park_name %></strong> - <%= o.facility %></li>
+        <% }); %>
+        <% } %>
+      <!-- </ul> -->
+          <p> </p>
+          <% if(transit.length > 0) { %>
+      <h5>Transit Types:</h5>
+      <!-- <ul> -->
+        <% transit.forEach((o) => { %>
+        <li><%= o.route %> - <%= o.type %></li>
+        <% }); %>
+        <% } %>
 
-  <div>
-      <% if(amenities.restaurants.length > 0) { %>
+      <!-- </ul> -->
+        </div>
+    <div class= "side">
+      <% if(amenities.supermarkets.length > 0) { %>
+      <h5>Supermarkets:</h5>
+      <!-- <ul> -->
+        <% amenities.supermarkets.forEach((o) => { %>
+        <li><strong><%= o.supermarket_name %></strong> - <%= o.supermarket_type %></li>
+        <% }); %>
+      <!-- </ul> -->
+      <p> </p>
+      <% } %>
+    <% if(amenities.restaurants.length > 0) { %>
     <h5>Restaurants:</h5>
-    <ul>
+    <!-- <ul> -->
       <% amenities.restaurants.forEach((o) => { %>
       <li><strong><%= o.restaurant_name %></strong> - <%= o.restaurant_cuisine %></li>
       <% }); %>
-    </ul>
+    <!-- </ul> -->
     <% } %>
   </div>
 
-  <div>
-      <% if(amenities.parks.length > 0) { %>
-    <h5>Parks and Recreation:</h5>
-    <ul>
-      <% amenities.parks.forEach((o) => { %>
-      <li><strong><%= o.park_name %></strong> - <%= o.facility %></li>
+  <div class ="side">
+    <% if(amenities.schools.length > 0) { %>
+    <h5>Schools:</h5>
+    <!-- <ul> -->
+      <% amenities.schools.forEach((o) => { %>
+      <li><strong><%= o.school_name %></strong> - <%= o.school_type %></li>
       <% }); %>
-    </ul>
+    <!-- </ul> -->
+    
+    <p> </p>
+    <% } %>
+    <% if(amenities.hospitals.length > 0) { %>
+    <h5>Hospitals:</h5>
+    <!-- <ul> -->
+      <% amenities.hospitals.forEach((o) => { %>
+      <li><strong><%= o.hospital_name %></strong> - <%= o.hospital_type %></li>
+      <% }); %>
+    <!-- </ul> -->
     <% } %>
   </div>
-
-  <div>
-      <% if(transit.length > 0) { %>
-    <h5>Transit Types:</h5>
-    <ul>
-      <% transit.forEach((o) => { %>
-      <li><%= o.route %> - <%= o.type %></li>
-      <% }); %>
-    </ul>
-  </div>
-  <% } %>
 </div>
 
-<div>
-  <h5>Please contact <%= post.landlord.name %>:</h5>
-  <ul>
-    <li><strong>Email</strong> - <%= post.landlord.email %></li>
-    <li><strong>Phone</strong> - <%= post.landlord.phone %></li>
-  </ul>
-</div>
+
 
 
 
@@ -153,7 +188,7 @@ style: 'mapbox://styles/mapbox/streets-v11'
 map.addControl(new mapboxgl.NavigationControl());
 </script> -->
 </div>
-</div>
+</div> -->
 
 </body>
 </html>
