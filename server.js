@@ -138,62 +138,62 @@ app.get("/rental-units/:unitId", function (request, response) {
       connection.query(`SELECT * FROM landlord L, rental_unit R, neighbourhood N, city C, province P, feature_list F
                         WHERE R.unit_id = '${unit[0].unit_id}' AND R.postal_code = '${unit[0].postal_code}' AND R.landlord_id = L.landlord_id AND R.postal_code = N.postal_code AND
                         N.city_id = C.city_id AND C.province_name = P.province_name AND R.unit_id = F.unit_id;`,
-          async (err, result) => {
-            if(err) {console.log(err)}
-            postJSON.post.title = result[0].unit_title;
-            postJSON.post.type = result[0].unit_type;
-            postJSON.post.address = result[0].unit_address;
-            postJSON.post.postal_code = result[0].postal_code;
-            postJSON.post.city = result[0].city_name;
-            postJSON.post.province = result[0].province_name;
-            postJSON.post.description = result[0].unit_description;
-            postJSON.post.price = result[0].price;
-            postJSON.post.type = result[0].unit_type;
-            postJSON.post.landlord.name = result[0].landlord_name;
-            postJSON.post.landlord.email = result[0].landlord_email;
-            postJSON.post.landlord.phone = result[0].landlord_phone_number;
-            postJSON.features.rooms = result[0].number_of_rooms;
-            postJSON.features.parking = result[0].parking;
-            postJSON.features.smoking = result[0].smoking;
-            postJSON.features.pets = result[0].pets;
-            await connection.query(`SELECT * FROM restaurant WHERE restaurant.postal_code = '${unit[0].postal_code}'`,
-              (err, restaurants) => {
-                postJSON.amenities.restaurants = restaurants;
-              })
-            await connection.query(`SELECT * FROM supermarket WHERE supermarket.postal_code = '${unit[0].postal_code}'`,
-              (err, supermarkets) => {
-                postJSON.amenities.supermarkets = supermarkets;
-              })
-            await connection.query(`SELECT * FROM school WHERE school.postal_code = '${unit[0].postal_code}'`,
-              (err, schools) => {
-                postJSON.amenities.schools = schools;
-              })
-            await connection.query(`SELECT * FROM hospital WHERE hospital.postal_code = '${unit[0].postal_code}'`,
-              (err, hospitals) => {
-                postJSON.amenities.hospitals = hospitals;
-              })
-            await connection.query(`SELECT * FROM parks_recreation WHERE parks_recreation.postal_code = '${unit[0].postal_code}'`,
-              (err, parks) => {
-                postJSON.amenities.parks = parks;
-              })
-            await connection.query(`SELECT TT.route_name FROM translink T, translinkType TT WHERE T.postal_code = '${unit[0].postal_code}' AND T.route_name = TT.route_name AND TT.route_type = 'bus'`,
-              (err, buses) => {
-                postJSON.transit.buses = buses;
-              })
-            await connection.query(`SELECT TT.route_name FROM translink T, translinkType TT WHERE T.postal_code = '${unit[0].postal_code}' AND T.route_name = TT.route_name AND TT.route_type = 'skyTrain'`,
-              (err, skytrains) => {
-                postJSON.transit.skytrains = skytrains;
-              })
-            if (request.query.jsonOnly) {
-              response.status(200).send({ post: postJSON.post, features: postJSON.features, amenities: postJSON.amenities, transit: postJSON.transit })
-            } else {
-              setTimeout(() => {
-                response.render('housing-posting', { post: postJSON.post, features: postJSON.features, amenities: postJSON.amenities, transit: postJSON.transit });
-              }, 300);
-            }
-          })
-      }
-    });
+        async (err, result) => {
+          if (err) { console.log(err) }
+          postJSON.post.title = result[0].unit_title;
+          postJSON.post.type = result[0].unit_type;
+          postJSON.post.address = result[0].unit_address;
+          postJSON.post.postal_code = result[0].postal_code;
+          postJSON.post.city = result[0].city_name;
+          postJSON.post.province = result[0].province_name;
+          postJSON.post.description = result[0].unit_description;
+          postJSON.post.price = result[0].price;
+          postJSON.post.type = result[0].unit_type;
+          postJSON.post.landlord.name = result[0].landlord_name;
+          postJSON.post.landlord.email = result[0].landlord_email;
+          postJSON.post.landlord.phone = result[0].landlord_phone_number;
+          postJSON.features.rooms = result[0].number_of_rooms;
+          postJSON.features.parking = result[0].parking;
+          postJSON.features.smoking = result[0].smoking;
+          postJSON.features.pets = result[0].pets;
+          await connection.query(`SELECT * FROM restaurant WHERE restaurant.postal_code = '${unit[0].postal_code}'`,
+            (err, restaurants) => {
+              postJSON.amenities.restaurants = restaurants;
+            })
+          await connection.query(`SELECT * FROM supermarket WHERE supermarket.postal_code = '${unit[0].postal_code}'`,
+            (err, supermarkets) => {
+              postJSON.amenities.supermarkets = supermarkets;
+            })
+          await connection.query(`SELECT * FROM school WHERE school.postal_code = '${unit[0].postal_code}'`,
+            (err, schools) => {
+              postJSON.amenities.schools = schools;
+            })
+          await connection.query(`SELECT * FROM hospital WHERE hospital.postal_code = '${unit[0].postal_code}'`,
+            (err, hospitals) => {
+              postJSON.amenities.hospitals = hospitals;
+            })
+          await connection.query(`SELECT * FROM parks_recreation WHERE parks_recreation.postal_code = '${unit[0].postal_code}'`,
+            (err, parks) => {
+              postJSON.amenities.parks = parks;
+            })
+          await connection.query(`SELECT TT.route_name FROM translink T, translinkType TT WHERE T.postal_code = '${unit[0].postal_code}' AND T.route_name = TT.route_name AND TT.route_type = 'bus'`,
+            (err, buses) => {
+              postJSON.transit.buses = buses;
+            })
+          await connection.query(`SELECT TT.route_name FROM translink T, translinkType TT WHERE T.postal_code = '${unit[0].postal_code}' AND T.route_name = TT.route_name AND TT.route_type = 'skyTrain'`,
+            (err, skytrains) => {
+              postJSON.transit.skytrains = skytrains;
+            })
+          if (request.query.jsonOnly) {
+            response.status(200).send({ post: postJSON.post, features: postJSON.features, amenities: postJSON.amenities, transit: postJSON.transit })
+          } else {
+            setTimeout(() => {
+              response.render('housing-posting', { post: postJSON.post, features: postJSON.features, amenities: postJSON.amenities, transit: postJSON.transit });
+            }, 300);
+          }
+        })
+    }
+  });
 });
 
 app.post("/rental-units", async function (request, response) {
@@ -252,7 +252,7 @@ app.put("/rental-units/:unitId", async function (request, response) {
 });
 
 app.get("/richest-landlords", async function (request, response) {
-  const sql = `SELECT L.landlord_id, L.landlord_name
+  const richestSql = `SELECT L.landlord_id, L.landlord_name
                FROM landlord L
                WHERE NOT EXISTS 
                 (SELECT * 
@@ -264,13 +264,41 @@ app.get("/richest-landlords", async function (request, response) {
                 N.postal_code=R.postal_code));`
 
   const richestLandlords = await new Promise((resolve, reject) => {
-    connection.query(sql, (error, result) => {
+    connection.query(richestSql, (error, result) => {
       if (error) throw error;
-      resolve({ landlords: result })
+      resolve(result)
     })
   })
 
+  const landlordIds = []
 
+  richestLandlords.forEach(landlord => {
+    landlordIds.push(JSON.stringify(landlord.landlord_id))
+  })
+
+  const landlordIdsStr = landlordIds.join(',')
+
+  if (landlordIdsStr && richestLandlords.length > 0) {
+    const valuesSql = `SELECT SUM(price) as totalIncome, COUNT(*) as numOfHouses, landlord_id
+                         FROM rental_unit
+                         GROUP BY landlord_id
+                         HAVING landlord_id IN (${landlordIdsStr})
+                         ORDER BY totalIncome ASC`
+    await new Promise((resolve, reject) => {
+      connection.query(valuesSql, (error, result) => {
+        if (error) throw error;
+        richestLandlords.forEach(landlord => {
+          result.forEach(value => {
+            if (value.landlord_id == landlord.landlord_id)
+              value.landlord_name = landlord.landlord_name
+          })
+        })
+        response.status(200).send({ richestLandlords: result });
+      })
+    })
+  } else {
+    response.status(200).send({ richestLandlords: [] });
+  }
 })
 
 app.post("/signup", async function (request, response) {
