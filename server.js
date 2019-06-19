@@ -12,6 +12,8 @@ const updateRentalUnit = require("./update-rental-unit");
 const updateFeatureList = require("./update-feature-list");
 const getAveragePriceOfAllRentalUnits = require("./get-average-price-of-all-rental-units");
 const postJSON = require("./post");
+const superagent = require("superagent");
+const parser     = require('xml2json');
 
 app.use(express.static("public"));
 
@@ -127,6 +129,7 @@ app.get("/rental-units", async function (request, response) {
 
 // CHANGE THE RESTAURANT TABLE NAME IN THE BELOW QUERY
 app.get("/rental-units/:unitId", function (request, response) {
+  var geoloc;
   connection.query(`SELECT * FROM rental_unit WHERE unit_id = '${request.params.unitId}';`, (err, unit) => {
     if (err) {
       console.log(err);
@@ -182,11 +185,19 @@ app.get("/rental-units/:unitId", function (request, response) {
             (err, skytrains) => {
               postJSON.transit.skytrains = skytrains;
             })
+          await superagent
+          .get(`http://geocoder.ca?postal=${unit[0].postal_code}1c3&geoit=XML`)
+          .then(response => {
+            var json = JSON.parse(parser.toJson(response.text, {reversible: false}));
+            console.log(JSON.stringify(json.geodata.latt));
+            console.log(JSON.stringify(json.geodata.longt));
+            geoloc = json.geodata;
+          }).catch(err => console.log(err));
           if (request.query.jsonOnly) {
             response.status(200).send({ post: postJSON.post, features: postJSON.features, amenities: postJSON.amenities, transit: postJSON.transit })
           } else {
             setTimeout(() => {
-              response.render('housing-posting', { post: postJSON.post, features: postJSON.features, amenities: postJSON.amenities, transit: postJSON.transit });
+              response.render('housing-posting', { post: postJSON.post, features: postJSON.features, amenities: postJSON.amenities, transit: postJSON.transit, geotag:geoloc });
             }, 300);
           }
         })
