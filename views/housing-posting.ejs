@@ -98,9 +98,33 @@
         <p></p>
       </div>
 
-  <!-- <div class = "row"> -->
+  <div class = "row">
       <div class="side2" id='map' style='width: 800px; height: 800px;'></div>
-      <script>
+      <div class = "side2">
+        <div class = "center">
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <h5>This unit's features:</h5>
+          <ur>
+            <li> <%= features.rooms %> Bedroom</li>
+            <li>Parking Available: <%= features.parking %></li>
+            <li>Smoking Allowed: <%= features.smoking %></li>
+            <li>Pets Allowed: <%= features.pets %></li>
+          </ur>
+          <p></p>
+          <p></p>
+          <h5>Please contact <%= post.landlord.name %>:</h5>
+            <ur></ur>
+              <li><strong>Email</strong> - <%= post.landlord.email %></li>
+              <li><strong>Phone</strong> - <%= post.landlord.phone %></li>
+            </ur>
+        </div>
+      </div>
+      </div>
+  <script>
       mapboxgl.accessToken = 'pk.eyJ1IjoiY2h1bmt5dG9mdTE1NyIsImEiOiJjangwMXVoNjgxNXV1NDhvNmFiY2o1ZGU5In0.xR3QHoTmnIUe1jl2u9bTHQ';
       var map = new mapboxgl.Map({
       container: 'map',
@@ -109,12 +133,6 @@
       style: 'mapbox://styles/mapbox/streets-v11'
       });
       map.addControl(new mapboxgl.NavigationControl());
-
-
-// THIS IS THE GEOLOCATION
-      JSON.stringify(geotag.latt);
-      JSON.stringify(geotag.longt);
-
 
 var marker = new mapboxgl.Marker() // initialize a new marker
   .setLngLat([-123.1207, 49.2827]) // Marker [lng, lat] coordinates
@@ -165,9 +183,10 @@ map.on('load', function() {
  </script>
   
       
-      <div class = "center"> 
+      <!-- <div class = "center">  -->
           <!-- <img src="images/gastown.jpg"> -->
-      <div class = "right-side">
+        <!-- </div> -->
+      <!-- <div class = "right-side">
         <h5>This unit's features:</h5>
         <ur>
           <li> <%= features.rooms %> Bedroom</li>
@@ -181,8 +200,7 @@ map.on('load', function() {
             <li><strong>Email</strong> - <%= post.landlord.email %></li>
             <li><strong>Phone</strong> - <%= post.landlord.phone %></li>
           </ur>
-      </div>
-      </div>
+      </div> -->
       
       
       <div class = "center">
