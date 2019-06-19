@@ -89,9 +89,10 @@ app.get("/rental-units/:unitId", function (request, response) {
     if (unit.length > 0) {
       console.log(unit[0].unit_id);
       connection.query(`SELECT * FROM landlord L, rental_unit R, neighbourhood N, city C, province P, feature_list F
-                        WHERE R.postal_code = '${unit[0].postal_code}' AND R.landlord_id = L.landlord_id AND R.postal_code = N.postal_code AND
+                        WHERE R.unit_id = '${unit[0].unit_id}' AND R.postal_code = '${unit[0].postal_code}' AND R.landlord_id = L.landlord_id AND R.postal_code = N.postal_code AND
                         N.city_id = C.city_id AND C.province_name = P.province_name AND R.unit_id = F.unit_id;`,
           async (err, result) => {
+            if(err) {console.log(err)}
             postJSON.post.title = result[0].unit_title;
             postJSON.post.type = result[0].unit_type;
             postJSON.post.address = result[0].unit_address;
