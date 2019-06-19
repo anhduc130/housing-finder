@@ -86,13 +86,12 @@
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
     
     <div class="center">
-    <h2><%= post.title %> - <strong><%= post.price %>$</strong>  (<%= post.address %>)</h2>
-    <p></p>
-    <!-- <div >  -->
-      <h3>The Landlord's Description:</h3>
-      <p><%= post.description %></p>
-      <p></p>
-    </div>
+        <h2><%= post.title %> is a <%= post.type %> at <i><%= post.address %></i> - <strong><%= post.price %>$</strong></h2>
+        <p></p>
+          <h3>The Landlord's Description:</h3>
+          <p><%= post.description %></p>
+          <p></p>
+        </div>
     
     
     <!-- <div class = "row"> -->
@@ -108,80 +107,97 @@
         });
         map.addControl(new mapboxgl.NavigationControl());
         </script>
-    <div class = "side2">
+   
+        
+        
+        <div class = "center"> 
+            <img src="images/gastown.jpg">
         <div class = "right-side">
-      <h5>This unit's features:</h5>
-      <ur>
-        <li> <%= features.rooms %> Bedroom</li>
-        <li>Parking Available: <%= features.parking %></li>
-        <li>Smoking Allowed: <%= features.smoking %></li>
-        <li>Pets Allowed: <%= features.pets %></li>
-      </ur>
-      <p></p>
-      <h5>Please contact <%= post.landlord.name %>:</h5>
-        <ur></ur>
-          <li><strong>Email</strong> - <%= post.landlord.email %></li>
-          <li><strong>Phone</strong> - <%= post.landlord.phone %></li>
-        </ur>
-    </div>
-  <!-- </div> -->
-    </div>
-    
-    <div class = "side">
-    <div class = "center">
-      <h4>Some of the amazing amenities here are:</h4>
-    </div>
-  </div>
-    
-    <div class="row">
-      <div class = "side">
-          <h5>Parks and Recreation:</h5>
-          <!-- <ul> -->
-            <% amenities.parks.forEach((o) => { %>
-            <li><strong><%= o.park_name %></strong> - <%= o.facility %></li>
-            <% }); %>
-          <!-- </ul> -->
+          <h5>This unit's features:</h5>
+          <ur>
+            <li> <%= features.rooms %> Bedroom</li>
+            <li>Parking Available: <%= features.parking %></li>
+            <li>Smoking Allowed: <%= features.smoking %></li>
+            <li>Pets Allowed: <%= features.pets %></li>
+          </ur>
+          <p></p>
+          <h5>Please contact <%= post.landlord.name %>:</h5>
+            <ur></ur>
+              <li><strong>Email</strong> - <%= post.landlord.email %></li>
+              <li><strong>Phone</strong> - <%= post.landlord.phone %></li>
+            </ur>
+        </div>
+        </div>
+        
+        
+        <div class = "center">
+          <h4>Some of the amazing amenities here are:</h4>
+        </div>
+        
+        <div class="row">
+          <div class = "side">
+              <% if(amenities.parks.length > 0) { %>
+              <h5>Parks and Recreation:</h5>
+              <!-- <ul> -->
+                <% amenities.parks.forEach((o) => { %>
+                <li><strong><%= o.park_name %></strong> - <%= o.facility %></li>
+                <% }); %>
+                <% } %>
+              <!-- </ul> -->
+                  <p> </p>
+                  <% if(transit.length > 0) { %>
+              <h5>Transit Types:</h5>
+              <!-- <ul> -->
+                <% transit.forEach((o) => { %>
+                <li><%= o.route %> - <%= o.type %></li>
+                <% }); %>
+                <% } %>
+        
+              <!-- </ul> -->
+                </div>
+            <div class= "side">
+              <% if(amenities.supermarkets.length > 0) { %>
+              <h5>Supermarkets:</h5>
+              <!-- <ul> -->
+                <% amenities.supermarkets.forEach((o) => { %>
+                <li><strong><%= o.supermarket_name %></strong> - <%= o.supermarket_type %></li>
+                <% }); %>
+              <!-- </ul> -->
               <p> </p>
-          <h5>Transit Types:</h5>
-          <!-- <ul> -->
-            <% transit.forEach((o) => { %>
-            <li><%= o.route %> - <%= o.type %></li>
-            <% }); %>
-    
-          <!-- </ul> -->
-            </div>
-        <div class= "side">
-          <h5>Supermarkets:</h5>
-          <!-- <ul> -->
-            <% amenities.supermarkets.forEach((o) => { %>
-            <li><strong><%= o.supermarket_name %></strong> - <%= o.supermarket_type %></li>
-            <% }); %>
-          <!-- </ul> -->
-          <p> </p>
-        <h5>Restaurants:</h5>
-        <!-- <ul> -->
-          <% amenities.restaurants.forEach((o) => { %>
-          <li><strong><%= o.name %></strong> - <%= o.cuisine %></li>
-          <% }); %>
-        <!-- </ul> -->
-      </div>
-    
-      <div class ="side">
-        <h5>Schools:</h5>
-        <!-- <ul> -->
-          <% amenities.schools.forEach((o) => { %>
-          <li><strong><%= o.school_name %></strong> - <%= o.school_type %></li>
-          <% }); %>
-        <!-- </ul> -->
-        <p> </p>
-        <h5>Hospitals:</h5>
-        <!-- <ul> -->
-          <% amenities.hospitals.forEach((o) => { %>
-          <li><strong><%= o.hospital_name %></strong> - <%= o.hospital_type %></li>
-          <% }); %>
-        <!-- </ul> -->
-      </div>
-    </div>
+              <% } %>
+            <% if(amenities.restaurants.length > 0) { %>
+            <h5>Restaurants:</h5>
+            <!-- <ul> -->
+              <% amenities.restaurants.forEach((o) => { %>
+              <li><strong><%= o.restaurant_name %></strong> - <%= o.restaurant_cuisine %></li>
+              <% }); %>
+            <!-- </ul> -->
+            <% } %>
+          </div>
+        
+          <div class ="side">
+            <% if(amenities.schools.length > 0) { %>
+            <h5>Schools:</h5>
+            <!-- <ul> -->
+              <% amenities.schools.forEach((o) => { %>
+              <li><strong><%= o.school_name %></strong> - <%= o.school_type %></li>
+              <% }); %>
+            <!-- </ul> -->
+            
+            <p> </p>
+            <% } %>
+            <% if(amenities.hospitals.length > 0) { %>
+            <h5>Hospitals:</h5>
+            <!-- <ul> -->
+              <% amenities.hospitals.forEach((o) => { %>
+              <li><strong><%= o.hospital_name %></strong> - <%= o.hospital_type %></li>
+              <% }); %>
+            <!-- </ul> -->
+            <% } %>
+          </div>
+        </div>
+        </div>
+        </div>
     
     
     
