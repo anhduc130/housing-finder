@@ -72,28 +72,12 @@ async function initialize(db) {
   success = await storeStatic(db, 'rental_unit.sql').catch((err) => console.log(err));
   success = await storeStatic(db, 'feature_list.sql').catch((err) => console.log(err));
   success = await storeStatic(db, 'tables.sql').catch((err) => console.log(err));
+  success = await storeStatic(db, 'translinkType.sql').catch((err) => console.log(err));
+  success = await storeStatic(db, 'translink.sql').catch((err) => console.log(err));
 
   //Inserting data from Yelp and Translink APIs for each neighbourhood
   db.query('SELECT postal_code FROM neighbourhood;', (err, neighbourhoods) => {
     neighbourhoods.forEach(async (neighbourhood, index) => {
-  //   //   superagent
-  //   //   .get(`http://geocoder.ca?postal=${neighbourhoods[0].postal_code}1c3&geoit=XML`)
-  //   //   .then(async (response) => {
-  //   //     // setTimeout(() => next(), 25);
-  //   //     var json = JSON.parse(parser.toJson(response.text, {reversible: false}));
-  //   //         var long = json.geodata.longt;
-  //   //         var latt = json.geodata.latt;
-  //   //         console.log(long);
-  //   //         console.log(latt);
-  //   //         await superagent
-  //   //             .get(`https://api.translink.ca/rttiapi/v1/stops?apikey=h1jF1krhbuNxsjSP5x4s&lat=${JSON.stringify(latt).replace('"', '').replace('"', '')}&long=${JSON.stringify(long).replace('"', '').replace('"', '')}`)
-  //   //             .then(busStops => {
-  //   //               var json2 = JSON.parse(parser.toJson(busStops.stops, {reversible: false}));
-  //   //               console.log(json2);
-  //   //             })
-  //   //             .catch(err => console.log(err))
-  //   //           }
-  //   //       ).catch(err => console.log(err))
       await superagent
       .get(`http://geocoder.ca?postal=${neighbourhood.postal_code}1c3&geoit=XML`)
       .then(response => {

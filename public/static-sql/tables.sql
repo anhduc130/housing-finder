@@ -6,13 +6,6 @@ CREATE TABLE restaurant
     postal_code         varchar(10) NOT NULL, 
     FOREIGN KEY (postal_code) references neighbourhood(postal_code));
 
-CREATE TABLE transit
-(
-    transit_route varchar(50) NOT NULL PRIMARY KEY,
-    transit_type  varchar(50),
-    postal_code   varchar(10) NOT NULL, 
-    FOREIGN KEY (postal_code) references neighbourhood(postal_code));
-
 CREATE TABLE supermarket
 (
     supermarket_address	varchar(255) NOT NULL PRIMARY KEY,

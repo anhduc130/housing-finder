@@ -21,25 +21,16 @@ const post = {
                   'pets':''
                 },                  
     'amenities':{
-                  'supermarkets': [
-                                  
-                                  ],
-                  'schools':      [
-                                  
-                                  ], 
-                  'hospitals':    [
-                                  
-                                  ],
-                  'restaurants':  [
-                                  
-                                  ], 
-                  'parks':        [
-                                  
-                                  ]
+                  'supermarkets': [],
+                  'schools':      [], 
+                  'hospitals':    [],
+                  'restaurants':  [], 
+                  'parks':        []
                 },
-    'transit':[
-
-              ]
+    'transit':{
+                'buses':    [],
+                'skytrains':[]
+              }
 };
 
 module.exports = post;
