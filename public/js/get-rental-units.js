@@ -130,6 +130,10 @@ const addCellsToElementAttribute = (rentalUnitElement, rentalUnit) => {
     const type = rentalUnitElement.insertCell(3);
     const typeText = document.createTextNode(rentalUnit.unit_type);
     type.append(typeText);
+
+    const price = rentalUnitElement.insertCell(4);
+    const priceText = document.createTextNode(rentalUnit.price);
+    price.append(priceText);
 }
 const getRentalUnitsByAttributesSuccess = (response) => {
     
@@ -157,6 +161,10 @@ const getRentalUnitsByAttributesSuccess = (response) => {
     const unitType = headerRow.insertCell(3);
     const unitTypeText = document.createTextNode('Type')
     unitType.append(unitTypeText)
+
+    const unitPrice = headerRow.insertCell(4);
+    const unitPriceText = document.createTextNode('Price')
+    unitPrice.append(unitPriceText)
 
     for (let i = 0; i < rentalUnits.length; i++) {
         const rentalUnit = rentalUnits[i];
@@ -188,12 +196,6 @@ const getRentalUnitsByAttributes = () => {
     const checkAddress = document.getElementById('checkAddress').checked
     const checkUnitType = document.getElementById('checkUnitType').checked
     let attributes = []
-    if (!minPrice) {
-        minPrice = Number.MIN_VALUE
-    }
-    if (!maxPrice) {
-        maxPrice = Number.MAX_VALUE
-    }
     if (checkTitle) {
         attributes.push('unit_title')
     }

@@ -64,18 +64,18 @@ connection.connect(function (err) {
 
 app.get("/rental-units", async function (request, response) {
   if (request.query.jsonOnly && request.query.projectionOnly) {
-    let maxPrice = JSON.stringify(request.query.maxPrice);
-    let minPrice = JSON.stringify(request.query.minPrice);
+    let maxPrice = request.query.maxPrice;
+    let minPrice = request.query.minPrice;
     const attributes = request.query.attributes;
     if (!minPrice) {
-      minPrice = Number.MIN_VALUE
+      minPrice = -1
     }
     if (!maxPrice) {
       maxPrice = Number.MAX_VALUE
     }
-    connection.query(`SELECT ${attributes}, unit_id
+    connection.query(`SELECT ${attributes}, unit_id, price
                         FROM rental_unit
-                        WHERE price > ${minPrice} AND price < ${maxPrice}`,
+                        WHERE price BETWEEN ${minPrice} AND ${maxPrice}`,
       (error, result) => {
         if (error) throw error;
         response.status(200).send({ rentalUnits: result })
@@ -173,17 +173,17 @@ app.get("/rental-units/:unitId", async function (request, response) {
                 postJSON.amenities.hospitals = hospitals;
               })
             await connection.query(`SELECT * FROM parks_recreation WHERE parks_recreation.postal_code = '${unit[0].postal_code}'`,
-            (err, parks) => {
-              postJSON.amenities.parks = parks;
-            })
+              (err, parks) => {
+                postJSON.amenities.parks = parks;
+              })
             await connection.query(`SELECT TT.route_name FROM translink T, translinkType TT WHERE T.postal_code = '${unit[0].postal_code}' AND T.route_name = TT.route_name AND TT.route_type = 'bus'`,
-            (err, buses) => {
-              postJSON.transit.buses = buses;
-            })
+              (err, buses) => {
+                postJSON.transit.buses = buses;
+              })
             await connection.query(`SELECT TT.route_name FROM translink T, translinkType TT WHERE T.postal_code = '${unit[0].postal_code}' AND T.route_name = TT.route_name AND TT.route_type = 'skyTrain'`,
-            (err, skytrains) => {
-              postJSON.transit.skytrains = skytrains;
-            })
+              (err, skytrains) => {
+                postJSON.transit.skytrains = skytrains;
+              })
             if (request.query.jsonOnly) {
               response.status(200).send({ post: postJSON.post, features: postJSON.features, amenities: postJSON.amenities, transit: postJSON.transit })
             } else {
@@ -250,6 +250,28 @@ app.put("/rental-units/:unitId", async function (request, response) {
     response.status(400).send(error);
   }
 });
+
+app.get("/richest-landlords", async function (request, response) {
+  const sql = `SELECT L.landlord_id, L.landlord_name
+               FROM landlord L
+               WHERE NOT EXISTS 
+                (SELECT * 
+                FROM neighbourhood N 
+                WHERE NOT EXISTS 
+                (SELECT R.landlord_id
+                FROM rental_unit R
+                WHERE L.landlord_id = R.landlord_id AND 
+                N.postal_code=R.postal_code));`
+
+  const richestLandlords = await new Promise((resolve, reject) => {
+    connection.query(sql, (error, result) => {
+      if (error) throw error;
+      resolve({ landlords: result })
+    })
+  })
+
+
+})
 
 app.post("/signup", async function (request, response) {
   try {
