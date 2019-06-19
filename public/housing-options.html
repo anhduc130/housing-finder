@@ -1,264 +1,156 @@
 <script type="text/javascript">
-	var avisible = true;
-	var bvisible = true;
-	var cvisible = true;
+  var avisible = true;
+  var bvisible = true;
+  var cvisible = true;
 
 
-	function selectAll() {
-        var a = document.getElementById("Title");
-        var b = document.getElementById("Address");
-        var c = document.getElementById("Unit_Type");
-        a.checked = true;
-        b.checked = true;
-        c.checked = true;
-    }
-    function checkSelectAll(){
-    	var a = document.getElementById("All");
-    	a.checked = false;
-    	var title = document.getElementById("Title");
-    	var address = document.getElementById("Address");
-    	var unitType = document.getElementById("Unit_Type");
-    	avisible = title.checked;
-    	bvisible = address.checked;
-    	cvisible = unitType.checked;
-    	
-    }
-    function updateTable(){
-        event.preventDefault()
-    	var tbl = document.getElementById(table1);
-    	var col = tbl.getElementByTagName('col1')[col1];
-    	col.style.visibility = 'none';
-    }
-	
-</script>
-<style>
-body {
-padding-top: 20px;
-padding-right: 500px;
-background-image: url(images/gastown.jpg);
-background-size: cover;
-background-repeat: no-repeat;
-background-position: 350px; 
-}
-
-.jumbotron {
-      opacity: 0.9;
-      padding: 5em inherit;
-      /* margin-right: 90%;  */
-      right: 500px; 
-      margin-left: 50px;
+  function selectAll() {
+    var d = document.getElementById("checkAll");
+    var a = document.getElementById("checkTitle");
+    var b = document.getElementById("checkAddress");
+    var c = document.getElementById("checkUnitType");
+    a.checked = true;
+    b.checked = true;
+    c.checked = true;
+    d.checked = true;
+  }
+  function checkSelectAll() {
+    var a = document.getElementById("checkAll");
+    a.checked = false;
+    var title = document.getElementById("checkTitle");
+    var address = document.getElementById("checkAddress");
+    var unitType = document.getElementById("checkUnitType");
+    avisible = title.checked;
+    bvisible = address.checked;
+    cvisible = unitType.checked;
+    getRentalUnitsByAttributes()
+  }
+  function updateTable() {
+    event.preventDefault()
+    var tbl = document.getElementById(table1);
+    var col = tbl.getElementByTagName('col1')[col1];
+    col.style.visibility = 'none';
   }
 
-div {
-font-size: 95%;
-}
+</script>
+<style>
+  body {
+    padding-top: 20px;
+    padding-right: 500px;
+    background-image: url(images/gastown.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 350px;
+  }
 
-.container{
-display: flex;
-/* background-color: #AFEEEE; */
+  .jumbotron {
+    opacity: 0.9;
+    padding: 5em inherit;
+    /* margin-right: 90%;  */
+    right: 500px;
+    margin-left: 50px;
+  }
 
-}
+  div {
+    font-size: 95%;
+  }
 
-.signup-content{
-/* background-color: #AFEEEE; */
-}
-.signup-form{
-width: 300px;
-/* background-color: #AFEEEE; */
-}
-.flex-item{
-flex-grow: 1;
-margin-right: -500px;
-/*margin-left:300px;*/
-/*width: 800px;*/
-/* padding: 10px;  */
-/* padding-left: 200 px; */
+  .container {
+    display: flex;
+    /* background-color: #AFEEEE; */
 
-}
+  }
 
+  .signup-content {
+    /* background-color: #AFEEEE; */
+  }
+
+  .signup-form {
+    width: 300px;
+    /* background-color: #AFEEEE; */
+  }
+
+  .flex-item {
+    flex-grow: 1;
+    margin-right: -500px;
+    /*margin-left:300px;*/
+    /*width: 800px;*/
+    /* padding: 10px;  */
+    /* padding-left: 200 px; */
+
+  }
 </style>
 
 <!DOCTYPE html>
 <html>
 
 <head>
-<!-- Jquery 3.4.1.min.js
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> -->
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-<!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 
-<script src="js/get-all-rental-units.js"></script>
-<script src="js/get-rental-posting.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
-<!-- MAPBOX API -->
-<script src='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
-<link href='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
-</head> 
+  <script src="js/get-rental-units.js"></script>
+
+  <!-- MAPBOX API -->
+  <script src='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
+</head>
 
 <body>
-<!-- <body background="images/gastown.jpg"> -->
+  <!-- <body background="images/gastown.jpg"> -->
 
 
-<div id="housing-options"></div>
-<script src="../js/get-housing-options.js"></script>
+  <div id="housing-options"></div>
 
-<div class="main" left: 50px;>
-<div class="container">
-  <div class="signup-content" >
-      <!-- <div class="signup-img">
+  <div class="main" left: 50px;>
+    <div class="container">
+      <div class="signup-content">
+        <!-- <div class="signup-img">
           <img src="images/signup-img.jpg" alt="">
       </div> -->
-      <div class="signup-form">
-          <form method="POST" class="register-form" id="register-form" >
-              <h4>housing</h4>
-              <div class="form-row">
-                    <div class="form-group">
-                      <label for="city">Neighbourhood/PostalCode </label>
-                      <div class="form-select">
-                          <select name="city" id="city">
-                              <option value="" disabled selected></option>
-                              <option value="">SOUTH VANCOUVER-(V6P,V5X,V5P,V5S)</option>
-                              <option value="Marpole">Marpole(V6P)</option>
-                              <option value="Sunset">Sunset(V5X)</option>
-                              <option value="Victoria-Fraserview">Victoria-Fraserview(V5P)</option>
-                              <option value="Renfrew-Killarney">Renfrew-Killarney(V5S)</option>
-                              <option value=""></option> -->
-                              <option value="">EAST VANCOUVER-(V5L,V5K,V5N,V5R,V5Y)</option> -->
-                              <option value="Grandview-Woodland">Grandview-Woodland(V5L)</option>
-                              <option value="Hastings-Sunrise">Hastings-Sunrise(V5K)</option>
-                              <option value="Kensington-Cedar Cottage">Kensington-Cedar Cottage(V5N)</option>
-                              <option value="Renfrew-Collingwood">Renfrew-Collingwood(V5R)</option>
-                              <option value="MountPleasant-Hillcrest-Oakridge">MountPleasant-Hillcrest-Oakridge(V5Y)</option>
-                              <option value=""></option>
-                              <option value="">WEST VANCOUVER-(V6R,V6K,V6N,V6M,V5Z,V6J,V6L)</option> 
-                              <option value="University Endowment Lands">University Endowment Lands(V6T)</option>
-                              <option value="West Point Grey">West Point Grey(V6R)</option>
-                              <option value="Kitsilano">Kitsilano(V6K)</option>
-                              <option value="Dunbar Southlands">Dunbar Southlandse(V6N)</option>
-                              <option value="Kerrisdale">Kerrisdale(V6M)</option>
-                              <option value="SouthCambie-Oakridge">SouthCambie-Oakridge(V5Z)</option>
-                              <option value="Shaughnessy-KitsPoint">Shaughnessy-KitsPoint(V6J)</option>
-                              <option value="Arbutus Ridge">Arbutus Ridge(V6L)</option>
-                              <option value=""></option>
-                              <option value="">CENTRAL VANCOUVER-(V6G,V6A,V6B,V6Z)</option>
-                              <option value="West End">West End(V6G)</option>
-                              <option value="Chinatown-DowntownEastside-Strathcona">Chinatown-DowntownEastside-Strathcona(V6A)</option>
-                              <option value="Downtown-Gastown-Coalharbour">Downtown-Gastown-Coalharbour(V6B)</option>
-                              <option value="Yaletown">Yaletown(V6Z)</option> -->
-                          </select>
-                          <span class="select-icon"><i class="zmdi zmdi-chevron-down"></i></span>
-                      </div>
-                  </div>
-              </div>
-              </div>
-              <!-- <label for="postal_code">OR</label>
+        <div class="signup-form">
+          <form onsubmit="return false;" class="register-form" id="register-form">
+            <h4>Categories</h4>
+        </div>
+        <!-- <label for="postal_code">OR</label>
               <div class="form-group">
                   <label for="postal_code">Postal Code</label>
                   <input type="text" name="postal_code" id="postal_code" placeholder="Desired postal code"/>
             </div> -->
-            <div class="form-group">
-                <label for="price">Price</label>
-                <input type="text" name="Price" style="width: 50px" id="price" placeholder="min"  min="0" max="10000"/>
-                <input type="text" name="Price" style="width: 50px" id="price" placeholder="max"  min="0" max="10000"/>
-            </div>
-              <div class="form-group">
-                  <label for="unit_type">Unit Type</label>
-                  <div class="form-select">
-                      <select name="course" id="course">
-                      <option value=""></option>
-                              <option value="Apartment">Apartment</option>
-                              <option value="House">House</option>
-                              <option value="Laneway House">Laneway House</option>
-                              <option value="Basement">Basement</option>
-                            </select>
-                            <span class="select-icon"><i class="zmdi zmdi-chevron-down"></i></span>
-                          </select>
-              </div>
-            </div>
-              <div class="form-group">
-                  <label for="course">Number of Rooms</label>
-                  <div class="form-select">
-                      <select name="course" id="course">
-                          <option value="" disabled selected>min</option>
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                          <option value="5+">5+</option>
-                      </select>
-                      <select name="course" id="course">
-                          <option value="" disabled selected>max</option>
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                          <option value="5+">5+</option>
-                      </select>
-                      <span class="select-icon"><i class="zmdi zmdi-chevron-down"></i></span>
-              
-                  </div>
-                  
-              </div>
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input type="text" name="Price" style="width: 100px" id="minPrice" placeholder="min" min="0" max="10000" />
+          <input type="text" name="Price" style="width: 100px" id="maxPrice" placeholder="max" min="0" max="10000" />
+        </div>
+        <label for="Selection" class="radio-label">Select By Attributes (Projection)</label>
+        <div class="flex-item">
+          <input type="checkbox" name="checkAll" id="checkAll" onclick="selectAll()">
+          <label for="All">All</label>
+          <span class="check"></span>
+          <input type="checkbox" name="Title" id="checkTitle" onclick="checkSelectAll()">
+          <label for="Title">Title</label>
+          <span class="check"></span>
+          <input type="checkbox" name="Address" id="checkAddress" onclick="checkSelectAll()">
+          <label for="Address">Address</label>
+          <span class="checkbox"></span>
+          <input type="checkbox" name="Unit_Type" id="checkUnitType" onclick="checkSelectAll()">
+          <label for="Unit_Type">Unit_Type</label>
+          <span class="check"></span>
+        </div>
 
-              <label for="Parking" class="radio-label">Parking</label>
-              <div class="fixed">
-                  <input type="radio" name="parking" id="parkingYes" >
-                  <label for="Yes">Yes</label>
-                  <span class="check"></span>
-                  <input type="radio" name="parking" id="parkingNo">
-                  <label for="No">No</label>
-                  <span class="check"></span>
-              </div>
-              <label for="Smoking" class="radio-label">Smoking</label>
-              <div class="flex-item">
-                  <input type="radio" name="smoking" id="smokingYes" >
-                  <label for="Yes">Yes</label>
-                  <span class="check"></span>
-                  <input type="radio" name="smoking" id="smokingNo">
-                  <label for="No">No</label>
-                  <span class="check"></span>
-              </div>
-              <label for="Pets" class="radio-label">Pets</label>
-              <div class="flex-item">
-                  <input type="radio" name="pets" id="petsYes" >
-                  <label for="Yes">Yes</label>
-                  <span class="check"></span>
-                  <input type="radio" name="pets" id="petsNo">
-                  <label for="No">No</label>
-                  <span class="check"></span>
-              </div>
-              <label for="Selction" class="radio-label">Select By Attributes (Projection)</label>
-              <div class="flex-item">
-                  <input type="checkbox" name="checkAll" id="All" onclick="selectAll()">
-                  <label for="All">All</label>
-                  <span class="check"></span>
-                  <input type="checkbox" name="Title" id="Title" onclick="checkSelectAll()">
-                  <label for="Title">Title</label>
-                  <span class="check"></span>
-                  <input type="checkbox" name="Address" id="Address" onclick="checkSelectAll()">
-                  <label for="Address">Address</label>
-                  <span class="checkbox"></span>
-                  <input type="checkbox" name="Unit_Type" id="Unit_Type" onclick="checkSelectAll()">
-                  <label for="Unit_Type">Unit_Type</label>
-                  <span class="check"></span>
-              </div>
-
-              <div class="form-submit">
-                  <input type="reset" value="reset" class="reset" name="reset" id="reset" />
-                  <input type="submit" value="update search" class="submit" name="submit" id="submit" onclick = "updateTable()"/>
-                 <!--  <button onclick = "updateTable()">update search</button> -->
-              </div>
-          </form>      
+        <div>
+          <button onclick="getRentalUnitsByAttributes()">Update search</button>
+          <!--  <button onclick = "updateTable()">update search</button> -->
+        </div>
+        </form>
       </div>
       <!-- <div class = "flex-item"></div> -->
-      <div class = "flex-item">
-          <div class="jumbotron jumbotron-fluid" >
+      <div class="flex-item">
+        <div class="jumbotron jumbotron-fluid">
           <!-- <ul id="myUL">
               <li><a href="#">Adele</a></li>
               <li><a href="#">Agnes</a></li>
@@ -271,57 +163,32 @@ margin-right: -500px;
               <li><a href="#">Cindy</a></li>
 
               <a href = "http://google.com" target = "_blank"-->
-            <!-- </ul> --> 
+          <!-- </ul> -->
 
-<table class="table table-striped table-dark" id = "table1">
-<thead>
-  <tr>
-    <th scope="col1"  id = "col1">rentalID</th>
-    <th scope="col2">UnitTitle</th>
-    <th scope="col3">Address</th>
-<!--     <th class="col">Price</th>
-    <th class="col">PostalCode</th> -->
-    <th scope="col4">Type</th>
-<!--     <th class="col">Description</th> -->
-  </tr>
-</thead>
-<tbody>
-  <tr>
-      <!-- <li><a href="#">Adele</a></li> -->
-    <!-- <th scope="row">00000001</th> -->
-    <th scope="row"> <a href ="http://localhost:2019/"> 00000001</a></th>
-    <input onclick="getRentalPosting(unitID)" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now">
-    <td>test</td>
-    <td>test</td>
-    <td>test</td>
-  </tr>
-  <tr>
-    <th scope="row">2</th>
-  </tr>
-  <tr>
-    <th scope="row">3</th>
-  </tr>
-    <tr>
-    <th scope="row">4</th>
-  </tr>
-    <tr>
-    <th scope="row">5</th>
-  </tr>
-    <tr>
-    <th scope="row">6</th>
-  </tr>
-</tbody>
-</table>
-          
-            </div>
+          <table class="table table-striped table-dark" id="housing-options-table">
+            <thead>
+              <tr>
+                <th scope="col1" id="col1">Unit ID</th>
+                <th scope="col2">Title</th>
+                <th scope="col3">Address</th>
+                <th scope="col4">Type</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+
+        </div>
       </div>
+    </div>
   </div>
-</div>
 
-</div>
-<script>
-    getRentalUnitsByLandlordId();
-</script>
+  </div>
+  <script>
+    selectAll()
+    getRentalUnitsByAttributes();
+    // getRentalUnitsByLandlordId();
+  </script>
 </body>
 
 </html>
@@ -389,15 +256,15 @@ async defer></script>
                               <option value="Victoria-Fraserview">Victoria-Fraserview"</option>
                               <option value="Renfrew-Killarney">Renfrew-Killarney</option>
                               <option value=""></option> -->
-                              <!-- <option value="">--EAST VANCOUVER--</option> -->
-                              <!-- <option value="Grandview-Woodland">Grandview-Woodland</option>
+<!-- <option value="">--EAST VANCOUVER--</option> -->
+<!-- <option value="Grandview-Woodland">Grandview-Woodland</option>
                               <option value="Hastings-Sunrise">Hastings-Sunrise</option>
                               <option value="Kensington-Cedar Cottage">Kensington-Cedar Cottage</option>
                               <option value="Renfrew-Collingwood">Renfrew-Collingwood</option>
                               <option value="MountPleasant-Hillcrest-Oakridge">MountPleasant-Hillcrest-Oakridge</option>
                               <option value=""></option> -->
-                              <!-- <option value="">--WEST VANCOUVER--</option> -->
-                              <!-- <option value="University Endowment Lands">University Endowment Lands</option>
+<!-- <option value="">--WEST VANCOUVER--</option> -->
+<!-- <option value="University Endowment Lands">University Endowment Lands</option>
                               <option value="West Point Grey">West Point Grey</option>
                               <option value="Kitsilano">Kitsilano</option>
                               <option value="Dunbar Southlands">Dunbar Southlandse</option>
@@ -406,12 +273,12 @@ async defer></script>
                               <option value="Shaughnessy-KitsPoint">Shaughnessy-KitsPoint</option>
                               <option value="Arbutus Ridge">Arbutus Ridge</option>
                               <option value=""></option> -->
-                              <!-- <option value="">--CENTRAL VANCOUVER--</option> -->
-                              <!-- <option value="West End">West End</option>
+<!-- <option value="">--CENTRAL VANCOUVER--</option> -->
+<!-- <option value="West End">West End</option>
                               <option value="Chinatown-DowntownEastside-Strathcona">Chinatown-DowntownEastside-Strathcona</option>
                               <option value="Downtown-Gastown-Coalharbour">Downtown-Gastown-Coalharbour</option>
                               <option value="Yaletown">Yaletown</option> -->
-                          <!-- </select>
+<!-- </select>
                           <span class="select-icon"><i class="zmdi zmdi-chevron-down"></i></span>
                       </div>
                   </div>
@@ -419,7 +286,7 @@ async defer></script>
 
 
 
-              <!-- <div id='map' style='width: 800px; height: 600px;'></div>
+<!-- <div id='map' style='width: 800px; height: 600px;'></div>
               <script>
               mapboxgl.accessToken = 'pk.eyJ1IjoiY2h1bmt5dG9mdTE1NyIsImEiOiJjangwMXVoNjgxNXV1NDhvNmFiY2o1ZGU5In0.xR3QHoTmnIUe1jl2u9bTHQ';
               var map = new mapboxgl.Map({

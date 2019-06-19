@@ -1,5 +1,9 @@
 const rentalUnitsUrl = "http://localhost:2019/rental-units";
 
+const isNumeric = (num) => {
+    return !isNaN(num)
+}
+
 const getRentalUnitError = response => {
     if (response.statusText == "Unauthorized") {
         alert(`${response.responseText}`)
@@ -8,7 +12,6 @@ const getRentalUnitError = response => {
 };
 
 const addCellsToElement = (rentalUnitElement, rentalUnit) => {
-    debugger
     // Insert title
     const title = rentalUnitElement.insertCell(0);
     const titleText = document.createTextNode(rentalUnit.unit_title);
@@ -26,7 +29,7 @@ const addCellsToElement = (rentalUnitElement, rentalUnit) => {
 
     // Insert Price
     const price = rentalUnitElement.insertCell(3);
-    const priceText = document.createTextNode(rentalUnit.price);
+    const priceText = document.createTextNode(`$${rentalUnit.price}`);
     price.append(priceText);
 
     // Insert Actions
@@ -56,13 +59,22 @@ const addCellsToElement = (rentalUnitElement, rentalUnit) => {
 }
 
 const getRentalUnitSuccess = response => {
-    for (let i = 0; i < response.length; i++) {
-        const rentalUnit = response[i];
-        const tableRef = document.getElementById('rental-unit-table-body');
+    const rentalUnits = response.rentalUnits
+    const tableRef = document.getElementById('rental-unit-table-body');
+    for (let i = 0; i < rentalUnits.length; i++) {
+        const rentalUnit = rentalUnits[i];
         const rentalUnitElement = tableRef.insertRow(-1);
         addCellsToElement(rentalUnitElement, rentalUnit);
     }
-    console.log(response)
+    
+    const rentalUnitElement = tableRef.insertRow(-1);
+    const averagePriceText = document.createTextNode(`AVERAGE: $${response.averagePriceOfAllRentalUnits}`);
+    rentalUnitElement.insertCell(0)
+    rentalUnitElement.insertCell(1)
+    rentalUnitElement.insertCell(2)
+    const avgPrice = rentalUnitElement.insertCell(3)
+    avgPrice.append(averagePriceText)
+    rentalUnitElement.insertCell(4)
 };
 
 /**
@@ -97,4 +109,137 @@ const getRentalUnitByUnitId = (unitId, successCallback, errorCallback) => {
         data: { jsonOnly: true },
         dataType: 'json'
     });
+}
+
+const addCellsToElementAttribute = (rentalUnitElement, rentalUnit) => {
+    
+    const unitId = rentalUnitElement.insertCell(0);
+    rentalUnit.unit_id
+    const unitIdText = document.createElement('p');
+    unitIdText.innerHTML = `<a target="_blank" href="rental-units/${rentalUnit.unit_id}">${rentalUnit.unit_id}</a>`
+    unitId.append(unitIdText);
+
+    const unitTitle = rentalUnitElement.insertCell(1);
+    const unitTitleText = document.createTextNode(rentalUnit.unit_title);
+    unitTitle.append(unitTitleText);
+
+    const address = rentalUnitElement.insertCell(2);
+    const addressText = document.createTextNode(rentalUnit.unit_address);
+    address.append(addressText);
+
+    const type = rentalUnitElement.insertCell(3);
+    const typeText = document.createTextNode(rentalUnit.unit_type);
+    type.append(typeText);
+
+    const price = rentalUnitElement.insertCell(4);
+    const priceText = document.createTextNode(`$${rentalUnit.price}`);
+    price.append(priceText);
+}
+const getRentalUnitsByAttributesSuccess = (response) => {
+    
+    const rentalUnits = response.rentalUnits;
+    const tableRef = document.getElementById('housing-options-table')
+
+    for (var i = tableRef.rows.length - 1; i >= 0; i--) {
+        tableRef.deleteRow(i);
+    }
+
+    const headerRow = tableRef.insertRow(-1)
+
+    const unitId = headerRow.insertCell(0);
+    const unitIdText = document.createTextNode('Unit ID')
+    unitId.append(unitIdText)
+
+    const unitTitle = headerRow.insertCell(1);
+    const unitTitleText = document.createTextNode('Title')
+    unitTitle.append(unitTitleText)
+
+    const unitAddress = headerRow.insertCell(2);
+    const unitAddressText = document.createTextNode('Address')
+    unitAddress.append(unitAddressText)
+
+    const unitType = headerRow.insertCell(3);
+    const unitTypeText = document.createTextNode('Type')
+    unitType.append(unitTypeText)
+
+    const unitPrice = headerRow.insertCell(4);
+    const unitPriceText = document.createTextNode('Price')
+    unitPrice.append(unitPriceText)
+
+    for (let i = 0; i < rentalUnits.length; i++) {
+        const rentalUnit = rentalUnits[i];
+        const rentalUnitElement = tableRef.insertRow(-1);
+        addCellsToElementAttribute(rentalUnitElement, rentalUnit);
+    }
+
+    const checkTitle = document.getElementById('checkTitle').checked
+    const checkAddress = document.getElementById('checkAddress').checked
+    const checkUnitType = document.getElementById('checkUnitType').checked
+    
+    if (!checkTitle && !checkAddress && !checkUnitType) {
+        return
+    }
+    if (!checkTitle) {
+        hideColumn("Title")
+    }
+    if (!checkAddress) {
+        hideColumn("Address")
+    }
+    if (!checkUnitType) {
+        hideColumn("Type")
+    }
+}
+const getRentalUnitsByAttributes = () => {
+    let minPrice = document.getElementById('minPrice').value
+    let maxPrice = document.getElementById('maxPrice').value
+    const checkTitle = document.getElementById('checkTitle').checked
+    const checkAddress = document.getElementById('checkAddress').checked
+    const checkUnitType = document.getElementById('checkUnitType').checked
+    let attributes = []
+    if (checkTitle) {
+        attributes.push('unit_title')
+    }
+    if (checkAddress) {
+        attributes.push('unit_address')
+    }
+    if (checkUnitType) {
+        attributes.push('unit_type')
+    }
+    if (attributes == '') {
+        attributes = ['unit_title', 'unit_address', 'unit_type']
+    }
+    attributes = attributes.join(',')
+    
+    $.ajax({
+        type: "GET",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        url: rentalUnitsUrl,
+        error: getRentalUnitError,
+        success: getRentalUnitsByAttributesSuccess,
+        data: {
+            jsonOnly: true,
+            projectionOnly: true,
+            minPrice,
+            maxPrice,
+            attributes
+        },
+        dataType: 'json'
+    });
+}
+
+const hideColumn = (col) => {
+    var tbl = document.getElementById("housing-options-table");
+    if (tbl != null) {
+        for (var i = 0; i < tbl.rows.length; i++) {
+            for (var j = 0; j < tbl.rows[i].cells.length; j++) {
+                // tbl.rows[i].cells[j].style.display = "";
+                
+                if (tbl.rows[i].cells[j].textContent == col ||
+                    tbl.rows[i].cells[j].textContent == 'undefined')
+                    tbl.rows[i].cells[j].style.display = "none";
+            }
+        }
+    }
 }

@@ -1,6 +1,5 @@
 const postRentalUnitUrl = "http://localhost:2019/rental-units";
 const postRentalError = (response) => {
-    debugger
     alert(`${response.responseText}`)
     if (response.statusText == "Unauthorized") {
         window.location.replace("signin.html");
@@ -9,7 +8,6 @@ const postRentalError = (response) => {
     }
 };
 const postRentalSuccess = (response) => {
-    debugger
     console.log(response)
 }
 
@@ -17,7 +15,6 @@ const postRentalSuccess = (response) => {
  * POST RENTAL UNIT
  */
 const postRentalUnit = () => {
-    debugger
     const unitTitle = document.getElementById('rentalUnitTitle').value
     const unitAddress = document.getElementById('rentalUnitAddress').value
     const unitPrice = document.getElementById('rentalUnitPrice').value

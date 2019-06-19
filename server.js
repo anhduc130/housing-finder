@@ -10,6 +10,7 @@ const getAllRentalUnits = require("./get-all-rental-units");
 const deleteRentalUnit = require("./delete-rental-unit");
 const updateRentalUnit = require("./update-rental-unit");
 const updateFeatureList = require("./update-feature-list");
+const getAveragePriceOfAllRentalUnits = require("./get-average-price-of-all-rental-units");
 const postJSON = require("./post");
 
 app.use(express.static("public"));
@@ -62,21 +63,67 @@ connection.connect(function (err) {
 });
 
 app.get("/rental-units", async function (request, response) {
-  const cookies = parseCookies(request);
-  let rentalUnits;
-  try {
-    if (request.query.onlyLandlordUnits) {
-      if (!cookies['landlord-id'] || !cookies['logged-in-key']) {
-        response.status(401).send('Session has expired. Please log in again.');
-        return;
-      }
-      rentalUnits = await getRentalUnitsByLandlordId(cookies['landlord-id'], connection);
-    } else {
-      rentalUnits = await getAllRentalUnits(connection);
+  if (request.query.jsonOnly && request.query.projectionOnly) {
+    let maxPrice = request.query.maxPrice;
+    let minPrice = request.query.minPrice;
+    const attributes = request.query.attributes;
+    if (!minPrice) {
+      minPrice = -1
     }
-    response.send(rentalUnits);
-  } catch (error) {
-    response.status(400).send(error);
+    if (!maxPrice) {
+      maxPrice = Number.MAX_VALUE
+    }
+    connection.query(`SELECT ${attributes}, unit_id, price
+                        FROM rental_unit
+                        WHERE price BETWEEN ${minPrice} AND ${maxPrice}`,
+      (error, result) => {
+        if (error) throw error;
+        response.status(200).send({ rentalUnits: result })
+      })
+  } else if (request.query.jsonOnly && request.query.getStats) {
+    const maxMarketPrice = await new Promise((resolve) => {
+      connection.query(`SELECT MAX(price) as maxMarketPrice
+                      FROM rental_unit`,
+        (error, result) => {
+          if (error) throw error;
+          if (result) {
+            resolve(result[0].maxMarketPrice)
+          } else {
+            resolve(0)
+          }
+        })
+    })
+    const minMarketPrice = await new Promise((resolve) => {
+      connection.query(`SELECT MIN(price) as minMarketPrice
+                      FROM rental_unit`,
+        (error, result) => {
+          if (error) throw error;
+          if (result) {
+            resolve(result[0].minMarketPrice)
+          } else {
+            resolve(0)
+          }
+        })
+    })
+    response.status(200).send({ maxMarketPrice, minMarketPrice })
+  } else {
+    const cookies = parseCookies(request);
+    let rentalUnits;
+    try {
+      if (request.query.onlyLandlordUnits) {
+        if (!cookies['landlord-id'] || !cookies['logged-in-key']) {
+          response.status(401).send('Session has expired. Please log in again.');
+          return;
+        }
+        rentalUnits = await getRentalUnitsByLandlordId(cookies['landlord-id'], connection);
+        averagePriceOfAllRentalUnits = await getAveragePriceOfAllRentalUnits(cookies['landlord-id'], connection);
+      } else {
+        rentalUnits = await getAllRentalUnits(connection);
+      }
+      response.send({ rentalUnits, averagePriceOfAllRentalUnits });
+    } catch (error) {
+      response.status(400).send(error);
+    }
   }
 });
 
@@ -109,45 +156,44 @@ app.get("/rental-units/:unitId", function (request, response) {
             postJSON.features.parking = result[0].parking;
             postJSON.features.smoking = result[0].smoking;
             postJSON.features.pets = result[0].pets;
-            await connection.query(`SELECT * FROM restaurant WHERE restaurant.postal_code = '${unit[0].postal_code}'`, 
-            (err, restaurants) => {
-              postJSON.amenities.restaurants = restaurants;
-            })
+            await connection.query(`SELECT * FROM restaurant WHERE restaurant.postal_code = '${unit[0].postal_code}'`,
+              (err, restaurants) => {
+                postJSON.amenities.restaurants = restaurants;
+              })
             await connection.query(`SELECT * FROM supermarket WHERE supermarket.postal_code = '${unit[0].postal_code}'`,
-            (err, supermarkets) => {
-              postJSON.amenities.supermarkets = supermarkets;
-            })
+              (err, supermarkets) => {
+                postJSON.amenities.supermarkets = supermarkets;
+              })
             await connection.query(`SELECT * FROM school WHERE school.postal_code = '${unit[0].postal_code}'`,
-            (err, schools) => {
-              postJSON.amenities.schools = schools;
-            })
+              (err, schools) => {
+                postJSON.amenities.schools = schools;
+              })
             await connection.query(`SELECT * FROM hospital WHERE hospital.postal_code = '${unit[0].postal_code}'`,
-            (err, hospitals) => {
-              postJSON.amenities.hospitals = hospitals;
-            })
+              (err, hospitals) => {
+                postJSON.amenities.hospitals = hospitals;
+              })
             await connection.query(`SELECT * FROM parks_recreation WHERE parks_recreation.postal_code = '${unit[0].postal_code}'`,
-            (err, parks) => {
-              postJSON.amenities.parks = parks;
-            })
+              (err, parks) => {
+                postJSON.amenities.parks = parks;
+              })
             await connection.query(`SELECT TT.route_name FROM translink T, translinkType TT WHERE T.postal_code = '${unit[0].postal_code}' AND T.route_name = TT.route_name AND TT.route_type = 'bus'`,
-            (err, buses) => {
-              postJSON.transit.buses = buses;
-            })
+              (err, buses) => {
+                postJSON.transit.buses = buses;
+              })
             await connection.query(`SELECT TT.route_name FROM translink T, translinkType TT WHERE T.postal_code = '${unit[0].postal_code}' AND T.route_name = TT.route_name AND TT.route_type = 'skyTrain'`,
-            (err, skytrains) => {
-              postJSON.transit.skytrains = skytrains;
-            })
+              (err, skytrains) => {
+                postJSON.transit.skytrains = skytrains;
+              })
             if (request.query.jsonOnly) {
-              response.status(200).send({post:postJSON.post, features:postJSON.features, amenities:postJSON.amenities, transit:postJSON.transit})
+              response.status(200).send({ post: postJSON.post, features: postJSON.features, amenities: postJSON.amenities, transit: postJSON.transit })
             } else {
               setTimeout(() => {
-                response.render('housing-posting', {post:postJSON.post, features:postJSON.features, amenities:postJSON.amenities, transit:postJSON.transit});
+                response.render('housing-posting', { post: postJSON.post, features: postJSON.features, amenities: postJSON.amenities, transit: postJSON.transit });
               }, 300);
             }
           })
-    }
-  });
-  // response.send("This housing unit no longer exists");
+      }
+    });
 });
 
 app.post("/rental-units", async function (request, response) {
@@ -204,6 +250,28 @@ app.put("/rental-units/:unitId", async function (request, response) {
     response.status(400).send(error);
   }
 });
+
+app.get("/richest-landlords", async function (request, response) {
+  const sql = `SELECT L.landlord_id, L.landlord_name
+               FROM landlord L
+               WHERE NOT EXISTS 
+                (SELECT * 
+                FROM neighbourhood N 
+                WHERE NOT EXISTS 
+                (SELECT R.landlord_id
+                FROM rental_unit R
+                WHERE L.landlord_id = R.landlord_id AND 
+                N.postal_code=R.postal_code));`
+
+  const richestLandlords = await new Promise((resolve, reject) => {
+    connection.query(sql, (error, result) => {
+      if (error) throw error;
+      resolve({ landlords: result })
+    })
+  })
+
+
+})
 
 app.post("/signup", async function (request, response) {
   try {
