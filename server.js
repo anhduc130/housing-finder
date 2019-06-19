@@ -63,22 +63,67 @@ connection.connect(function (err) {
 });
 
 app.get("/rental-units", async function (request, response) {
-  const cookies = parseCookies(request);
-  let rentalUnits;
-  try {
-    if (request.query.onlyLandlordUnits) {
-      if (!cookies['landlord-id'] || !cookies['logged-in-key']) {
-        response.status(401).send('Session has expired. Please log in again.');
-        return;
-      }
-      rentalUnits = await getRentalUnitsByLandlordId(cookies['landlord-id'], connection);
-      averagePriceOfAllRentalUnits = await getAveragePriceOfAllRentalUnits(cookies['landlord-id'], connection);
-    } else {
-      rentalUnits = await getAllRentalUnits(connection);
+  if (request.query.jsonOnly && request.query.projectionOnly) {
+    let maxPrice = JSON.stringify(request.query.maxPrice);
+    let minPrice = JSON.stringify(request.query.minPrice);
+    const attributes = request.query.attributes;
+    if (!minPrice) {
+      minPrice = Number.MIN_VALUE
     }
-    response.send({ rentalUnits, averagePriceOfAllRentalUnits });
-  } catch (error) {
-    response.status(400).send(error);
+    if (!maxPrice) {
+      maxPrice = Number.MAX_VALUE
+    }
+    connection.query(`SELECT ${attributes}, unit_id
+                        FROM rental_unit
+                        WHERE price > ${minPrice} AND price < ${maxPrice}`,
+      (error, result) => {
+        if (error) throw error;
+        response.status(200).send({ rentalUnits: result })
+      })
+  } else if (request.query.jsonOnly && request.query.getStats) {
+    const maxMarketPrice = await new Promise((resolve) => {
+      connection.query(`SELECT MAX(price) as maxMarketPrice
+                      FROM rental_unit`,
+        (error, result) => {
+          if (error) throw error;
+          if (result) {
+            resolve(result[0].maxMarketPrice)
+          } else {
+            resolve(0)
+          }
+        })
+    })
+    const minMarketPrice = await new Promise((resolve) => {
+      connection.query(`SELECT MIN(price) as minMarketPrice
+                      FROM rental_unit`,
+        (error, result) => {
+          if (error) throw error;
+          if (result) {
+            resolve(result[0].minMarketPrice)
+          } else {
+            resolve(0)
+          }
+        })
+    })
+    response.status(200).send({ maxMarketPrice, minMarketPrice })
+  } else {
+    const cookies = parseCookies(request);
+    let rentalUnits;
+    try {
+      if (request.query.onlyLandlordUnits) {
+        if (!cookies['landlord-id'] || !cookies['logged-in-key']) {
+          response.status(401).send('Session has expired. Please log in again.');
+          return;
+        }
+        rentalUnits = await getRentalUnitsByLandlordId(cookies['landlord-id'], connection);
+        averagePriceOfAllRentalUnits = await getAveragePriceOfAllRentalUnits(cookies['landlord-id'], connection);
+      } else {
+        rentalUnits = await getAllRentalUnits(connection);
+      }
+      response.send({ rentalUnits, averagePriceOfAllRentalUnits });
+    } catch (error) {
+      response.status(400).send(error);
+    }
   }
 });
 
@@ -145,63 +190,23 @@ app.get("/rental-units/:unitId", async function (request, response) {
 
 app.post("/rental-units", async function (request, response) {
   const cookies = parseCookies(request);
-  if (request.query.jsonOnly && request.query.projectionOnly) {
-    const maxPrice = JSON.stringify(request.query.maxPrice);
-    const minPrice = JSON.stringify(request.query.minPrice);
-    const attributes = request.query.attributes;
-    connection.query(`SELECT ${attributes}, price
-                      FROM rental_unit
-                      WHERE price > ${minPrice} AND price < ${maxPrice}`,
-      (error, result) => {
-        debugger
-        if (error) throw error;
-        response.status(200).send(result)
-      })
-  } else if (request.query.jsonOnly && request.query.getStats) {
-    const maxMarketPrice = await new Promise((resolve) => {
-      connection.query(`SELECT MAX(price)
-                      FROM rental_unit`,
-        (error, result) => {
-          if (error) throw error;
-          if (result) {
-            resolve(result)
-          } else {
-            resolve(0)
-          }
-        })
-    })
-    const minMarketPrice = await new Promise((resolve) => {
-      connection.query(`SELECT MIN(price)
-                      FROM rental_unit`,
-        (error, result) => {
-          if (error) throw error;
-          if (result) {
-            resolve(result)
-          } else {
-            resolve(0)
-          }
-        })
-    })
-    response.status(200).send({ maxMarketPrice, minMarketPrice })
-  } else {
-    try {
-      if (!cookies['landlord-id'] || !cookies['logged-in-key']) {
-        response.status(401).send('Session has expired. Please log in again.');
-        return;
-      }
-
-      const landlord = {
-        landlordId: cookies['landlord-id'],
-        loggedInKey: cookies['logged-in-key']
-      }
-
-      const rentalUnitId = await createRentalUnit(landlord, request.body.rentalUnit, connection);
-      await addFeatureListToRentalUnit(request.body.unitFeatureList, rentalUnitId, connection);
-
-      response.status(201).send("A rental unit was successfully created!");
-    } catch (error) {
-      response.status(400).send(error);
+  try {
+    if (!cookies['landlord-id'] || !cookies['logged-in-key']) {
+      response.status(401).send('Session has expired. Please log in again.');
+      return;
     }
+
+    const landlord = {
+      landlordId: cookies['landlord-id'],
+      loggedInKey: cookies['logged-in-key']
+    }
+
+    const rentalUnitId = await createRentalUnit(landlord, request.body.rentalUnit, connection);
+    await addFeatureListToRentalUnit(request.body.unitFeatureList, rentalUnitId, connection);
+
+    response.status(201).send("A rental unit was successfully created!");
+  } catch (error) {
+    response.status(400).send(error);
   }
 });
 
