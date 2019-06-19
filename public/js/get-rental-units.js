@@ -132,7 +132,7 @@ const addCellsToElementAttribute = (rentalUnitElement, rentalUnit) => {
     type.append(typeText);
 
     const price = rentalUnitElement.insertCell(4);
-    const priceText = document.createTextNode(rentalUnit.price);
+    const priceText = document.createTextNode(`$${rentalUnit.price}`);
     price.append(priceText);
 }
 const getRentalUnitsByAttributesSuccess = (response) => {
