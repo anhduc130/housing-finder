@@ -1,4 +1,9 @@
 <script type="text/javascript">
+	var avisible = true;
+	var bvisible = true;
+	var cvisible = true;
+
+
 	function selectAll() {
         var a = document.getElementById("Title");
         var b = document.getElementById("Address");
@@ -10,6 +15,19 @@
     function checkSelectAll(){
     	var a = document.getElementById("All");
     	a.checked = false;
+    	var title = document.getElementById("Title");
+    	var address = document.getElementById("Address");
+    	var unitType = document.getElementById("Unit_Type");
+    	avisible = title.checked;
+    	bvisible = address.checked;
+    	cvisible = unitType.checked;
+    	
+    }
+    function updateTable(){
+        event.preventDefault()
+    	var tbl = document.getElementById(table1);
+    	var col = tbl.getElementByTagName('col1')[col1];
+    	col.style.visibility = 'none';
     }
 	
 </script>
@@ -50,6 +68,7 @@ width: 300px;
 }
 .flex-item{
 flex-grow: 1;
+margin-right: -500px;
 /*margin-left:300px;*/
 /*width: 800px;*/
 /* padding: 10px;  */
@@ -232,7 +251,8 @@ flex-grow: 1;
 
               <div class="form-submit">
                   <input type="reset" value="reset" class="reset" name="reset" id="reset" />
-                  <input type="submit" value="update search" class="submit" name="submit" id="submit" />
+                  <input type="submit" value="update search" class="submit" name="submit" id="submit" onclick = "updateTable()"/>
+                 <!--  <button onclick = "updateTable()">update search</button> -->
               </div>
           </form>      
       </div>
@@ -253,16 +273,16 @@ flex-grow: 1;
               <a href = "http://google.com" target = "_blank"-->
             <!-- </ul> --> 
 
-<table class="table table-striped table-dark">
+<table class="table table-striped table-dark" id = "table1">
 <thead>
   <tr>
-    <th scope="col">rentalID</th>
-    <th scope="col">UnitTitle</th>
-    <th scope="col">Address</th>
-    <th scope="col">Price</th>
-    <th scope="col">PostalCode</th>
-    <th scope="col">Type</th>
-    <th scope="col">Description</th>
+    <th scope="col1"  id = "col1">rentalID</th>
+    <th scope="col2">UnitTitle</th>
+    <th scope="col3">Address</th>
+<!--     <th class="col">Price</th>
+    <th class="col">PostalCode</th> -->
+    <th scope="col4">Type</th>
+<!--     <th class="col">Description</th> -->
   </tr>
 </thead>
 <tbody>
@@ -271,9 +291,6 @@ flex-grow: 1;
     <!-- <th scope="row">00000001</th> -->
     <th scope="row"> <a href ="http://localhost:2019/"> 00000001</a></th>
     <input onclick="getRentalPosting(unitID)" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now">
-    <td>test</td>
-    <td>test</td>
-    <td>test</td>
     <td>test</td>
     <td>test</td>
     <td>test</td>
